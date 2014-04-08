@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dish Order</string>
+    <string name="back">Back</string>
+    <string name="hotdishs">Hot Dishs</string>
+    <string name="cooldishs">Cool Dishs</string>
+    <string name="stapledishs">Staple Dishs</string>
+    <string name="snacksdishs">Snacks Dishs</string>
+    <string name="drinks">drinks</string>
+    <string name="title">Yinsen dian dan</string>
+    <string name="order">Order</string>
+    <string name="option">Options</string>
+    <string name="viewstyle">View Style</string>
+    
+    <string name="kouwei">kouwei</string>
+    <string name="qingdan">qingdan</string>
+    <string name="weila">weila</string>
+    <string name="zhongla">zhongla</string>
+    <string name="shaoxian">shaoxian</string>
+    
+    <string name="zuofa">zuofa</string>
+    <string name="qingcao">qingcao</string>
+    <string name="hongshao">hongshao</string>
+    <string name="baochao">baochao</string>
+    
+    <string name="fenliang">fenliang</string>
+    <string name="dafen">dafen</string>
+    <string name="zhongfen">zhongfen</string>
+    <string name="xiaofeng">xiaofeng</string>
+    
+    <string name="price">price</string>
+    <string name="numperdish">number</string>
+    <string name="orderdish">OK</string>
+    
+    <string name="dishdetail">A very nice dish</string>
+    <string name="example_name">example name</string>
+</resources>

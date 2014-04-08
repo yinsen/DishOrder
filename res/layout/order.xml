@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		
+        <!-- top bar -->
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/topbar_bk">
+			
+			<Button android:id="@+id/backbt"
+			    android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+			    android:layout_marginLeft="20dp"
+			    android:layout_gravity="center_vertical"
+			    android:text="@string/back"
+			    android:background="@drawable/toolbar_back_normal" />
+			<TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center"
+		        android:layout_marginLeft="110dp"
+		        android:text="@string/example_name"
+		        android:textSize="25sp"
+		        android:textStyle="bold"/>
+			
+			<Button android:id="@+id/orderbt"
+			    android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+			    android:layout_marginLeft="100dp"
+			    android:layout_gravity="center_vertical"
+			    android:text="@string/orderdish"
+			    android:background="@drawable/toolbar_normal" />
+		</LinearLayout>
+		
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+			
+		    <ImageView
+			    android:id="@+id/bigImg"
+			    android:layout_width="200dp"
+			    android:layout_height="fill_parent"
+			    android:background="@drawable/bigimg" />
+		    
+		    <!-- 文字介绍 -->
+			<TextView
+		        android:layout_width="120dp"
+		        android:layout_height="fill_parent"
+		        android:layout_gravity="center"
+		        android:layout_marginTop="20dp"
+		        android:text="@string/dishdetail"
+		        android:textSize="15sp"
+		        android:textStyle="bold"/>
+		
+			<!-- 选项栏 -->
+			<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+				
+			    <!-- 口味 -->
+			    <LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_gravity="center"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/kouwei"
+						android:textSize="20sp"
+		        		android:textStyle="bold"
+						android:id="@+id/kouwei"/>
+					<RadioGroup
+				        android:layout_width="fill_parent"
+				        android:layout_height="wrap_content"
+				        android:orientation="vertical"
+				        android:id="@+id/option1">
+				        <RadioButton
+				            android:text="@string/qingdan"
+				            android:id="@+id/qingdan"/>
+				        <RadioButton
+				            android:text="@string/weila"
+				            android:id="@+id/weila" />
+				        <RadioButton
+				            android:text="@string/zhongla"
+				            android:id="@+id/zhongla" />
+				        <RadioButton
+				            android:text="@string/shaoxian"
+				            android:id="@+id/shaoxian" />
+				    </RadioGroup>
+				</LinearLayout>  
+				
+			    <!-- 做法 -->
+			    <LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_gravity="center"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/zuofa"
+						android:textSize="20sp"
+		        		android:textStyle="bold"
+						android:id="@+id/zuofa"/>
+					<RadioGroup
+				        android:layout_width="fill_parent"
+				        android:layout_height="wrap_content"
+				        android:orientation="vertical"
+				        android:id="@+id/option2">
+				        <RadioButton
+				            android:text="@string/qingcao"
+				            android:id="@+id/qingcao"/>
+				        <RadioButton
+				            android:text="@string/hongshao"
+				            android:id="@+id/hongshao" />
+				        <RadioButton
+				            android:text="@string/baochao"
+				            android:id="@+id/baochao" />
+				    </RadioGroup>
+				</LinearLayout>  
+				
+			    <!-- 份量 -->
+			    <LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_gravity="center"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/fenliang"
+						android:textSize="20sp"
+		        		android:textStyle="bold"
+						android:id="@+id/fenliang"/>
+					<RadioGroup
+				        android:layout_width="fill_parent"
+				        android:layout_height="wrap_content"
+				        android:orientation="vertical"
+				        android:id="@+id/option3">
+				        <RadioButton
+				            android:text="@string/dafen"
+				            android:id="@+id/dafen"/>
+				        <RadioButton
+				            android:text="@string/zhongfen"
+				            android:id="@+id/zhongfen" />
+				        <RadioButton
+				            android:text="@string/xiaofeng"
+				            android:id="@+id/xiaofeng" />
+				    </RadioGroup>
+				</LinearLayout>
+			</LinearLayout>	
+		</LinearLayout>
+		
+	</LinearLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">点单</string>
+    <string name="back">返回</string>
+    <string name="hotdishs">热菜</string>
+    <string name="cooldishs">冷盘</string>
+    <string name="stapledishs">主食</string>
+    <string name="snacksdishs">点心</string>
+    <string name="drinks">酒水</string>
+    <string name="title">尹森酒楼</string>
+    <string name="order">点单</string>
+    <string name="option">设置</string>
+    <string name="viewstyle">视图切换</string>
+    
+    <string name="kouwei">口味</string>
+    <string name="qingdan">清淡</string>
+    <string name="weila">微辣</string>
+    <string name="zhongla">中辣</string>
+    <string name="shaoxian">稍咸</string>
+    
+    <string name="zuofa">做法</string>
+    <string name="qingcao">清炒</string>
+    <string name="hongshao">红烧</string>
+    <string name="baochao">爆炒</string>
+    
+    <string name="fenliang">份量</string>
+    <string name="dafen">大份</string>
+    <string name="zhongfen">中份</string>
+    <string name="xiaofeng">小份</string>
+    
+    <string name="price">单价</string>
+    <string name="numperdish">份数</string>
+    <string name="orderdish">确定点菜</string>
+    
+    <string name="dishdetail">青椒豆干炒肉片，青椒微辣，豆干劲道，肉片嫩滑，色泽清爽，清香宜人</string>
+    <string name="example_name">青椒炒肉片</string>
+</resources>
