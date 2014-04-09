@@ -34,4 +34,11 @@
     
     <string name="dishdetail">A very nice dish</string>
     <string name="example_name">example name</string>
+    
+    <string name="no">No</string>
+    <string name="dishname">Dish Name</string>
+    <string name="description">Description</string>
+    <string name="del">No</string>
+    <string name="totalprice">Total Price</string>
+    <string name="ok">OK</string>
 </resources>

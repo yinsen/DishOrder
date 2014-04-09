@@ -95,6 +95,7 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     //移到DishListActivity用于获取菜单
     //同时移到已点菜品的Activity用于获取已点菜品列表
     public Vector<AddressItem> getDishList() {
+      
         if(mDb==null)
           return null;    
         

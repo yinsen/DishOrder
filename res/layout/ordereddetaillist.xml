@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		
+    <!-- top bar -->
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/topbar_bk">
+			
+			<TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left"
+		        android:text="@string/no"
+		        android:textSize="20sp"
+		        android:textStyle="bold"/>
+			
+			<TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp"
+		        android:text="@string/dishname"
+		        android:textSize="20sp"
+		        android:textStyle="bold"/>
+		        
+		  <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="90dp"
+		        android:text="@string/description"
+		        android:textSize="20sp"
+		        android:textStyle="bold"/>
+		  <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="190dp"
+		        android:text="@string/price"
+		        android:textSize="20sp"
+		        android:textStyle="bold"/>
+		  <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp"
+		        android:text="@string/num"
+		        android:textSize="20sp"
+		        android:textStyle="bold"/>
+      <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp"
+		        android:text="@string/del"
+		        android:textSize="20sp"
+		        android:textStyle="bold"/>
+		</LinearLayout>
+		
+		<!-- list -->
+		<ListView android:id="@+id/orderDetailList"
+		  android:minHeight="40dip"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:background="@drawable/background"
+			android:cacheColorHint="@android:color/transparent">
+		</ListView>
+		
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/topbar_bk">
+			
+			<Button android:id="@+id/backBt"
+			    android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+			    android:layout_marginLeft="320dp"
+			    android:layout_gravity="center_vertical"
+			    android:text="@string/back"
+			    android:background="@drawable/toolbar_back_normal" />
+			    
+			<Button android:id="@+id/okBt"
+			    android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+			    android:layout_marginLeft="20dp"
+			    android:layout_gravity="center_vertical"
+			    android:text="@string/back"
+			    android:background="@drawable/toolbar_back_normal" />
+	  </LinearLayout>
+	</LinearLayout>
