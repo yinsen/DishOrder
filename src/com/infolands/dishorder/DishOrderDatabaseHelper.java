@@ -12,24 +12,62 @@ import android.database.sqlite.SQLiteOpenHelper;
    */
 class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     
-
     // DB NAME
     public static final String DATABASE_NAME = "dishorderDB";
     public static final int DATABASE_VERSION = 1;
-    
 
+    // DINING TABLES
+    protected static final String DINING_TABLE_NAME = "dining";
+    // DISH TABLES COLUMNS
+    public static final String COLUMN_DINING_ID = "dining_id";
+    public static final String COLUMN_DINING_NAME = "name";
+    public static final String COLUMN_DINING_IMG = "img";
+    private static final String DINING_TABLE_CREATE = "create table if not exists "
+        + DINING_TABLE_NAME
+        + "("+ COLUMN_DINING_ID + " TEXT primary key, "
+        + COLUMN_DINING_NAME + " TEXT not null ," 
+        + COLUMN_DINING_IMG + " TEXT not null)";
+    
+    
+    // MENU TABLES
+    protected static final String MENU_TABLE_NAME = "menu";
+    // DISH TABLES COLUMNS
+    public static final String COLUMN_MENU_ID = "menu_id";
+    public static final String COLUMN_MENU_NAME = "name";
+    public static final String COLUMN_MENU_IMG = "img";
+    private static final String MENU_TABLE_CREATE = "create table if not exists "
+        + MENU_TABLE_NAME
+        + "("+ COLUMN_MENU_ID + " TEXT primary key, "
+        + COLUMN_MENU_NAME + " TEXT not null ," 
+        + COLUMN_MENU_IMG + " TEXT not null)";
+    
+    // SUBMENU TABLES
+    protected static final String SUBMENU_TABLE_NAME = "submenu";
+    // DISH TABLES COLUMNS
+    public static final String COLUMN_SUBMENU_ID = "submenu_id";
+    public static final String COLUMN_SUBMENU_NAME = "name";
+    public static final String COLUMN_SUBMENU_IMG = "img";
+    private static final String SUBMENU_TABLE_CREATE = "create table if not exists "
+        + SUBMENU_TABLE_NAME
+        + "("+ COLUMN_SUBMENU_ID + " TEXT primary key, "
+        + COLUMN_SUBMENU_NAME + " TEXT not null ," 
+        + COLUMN_SUBMENU_IMG + " TEXT not null)";
+    
+    
     // DISH TABLES
     protected static final String DISH_TABLE_NAME = "dish";
     // DISH TABLES COLUMNS
     public static final String COLUMN_DISH_ID = "dish_id";
     public static final String COLUMN_DISH_NAME = "name";
+    public static final String COLUMN_DISH_PRICE = "price";
     public static final String COLUMN_DISH_SUBMENU = "submenu";
     public static final String COLUMN_DISH_MENU = "menu";
     public static final String COLUMN_DISH_IMG = "img";
     private static final String DISH_TABLE_CREATE = "create table if not exists "
         + DISH_TABLE_NAME
-        + "("+ COLUMN_DISH_ID + " integer primary key, "
+        + "("+ COLUMN_DISH_ID + " TEXT primary key, "
         + COLUMN_DISH_NAME + " TEXT not null ," 
+        + COLUMN_DISH_PRICE + " TEXT not null ," 
         + COLUMN_DISH_SUBMENU + " TEXT not null ," 
         + COLUMN_DISH_MENU + " TEXT not null ," 
         + COLUMN_DISH_IMG + " TEXT not null)";
@@ -55,10 +93,10 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ORDERDISHS_WEIGHT = "weight";
     private static final String ORDERDISHS_TABLE_CREATE = "create table if not exists "
         + ORDERDISHS_TABLE_NAME
-        + "("+ COLUMN_DISH_ID + " integer primary key, "
+        + "("+ COLUMN_DISH_ID + " TEXT primary key, "
         + COLUMN_ORDERLIST_ID + " TEXT primary key," 
         + COLUMN_ORDERDISHS_DISHNUM + " integer not null ," 
-        + COLUMN_ORDERDISHS_TABLE_NO + " TEXT not null ," 
+        + COLUMN_ORDERDISHS_TABLE_NO + " integer not null ," 
         + COLUMN_ORDERDISHS_TASTE + " TEXT not null ," 
         + COLUMN_ORDERDISHS_MIXTURE + " TEXT not null ," 
         + COLUMN_ORDERDISHS_COOKIE + " TEXT not null ," 
@@ -92,39 +130,6 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
         System.out.println("upgrade a database");  
     }
     
-    //移到DishListActivity用于获取菜单
-    //同时移到已点菜品的Activity用于获取已点菜品列表
-    public Vector<AddressItem> getDishList() {
-      
-        if(mDb==null)
-          return null;    
-        
-        ArrayList<AddressItem> results = new ArrayList<AddressItem>();
-        Cursor cursor = mDb.query(ADDRESS_TABLE_NAME, new String[] { KEY_ROWID,
-                  KEY_POI_ADDRESS, KEY_POI_POSITION }, null, null,
-          null, null, "_id desc");
-        cursor.moveToFirst();
-        
-        while (cursor.getPosition() != cursor.getCount()) 
-          {
-          AddressItem item= new AddressItem();
-          item.rowId =cursor.getString(cursor.getColumnIndex(KEY_ROWID));
-          item.address=cursor.getString(cursor.getColumnIndex(KEY_POI_ADDRESS));
-          item.position=cursor.getString(cursor.getColumnIndex(KEY_POI_POSITION));
-            results.add(item);
-              cursor.moveToNext();
-          }
-          cursor.close();
-      return results;
-    }
-    
-    //移到已点菜品的Activity取消已点菜品
-    public boolean deleteAddress(String rowId) {
-      if(mDb==null)
-          return false; 
-      
-      return mDb.delete(ADDRESS_TABLE_NAME, KEY_ROWID + "=" + rowId, null) > 0;
-    }
     
 }
 

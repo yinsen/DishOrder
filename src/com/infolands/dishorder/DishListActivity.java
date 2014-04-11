@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +30,8 @@ public class DishListActivity extends Activity {
     public int id;
     public String name;
 
+    public LabelItem() {
+    }
     public LabelItem(int no, String n) {
       id = no;
       name = n;
@@ -36,11 +40,14 @@ public class DishListActivity extends Activity {
 
   private class DishItem {
 
-    public int id;
+    public String id;
     public String name;
     public String price;
 
-    public DishItem(int no, String n, String p) {
+    public DishItem() {
+    }
+    
+    public DishItem(String no, String n, String p) {
       id = no;
       name = n;
       price = p;
@@ -161,7 +168,7 @@ public class DishListActivity extends Activity {
       orderButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          //dataList.get(pos).id;
+          currSubMenuID = ""+pos;
         }
       });
     }
@@ -236,6 +243,9 @@ public class DishListActivity extends Activity {
     }
   }
 
+  private String currMenuID; 
+  private String currSubMenuID; 
+  
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -243,6 +253,11 @@ public class DishListActivity extends Activity {
 
     setContentView(R.layout.dishlist);
 
+    Intent intent = getIntent();  
+    Bundle bundle = intent.getBundleExtra("menu_id");  
+    currMenuID = bundle.getString("menu_id"); 
+    currSubMenuID = "1";
+    
     setTopButtons();
     setlabelAdapter();
     setDishsAdapter();
@@ -250,17 +265,7 @@ public class DishListActivity extends Activity {
 
   private void setDishsAdapter() {
 
-    Vector<DishItem> dishList = new Vector<DishItem>();
-    DishItem element0 = new DishItem(0, "name:chicken", "price:180");
-    DishItem element1 = new DishItem(1, "name:chicken1", "price:181");
-    DishItem element2 = new DishItem(2, "name:chicken2", "price:182");
-    DishItem element3 = new DishItem(3, "name:chicken3", "price:183");
-    DishItem element4 = new DishItem(4, "name:chicken4", "price:184");
-    dishList.addElement(element0);
-    dishList.addElement(element1);
-    dishList.addElement(element2);
-    dishList.addElement(element3);
-    dishList.addElement(element4);
+    Vector<DishItem> dishList = getDishList();
     DishAdapter dishAdapter = new DishAdapter(dishList);
 
     //    ScrollView dishScrollView = (ScrollView) findViewById(R.id.dishScrollView);
@@ -348,5 +353,29 @@ public class DishListActivity extends Activity {
         }
       }
     });
+  }
+  
+  public Vector<DishItem> getDishList() {
+    
+    DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(DishListActivity.this);  
+    SQLiteDatabase mDb = dbHelper.getWritableDatabase(); 
+      
+    Vector<DishItem> results = new Vector<DishItem>();
+    String[] selectionArgs = new String[]{currSubMenuID, currMenuID};
+    Cursor cursor = mDb.rawQuery("select * from table " + DishOrderDatabaseHelper.DISH_TABLE_NAME
+                                  + " where " + DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU + "=?"
+                                  + " AND "+DishOrderDatabaseHelper.COLUMN_DISH_MENU + "=?", selectionArgs);
+    cursor.moveToFirst();
+    
+    while (cursor.getPosition() != cursor.getCount()) {
+      DishItem item= new DishItem();
+      item.id =cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_ID));
+      item.name=cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_NAME));
+      item.price=cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_PRICE));
+      results.add(item);
+      cursor.moveToNext();
+    }
+    cursor.close();
+    return results;
   }
 }

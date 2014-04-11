@@ -32,6 +32,11 @@ public class MainMenu extends Activity {
               intent.setAction(Intent.ACTION_VIEW);
               String url = "dishlist://";
               intent.setData(Uri.parse(url));
+              
+              Bundle bundle = new Bundle();
+              bundle.putString("menu_id", "1");
+              intent.putExtra("menu_id", bundle);  
+              
               startActivity(intent);
             } catch (Exception e) {
               e.printStackTrace();

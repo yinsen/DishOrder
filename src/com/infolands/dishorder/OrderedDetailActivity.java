@@ -165,4 +165,37 @@ public class OrderedDetailActivity extends Activity {
       }
     });
   }
+  
+  
+
+  public Vector<AddressItem> getDishList() {
+    
+      if(mDb==null)
+        return null;    
+      
+      ArrayList<AddressItem> results = new ArrayList<AddressItem>();
+      Cursor cursor = mDb.query(ADDRESS_TABLE_NAME, new String[] { KEY_ROWID,
+                KEY_POI_ADDRESS, KEY_POI_POSITION }, null, null,
+        null, null, "_id desc");
+      cursor.moveToFirst();
+      
+      while (cursor.getPosition() != cursor.getCount()) 
+        {
+        AddressItem item= new AddressItem();
+        item.rowId =cursor.getString(cursor.getColumnIndex(KEY_ROWID));
+        item.address=cursor.getString(cursor.getColumnIndex(KEY_POI_ADDRESS));
+        item.position=cursor.getString(cursor.getColumnIndex(KEY_POI_POSITION));
+          results.add(item);
+            cursor.moveToNext();
+        }
+        cursor.close();
+    return results;
+  }
+  
+  public boolean deleteAddress(String rowId) {
+    if(mDb==null)
+        return false; 
+    
+    return mDb.delete(ADDRESS_TABLE_NAME, KEY_ROWID + "=" + rowId, null) > 0;
+  }
 }
