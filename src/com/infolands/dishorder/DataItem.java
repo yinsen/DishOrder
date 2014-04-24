@@ -51,12 +51,16 @@ public class DataItem {
 
     public String submenu_id;
     public String name;
+    public String menu_id;
+    public String img;
 
     public SubmenuItem() {
     }
-    public SubmenuItem(String no, String n) {
+    public SubmenuItem(String no, String n, String mid, String imgPath) {
       submenu_id = no;
       name = n;
+      menu_id = mid;
+      img = imgPath;
     }
   }
   
@@ -66,14 +70,18 @@ public class DataItem {
     public String name;
     public String price;
     public String img;
+    public String submenu_id;
+    public String menu_id;
 
     public DishItem() {
     }
     
-    public DishItem(String no, String n, String p, String imgPath) {
+    public DishItem(String no, String n, String p, String sid, String mid, String imgPath) {
       dish_id = no;
       name = n;
       price = p;
+      submenu_id = sid;
+      menu_id = mid;
       img = imgPath;
     }
   }

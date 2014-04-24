@@ -27,24 +27,23 @@ public class DishListActivity extends Activity {
 
   private class LabelAdapter extends BaseAdapter {
 
-    private Vector<LabelItem> dataList;
     private View oldSelectedItem = null;
-
-    public LabelAdapter(Vector<LabelItem> list) {
-      this.dataList = list;
+    private Vector<DataItem.SubmenuItem> submenuList;
+    public LabelAdapter(Vector<DataItem.SubmenuItem> list) {
+      this.submenuList = list;
     }
 
-    public void setList(Vector<LabelItem> list) {
-      this.dataList = list;
+    public void setList(Vector<DataItem.SubmenuItem> list) {
+      this.submenuList = list;
       notifyDataSetChanged();
     }
 
     public int getCount() {
-      return dataList.size();
+      return submenuList.size();
     }
 
     public Object getItem(int position) {
-      return dataList.get(position);
+      return submenuList.get(position);
     }
 
     public long getItemId(int position) {
@@ -57,7 +56,8 @@ public class DishListActivity extends Activity {
         LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = vi.inflate(R.layout.labelitem, null);
       }
-      LabelItem o = (LabelItem) dataList.get(position);
+      DataItem.SubmenuItem o = (DataItem.SubmenuItem) submenuList.get(position);
+      
       if (o != null) {
         Button labelBt = (Button) v.findViewById(R.id.labelItem);
         if (labelBt != null) {
@@ -75,12 +75,19 @@ public class DishListActivity extends Activity {
       labelButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          //dataList.get(pos).id;
+          //submenuList.get(pos).id;
           //          if (oldSelectedItem != null) {
           //            oldSelectedItem.getBackground().setAlpha(0);
           //          }
           //          v.setBackgroundColor(Color.LTGRAY);
           //          oldSelectedItem = v;
+          
+          //更新当前子菜单项，同时更新菜品列表
+          DishApplication app = (DishApplication)getApplicationContext();
+          app.currSubMenu =  submenuList.get(pos).submenu_id;
+          
+          DishListActivity activity = (DishListActivity)(v.getContext());
+          activity.updateData();
         }
       });
     }
@@ -88,23 +95,23 @@ public class DishListActivity extends Activity {
 
   private class DishAdapter extends BaseAdapter {
 
-    private Vector<DishItem> dataList;
+    private Vector<DataItem.DishItem> dishList;
 
-    public DishAdapter(Vector<DishItem> list) {
-      this.dataList = list;
+    public DishAdapter(Vector<DataItem.DishItem> list) {
+      this.dishList = list;
     }
 
-    public void setList(Vector<DishItem> list) {
-      this.dataList = list;
+    public void setList(Vector<DataItem.DishItem> list) {
+      this.dishList = list;
       notifyDataSetChanged();
     }
 
     public int getCount() {
-      return dataList.size();
+      return dishList.size();
     }
 
     public Object getItem(int position) {
-      return dataList.get(position);
+      return dishList.get(position);
     }
 
     public long getItemId(int position) {
@@ -117,7 +124,7 @@ public class DishListActivity extends Activity {
         LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = vi.inflate(R.layout.dishitem, null);
       }
-      DishItem o = (DishItem) dataList.get(position);
+      DataItem.DishItem o = (DataItem.DishItem) dishList.get(position);
       if (o != null) {
         TextView nameView = (TextView) v.findViewById(R.id.dishName);
         TextView priceView = (TextView) v.findViewById(R.id.dishPrice);
@@ -139,31 +146,30 @@ public class DishListActivity extends Activity {
       orderButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          getApplication().setCurrSubMenu(""+pos);
+          
         }
       });
     }
   }
 
   public class DishGridAdapter extends BaseAdapter {
-
-    private Vector<DishItem> dataList;
+    private Vector<DataItem.DishItem> dishList;
     
-    public DishGridAdapter(Vector<DishItem> list) {
-      this.dataList = list;
+    public DishGridAdapter(Vector<DataItem.DishItem> list) {
+      this.dishList = list;
     }
 
-    public void setList(Vector<DishItem> list) {
-      this.dataList = list;
+    public void setList(Vector<DataItem.DishItem> list) {
+      this.dishList = list;
       notifyDataSetChanged();
     }
 
     public int getCount() {
-      return dataList.size();
+      return dishList.size();
     }
 
     public Object getItem(int position) {
-      return dataList.get(position);
+      return dishList.get(position);
     }
 
     public long getItemId(int position) {
@@ -177,7 +183,8 @@ public class DishListActivity extends Activity {
         LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = vi.inflate(R.layout.dishgriditem, null);
       }
-      DishItem o = (DishItem) dataList.get(position);
+      DataItem.DishItem o =  dishList.get(position);
+      
       if (o != null) {
         TextView nameView = (TextView) v.findViewById(R.id.dishName);
         TextView priceView = (TextView) v.findViewById(R.id.dishPrice);
@@ -199,7 +206,7 @@ public class DishListActivity extends Activity {
       orderButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          //dataList.get(pos).id;
+          //dishList.get(pos).id;
           try {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
@@ -214,6 +221,14 @@ public class DishListActivity extends Activity {
     }
   }
 
+  /**************************** submenuList ************************************
+  ********************此变量是否需要一个menu_id作为外键？需要根据数据待确定***************
+  *****************************************************************************/
+  private Vector<DataItem.SubmenuItem> submenuList;
+  private Vector<DataItem.DishItem> dishList;
+  
+  private DishAdapter dishAdapter;
+  private LabelAdapter labelAdapter;
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -226,11 +241,36 @@ public class DishListActivity extends Activity {
     setlabelAdapter();
     setDishsAdapter();
   }
+  public void onStart() {
+    super.onStart();
+    
+    updateData();
+  }
+  
+  private void updateData(){
+    //获取当前页面的Dish List以及Submenu List
+    if (!dishList.isEmpty()) dishList.clear();
+    DishApplication app = (DishApplication)getApplicationContext();
+    for (int i=0; i<app.dishList.size(); i++) {
+      if (app.dishList.get(i).submenu_id.equalsIgnoreCase(app.currSubMenu)
+        &&app.dishList.get(i).menu_id.equalsIgnoreCase(app.currMenu)) {
+        dishList.add(app.dishList.get(i));
+      }
+    }
+    dishAdapter.setList(dishList);//更新adapter里的数据&页面内容
+    
+    if (!submenuList.isEmpty()) submenuList.clear();
+    for (int i=0; i<app.submenuList.size(); i++) {
+      if (app.submenuList.get(i).menu_id.equalsIgnoreCase(app.currMenu)) {
+        submenuList.add(app.submenuList.get(i));
+      }
+    }
+    labelAdapter.setList(submenuList);//更新adapter里的数据&页面内容
+  }
 
   private void setDishsAdapter() {
 
-    Vector<DishItem> dishList = getApplication().getDishList();
-    DishAdapter dishAdapter = new DishAdapter(dishList);
+    dishAdapter = new DishAdapter(dishList);
 
     //    ScrollView dishScrollView = (ScrollView) findViewById(R.id.dishScrollView);
     //    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -248,24 +288,11 @@ public class DishListActivity extends Activity {
   }
 
   private void setlabelAdapter() {
-
-    Vector<LabelItem> labelList = new Vector<LabelItem>();
-    LabelItem element0 = new LabelItem(0, getResources().getString(R.string.hotdishs));
-    LabelItem element1 = new LabelItem(1, getResources().getString(R.string.cooldishs));
-    LabelItem element2 = new LabelItem(2, getResources().getString(R.string.stapledishs));
-    LabelItem element3 = new LabelItem(3, getResources().getString(R.string.snacksdishs));
-    LabelItem element4 = new LabelItem(4, getResources().getString(R.string.drinks));
-    labelList.addElement(element0);
-    labelList.addElement(element1);
-    labelList.addElement(element2);
-    labelList.addElement(element3);
-    labelList.addElement(element4);
-
-    LabelAdapter labelAdapter = new LabelAdapter(labelList);
+    
+    labelAdapter = new LabelAdapter(submenuList);
 
     ListView labelListView = (ListView) findViewById(R.id.labelList);
     labelListView.setAdapter(labelAdapter);
-
   }
 
   private void setTopButtons() {

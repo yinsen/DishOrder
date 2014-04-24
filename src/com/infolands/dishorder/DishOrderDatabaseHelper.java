@@ -5,8 +5,6 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-
-
   /**
    * DatabaseHelper extends SQLiteOpenHelper
    */
@@ -19,7 +17,7 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     // DINING TABLES
     protected static final String TABLE_DINING = "dining";
     // DINING TABLES COLUMNS
-    public static final String COLUMN_DINING_ID = "dining_id";
+    public static final String COLUMN_DINING_ID = "id";
     public static final String COLUMN_DINING_NAME = "name";
     public static final String COLUMN_DINING_IMG = "img";
     private static final String CREATE_TABLE_DINING = "create table if not exists "
@@ -31,7 +29,7 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     // WAITOR TABLES
     protected static final String TABLE_WAITOR = "waitor";
     // WAITOR TABLES COLUMNS
-    public static final String COLUMN_WAITOR_ID = "waitor_id";
+    public static final String COLUMN_WAITOR_ID = "id";
     public static final String COLUMN_WAITOR_NAME = "name";
     public static final String COLUMN_WAITOR_IMG = "img";
     private static final String CREATE_TABLE_WAITOR = "create table if not exists "
@@ -44,7 +42,7 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     // MENU TABLES
     protected static final String TABLE_MENU = "menu";
     // MENU TABLES COLUMNS
-    public static final String COLUMN_MENU_ID = "menu_id";
+    public static final String COLUMN_MENU_ID = "id";
     public static final String COLUMN_MENU_NAME = "name";
     public static final String COLUMN_MENU_IMG = "img";
     private static final String CREATE_TABLE_MENU = "create table if not exists "
@@ -56,19 +54,22 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     // SUBMENU TABLES
     protected static final String TABLE_SUBMENU = "submenu";
     // SUBMENU TABLES COLUMNS
-    public static final String COLUMN_SUBMENU_ID = "submenu_id";
+    public static final String COLUMN_SUBMENU_ID = "id";
     public static final String COLUMN_SUBMENU_NAME = "name";
+    public static final String COLUMN_SUBMENU_MENU_ID = "menu_id";
     public static final String COLUMN_SUBMENU_IMG = "img";
     private static final String CREATE_TABLE_SUBMENU = "create table if not exists "
         + TABLE_SUBMENU
         + "("+ COLUMN_SUBMENU_ID + " TEXT primary key, "
         + COLUMN_SUBMENU_NAME + " TEXT not null ," 
-        + COLUMN_SUBMENU_IMG + " TEXT not null)";
+        + COLUMN_SUBMENU_MENU_ID + " TEXT not null ," 
+        + COLUMN_SUBMENU_IMG + " TEXT not null ,"
+        + "FOREIGN KEY (COLUMN_SUBMENU_MENU_ID) REFERENCES TABLE_MENU (COLUMN_MENU_ID))";
     
     // DISH TABLES
     protected static final String TABLE_DISH = "dish";
     // DISH TABLES COLUMNS
-    public static final String COLUMN_DISH_ID = "dish_id";
+    public static final String COLUMN_DISH_ID = "id";
     public static final String COLUMN_DISH_NAME = "name";
     public static final String COLUMN_DISH_PRICE = "price";
     public static final String COLUMN_DISH_SUBMENU = "submenu_id";
@@ -81,13 +82,15 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
         + COLUMN_DISH_PRICE + " TEXT not null ," 
         + COLUMN_DISH_SUBMENU + " TEXT not null ," 
         + COLUMN_DISH_MENU + " TEXT not null ," 
-        + COLUMN_DISH_IMG + " TEXT not null)";
+        + COLUMN_DISH_IMG + " TEXT not null ," 
+        + "FOREIGN KEY (COLUMN_DISH_SUBMENU) REFERENCES TABLE_SUBMENU (COLUMN_SUBMENU_ID) ,"
+        + "FOREIGN KEY (COLUMN_DISH_MENU) REFERENCES TABLE_MENU (COLUMN_MENU_ID))";
     
     
     // MIXTURE TABLES
     protected static final String TABLE_MIXTURE = "mixture";
     // MIXTURE TABLES COLUMNS
-    public static final String COLUMN_MIXTURE_ID = "mixture_id";
+    public static final String COLUMN_MIXTURE_ID = "id";
     public static final String COLUMN_MIXTURE_NAME = "name";
     public static final String COLUMN_MIXTURE_PRICE = "price";
     public static final String COLUMN_MIXTURE_IMG = "img";
@@ -95,40 +98,47 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
         + TABLE_MIXTURE
         + "("+ COLUMN_MIXTURE_ID + " TEXT primary key, "
         + COLUMN_MIXTURE_NAME + " TEXT not null ,"
-        + COLUMN_MIXTURE_PRICE + " TEXT not null ," 
+        + COLUMN_MIXTURE_PRICE + " TEXT not null ,"
         + COLUMN_MIXTURE_IMG + " TEXT not null)";
     
     
     // ORDERLIST TABLES
     protected static final String TABLE_ORDERLIST = "orderlist";
     // ORDERLIST TABLES COLUMNS
-    public static final String COLUMN_ORDERLIST_ID = "list_id";
+    public static final String COLUMN_ORDERLIST_ID = "id";
     public static final String COLUMN_ORDERLIST_TOTAL_PRICE = "price";
-    public static final String COLUMN_ORDERLIST_WAITOR_ID = "waitorid";
+    public static final String COLUMN_ORDERLIST_WAITOR_ID = "waitor_id";
     public static final String COLUMN_ORDERLIST_TABLE_NO = "table_no";
     private static final String CREATE_TABLE_ORDERLIST = "create table if not exists "
         + TABLE_ORDERLIST
         + "("+ COLUMN_ORDERLIST_ID + " TEXT primary key, "
-        + COLUMN_ORDERLIST_TOTAL_PRICE + " integer not null ," 
+        + COLUMN_ORDERLIST_TOTAL_PRICE + " integer not null ,"
         + COLUMN_ORDERLIST_WAITOR_ID + " TEXT not null ,"
-        + COLUMN_ORDERLIST_TABLE_NO + " TEXT not null)";
+        + COLUMN_ORDERLIST_TABLE_NO + " TEXT not null ,"
+        + "FOREIGN KEY (COLUMN_ORDERLIST_WAITOR_ID) REFERENCES TABLE_WAITOR (COLUMN_WAITOR_ID))";
 
     // ORDERDETAIL TABLES
     protected static final String TABLE_ORDERDETAIL = "orderdetail";
     // ORDERDETAIL TABLES COLUMNS
+    public static final String COLUMN_ORDERDETAIL_DISH_ID = "dish_id";
+    public static final String COLUMN_ORDERDETAIL_ORDERLIST_ID = "orderlist_id";
+    public static final String COLUMN_ORDERDETAIL_MIXTURE_ID = "mixture_id";
     public static final String COLUMN_ORDERDETAIL_DISHNUM = "dish_num";
     public static final String COLUMN_ORDERDETAIL_TASTE = "taste";
     public static final String COLUMN_ORDERDETAIL_COOKIE = "cookie";
     public static final String COLUMN_ORDERDETAIL_WEIGHT = "weight";
     private static final String CREATE_TABLE_ORDERDETAIL = "create table if not exists "
         + TABLE_ORDERDETAIL
-        + "("+ COLUMN_DISH_ID + " TEXT primary key, "
-        + COLUMN_ORDERLIST_ID + " TEXT primary key," 
-        + COLUMN_MIXTURE_ID + " TEXT not null ,"
-        + COLUMN_ORDERDETAIL_WEIGHT + " TEXT primary key ,"
-        + COLUMN_ORDERDETAIL_TASTE + " TEXT not null ," 
-        + COLUMN_ORDERDETAIL_COOKIE + " TEXT not null ,"
-        + COLUMN_ORDERDETAIL_DISHNUM + " integer not null)";
+        + "("+ COLUMN_ORDERDETAIL_DISH_ID + " TEXT primary key, "
+        + COLUMN_ORDERDETAIL_ORDERLIST_ID + " TEXT primary key," 
+        + COLUMN_ORDERDETAIL_MIXTURE_ID + " TEXT ,"
+        + COLUMN_ORDERDETAIL_WEIGHT + " TEXT ,"
+        + COLUMN_ORDERDETAIL_TASTE + " TEXT ," 
+        + COLUMN_ORDERDETAIL_COOKIE + " TEXT ,"
+        + COLUMN_ORDERDETAIL_DISHNUM + " integer not null ,"
+        + "FOREIGN KEY (COLUMN_ORDERDETAIL_DISH_ID) REFERENCES TABLE_DISH (COLUMN_DISH_ID) ,"
+        + "FOREIGN KEY (COLUMN_ORDERDETAIL_ORDERLIST_ID) REFERENCES TABLE_ORDERLIST (COLUMN_ORDERLIST_ID) ,"
+        + "FOREIGN KEY (COLUMN_ORDERDETAIL_MIXTURE_ID) REFERENCES TABLE_MIXTURE (COLUMN_MIXTURE_ID))";
     
     /** 
      * 在SQLiteOpenHelper的子类当中，必须有该构造函数 
@@ -155,8 +165,6 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
       db.execSQL(CREATE_TABLE_MIXTURE);
       db.execSQL(CREATE_TABLE_ORDERLIST);
       db.execSQL(CREATE_TABLE_ORDERDETAIL);
-      
-      
     }
 
     @Override  

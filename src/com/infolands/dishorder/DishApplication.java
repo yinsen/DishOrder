@@ -28,14 +28,14 @@ import com.infolands.dishorder.DataItem.DishItem;
 
 public class DishApplication extends Application {
 
-  private String currMenu;
-  private String currSubMenu;
-  private Vector<DataItem.DiningItem> diningList;
-  private Vector<DataItem.WaitorItem> waitorList;
-  private Vector<DataItem.MenuItem> menuList;
-  private Vector<DataItem.SubmenuItem> submenuList;
-  private Vector<DataItem.DishItem> dishList;
-  private Vector<DataItem.MixtureItem> mixtureList;
+  public String currMenu;
+  public String currSubMenu;
+  public Vector<DataItem.DiningItem> diningList;
+  public Vector<DataItem.WaitorItem> waitorList;
+  public Vector<DataItem.MenuItem> menuList;
+  public Vector<DataItem.SubmenuItem> submenuList;
+  public Vector<DataItem.DishItem> dishList;
+  public Vector<DataItem.MixtureItem> mixtureList;
   
   public void setCurrMenu(String m) {
     currMenu = m;
@@ -53,7 +53,7 @@ public class DishApplication extends Application {
     return currSubMenu;
   }
 
-  private void createTables() {
+  private void createTestTables() {
     DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
 
     SQLiteDatabase writeSession = dbHelper.getWritableDatabase();
@@ -61,7 +61,7 @@ public class DishApplication extends Application {
     ContentValues values = new ContentValues();
 
     for (int i = 0; i < 10; i++) {
-      values.put("dining_id", "dining_id_" + i + 1);
+      values.put("id", "dining_id_" + i + 1);
       values.put("name", "dining_name_" + i + 1);
       values.put("img", "img_path_" + i + 1);
     }
@@ -69,7 +69,7 @@ public class DishApplication extends Application {
 
     values.clear();
     for (int i = 0; i < 10; i++) {
-      values.put("waitor_id", "waitor_id_" + i + 1);
+      values.put("id", "waitor_id_" + i + 1);
       values.put("name", "waitor_name_" + i + 1);
       values.put("img", "img_path_" + i + 1);
     }
@@ -77,7 +77,7 @@ public class DishApplication extends Application {
 
     values.clear();
     for (int i = 0; i < 10; i++) {
-      values.put("menu_id", "menu_id_" + i + 1);
+      values.put("id", "menu_id_" + i + 1);
       values.put("name", "menu_name_" + i + 1);
       values.put("img", "img_path_" + i + 1);
     }
@@ -85,15 +85,16 @@ public class DishApplication extends Application {
 
     values.clear();
     for (int i = 0; i < 10; i++) {
-      values.put("submenu_id", "submenu_id_" + i + 1);
+      values.put("id", "submenu_id_" + i + 1);
       values.put("name", "submenu_name_" + i + 1);
+      values.put("menu_id", "menu_id" + i + 1);
       values.put("img", "img_path_" + i + 1);
     }
     writeSession.insert("submenu", null, values);
 
     values.clear();
     for (int i = 0; i < 10; i++) {
-      values.put("dish_id", i + 1);
+      values.put("id", i + 1);
       values.put("name", "dish_name_" + i + 1);
       values.put("price", "price_" + 120);
       values.put("submenu_id", "submenu_id_" + i + 1);
@@ -104,7 +105,7 @@ public class DishApplication extends Application {
 
     values.clear();
     for (int i = 0; i < 10; i++) {
-      values.put("mixture_id", i + 1);
+      values.put("id", i + 1);
       values.put("name", "mixture_name_" + i + 1);
       values.put("price", "price_" + 10);
       values.put("img", "img_path_" + i + 1);
@@ -113,7 +114,7 @@ public class DishApplication extends Application {
 
     values.clear();
     for (int i = 0; i < 10; i++) {
-      values.put("list_id", "list_id_" + i + 1);
+      values.put("id", "list_id_" + i + 1);
       values.put("price", "price_" + 10);
       values.put("waitor_id", "waitor_" + i + 1);
       values.put("table_no", "table_no_" + i + 1);
@@ -148,53 +149,101 @@ public class DishApplication extends Application {
     // 将光标移动到下一行，从而判断该结果集是否还有下一条数据，如果有则返回true，没有则返回false  
     DataItem dataItem = new DataItem();
     while (cursor.moveToNext()) {
-      String dining_id = cursor.getString(cursor.getColumnIndex("dining_id"));
+      String id = cursor.getString(cursor.getColumnIndex("id"));
       String name = cursor.getString(cursor.getColumnIndex("name"));
       String img = cursor.getString(cursor.getColumnIndex("img"));
-      DataItem.DiningItem diningItem =  dataItem.new DiningItem(dining_id, name, img);
+      DataItem.DiningItem diningItem = dataItem.new DiningItem(id, name, img);
       diningList.add(diningItem);
     }
+    
+    cursor = readSession.query(DishOrderDatabaseHelper.TABLE_WAITOR, new String[]{"id", "name", "img"}, "", null, null, null, null);
+    while (cursor.moveToNext()) {
+      String id = cursor.getString(cursor.getColumnIndex("id"));
+      String name = cursor.getString(cursor.getColumnIndex("name"));
+      String img = cursor.getString(cursor.getColumnIndex("img"));
+      DataItem.WaitorItem waitorItem =  dataItem.new WaitorItem(id, name, img);
+      waitorList.add(waitorItem);
+    }
+    
+    cursor = readSession.query(DishOrderDatabaseHelper.TABLE_MENU, new String[]{"id", "name", "img"}, "", null, null, null, null);
+    while (cursor.moveToNext()) {
+      String id = cursor.getString(cursor.getColumnIndex("id"));
+      String name = cursor.getString(cursor.getColumnIndex("name"));
+      String img = cursor.getString(cursor.getColumnIndex("img"));
+      DataItem.MenuItem menuItem =  dataItem.new MenuItem(id, name, img);
+      menuList.add(menuItem);
+    }
+    
+    cursor = readSession.query(DishOrderDatabaseHelper.TABLE_SUBMENU, new String[]{"id", "name", "menu_id", "img"}, "", null, null, null, null);
+    while (cursor.moveToNext()) {
+      String id = cursor.getString(cursor.getColumnIndex("id"));
+      String name = cursor.getString(cursor.getColumnIndex("name"));
+      String menu_id = cursor.getString(cursor.getColumnIndex("menu_id"));
+      String img = cursor.getString(cursor.getColumnIndex("img"));
+      DataItem.SubmenuItem submenuItem =  dataItem.new SubmenuItem(id, name, menu_id, img);
+      submenuList.add(submenuItem);
+    }
+    
+    cursor = readSession.query(DishOrderDatabaseHelper.TABLE_DISH, new String[]{"id", "name", "price", "img"}, "", null, null, null, null);
+    while (cursor.moveToNext()) {
+      String id = cursor.getString(cursor.getColumnIndex("id"));
+      String name = cursor.getString(cursor.getColumnIndex("name"));
+      String price = cursor.getString(cursor.getColumnIndex("price"));
+      String submenu_id = cursor.getString(cursor.getColumnIndex("submenu_id"));
+      String menu_id = cursor.getString(cursor.getColumnIndex("menu_id"));
+      String img = cursor.getString(cursor.getColumnIndex("img"));
+      DataItem.DishItem dishItem =  dataItem.new DishItem(id, name, price, submenu_id, menu_id, img);
+      dishList.add(dishItem);
+    }
+    
+    cursor = readSession.query(DishOrderDatabaseHelper.TABLE_MIXTURE, new String[]{"id", "name", "price", "img"}, "", null, null, null, null);
+    while (cursor.moveToNext()) {
+      String id = cursor.getString(cursor.getColumnIndex("id"));
+      String name = cursor.getString(cursor.getColumnIndex("name"));
+      String price = cursor.getString(cursor.getColumnIndex("price"));
+      String img = cursor.getString(cursor.getColumnIndex("img"));
+      DataItem.MixtureItem mixtureItem =  dataItem.new MixtureItem(id, name, price, img);
+      mixtureList.add(mixtureItem);
+    }
+    
   }
   @Override
   public void onCreate() {
-    createTables();
+    createTestTables();
 
     initDataSet();
+  }
+  
+  public void updateDateDisplay() {
     
-    readDining();
-    readWaitor();
-    
-    readMenus();
-    readSubmenus();
-    readDishs();
-    readMixture();
-    
+
   }
 
-  public Vector<DishItem> getDishList() {
-
-    DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
-    SQLiteDatabase mDb = dbHelper.getReadableDatabase();
-
-    Vector<DishItem> results = new Vector<DishItem>();
-
-    String[] selectionArgs = new String[]{currSubMenu, currMenu};
-    Cursor cursor = mDb.rawQuery("select * from table " + DishOrderDatabaseHelper.DISH_TABLE_NAME + " where "
-        + DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU + "=?" + " AND " + DishOrderDatabaseHelper.COLUMN_DISH_MENU
-        + "=?", selectionArgs);
-    cursor.moveToFirst();
-
-    while (cursor.getPosition() != cursor.getCount()) {
-      DishItem item = new DishItem();
-      item.id = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_ID));
-      item.name = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_NAME));
-      item.price = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_PRICE));
-      results.add(item);
-      cursor.moveToNext();
-    }
-    cursor.close();
-    return results;
-  }
+//  public Vector<DataItem.DishItem> getDishList() {
+//
+//    DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
+//    SQLiteDatabase mDb = dbHelper.getReadableDatabase();
+//
+//    Vector<DataItem.DishItem> results = new Vector<DataItem.DishItem>();
+//
+//    String[] selectionArgs = new String[]{currSubMenu, currMenu};
+//    Cursor cursor = mDb.rawQuery("select * from table " + DishOrderDatabaseHelper.TABLE_DISH + " where "
+//        + DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU + "=?" + " AND " + DishOrderDatabaseHelper.COLUMN_DISH_MENU
+//        + "=?", selectionArgs);
+//    cursor.moveToFirst();
+//
+//    DataItem dataItem = new DataItem();
+//    while (cursor.getPosition() != cursor.getCount()) {
+//      DataItem.DishItem item = dataItem.new DishItem();
+//      item.dish_id = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_ID));
+//      item.name = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_NAME));
+//      item.price = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_PRICE));
+//      results.add(item);
+//      cursor.moveToNext();
+//    }
+//    cursor.close();
+//    return results;
+//  }
 
   @Override
   public void onTerminate() {
