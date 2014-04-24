@@ -12,11 +12,8 @@ import android.view.View;
 import android.widget.Button;
 
 
-
-
 public class OrderActivity extends Activity {
     
-  private 
   @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

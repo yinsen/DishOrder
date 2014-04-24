@@ -1,0 +1,58 @@
+create table dining(
+  dining_id int not null primary key,
+  name varchar(50) not null,
+  img varchar(500)
+);
+
+create table waitor(
+  waitor_id int not null primary key,
+  name varchar(50),
+  img varchar(500)
+);
+
+create table menu(
+  menu_id int not null primary key,
+  name varchar(50) not null,
+  img varchar(500)
+);
+
+create table submenu(
+  submenu_id int not null primary key,
+  name varchar(50) not null,
+  img varchar(500)
+);
+
+create table dish(
+  dish_id int not null primary key,
+  name varchar(50) not null,
+  price int,
+  submenu_id int,
+  menu_id int,
+  img varchar(500)
+);
+
+create table mixture(
+  mixture_id int not null primary key,
+  name varchar(50) not null,
+  price int,
+  img varchar(500)
+);
+
+create table orderlist(
+  list_id int not null primary key,
+  price int,
+  waitor_id int,
+  table_no varchar(50)
+);
+
+create table orderdetail(
+  dish_id int not null primary key,
+  list_id int not null primary key,
+  mixture_id varchar(50),
+  weight varchar(50) not null,
+  taste varchar(50) not null,
+  cookie varchar(50) not null,
+  dish_num int
+);
+
+
