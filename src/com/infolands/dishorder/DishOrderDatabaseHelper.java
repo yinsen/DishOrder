@@ -106,7 +106,7 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     protected static final String TABLE_ORDERLIST = "orderlist";
     // ORDERLIST TABLES COLUMNS
     public static final String COLUMN_ORDERLIST_ID = "id";
-    public static final String COLUMN_ORDERLIST_TOTAL_PRICE = "price";
+    public static final String COLUMN_ORDERLIST_TOTAL_PRICE = "total_price";
     public static final String COLUMN_ORDERLIST_WAITOR_ID = "waitor_id";
     public static final String COLUMN_ORDERLIST_TABLE_NO = "table_no";
     private static final String CREATE_TABLE_ORDERLIST = "create table if not exists "

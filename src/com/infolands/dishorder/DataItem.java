@@ -103,4 +103,48 @@ public class DataItem {
       img = imgPath;
     }
   }
+  
+  public class OrderListItem {
+
+    public String orderlist_id;
+    public String waitor_id;
+    public String total_price;
+    public String table_no;
+    public String listStatus;
+
+    public OrderListItem() {
+    }
+    
+    public OrderListItem(String no, String tableno, String totalprice, String wid, String st) {
+      orderlist_id = no;
+      table_no = tableno;
+      total_price = totalprice;
+      waitor_id = wid;
+      listStatus = st;
+    }
+  }
+  
+  public class OrderDetailItem {
+
+    public String dish_id;
+    public String orderlist_id;
+    public String mixture_id;
+    public int dish_num;
+    public String taste;
+    public String cookie;
+    public String weight;
+
+    public OrderDetailItem() {
+    }
+    
+    public OrderDetailItem(String dishid, String orderlistid, String mixtureid, String t, String c, String w, int dishnum) {
+      dish_id = dishid;
+      orderlist_id = orderlistid;
+      mixture_id = mixtureid;
+      taste = t;
+      cookie = c;
+      weight = w;
+      dish_num = dishnum;
+    }
+  }
 }

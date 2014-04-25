@@ -30,12 +30,16 @@ public class DishApplication extends Application {
 
   public String currMenu;
   public String currSubMenu;
-  public Vector<DataItem.DiningItem> diningList;
-  public Vector<DataItem.WaitorItem> waitorList;
-  public Vector<DataItem.MenuItem> menuList;
-  public Vector<DataItem.SubmenuItem> submenuList;
-  public Vector<DataItem.DishItem> dishList;
-  public Vector<DataItem.MixtureItem> mixtureList;
+  public String currTableNo;
+  public Vector<DataItem.DiningItem> diningList = new Vector<DataItem.DiningItem>();
+  public Vector<DataItem.WaitorItem> waitorList = new Vector<DataItem.WaitorItem>();
+  public Vector<DataItem.MenuItem> menuList = new Vector<DataItem.MenuItem>();
+  public Vector<DataItem.SubmenuItem> submenuList = new Vector<DataItem.SubmenuItem>();
+  public Vector<DataItem.DishItem> dishList = new Vector<DataItem.DishItem>();
+  public Vector<DataItem.MixtureItem> mixtureList = new Vector<DataItem.MixtureItem>();
+  
+  public Vector<DataItem.OrderListItem> orderlistList = new Vector<DataItem.OrderListItem>();
+  public Vector<DataItem.OrderDetailItem> orderdetailList = new Vector<DataItem.OrderDetailItem>();
   
   public void setCurrMenu(String m) {
     currMenu = m;
