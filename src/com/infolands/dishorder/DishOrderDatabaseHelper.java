@@ -127,6 +127,8 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ORDERDETAIL_TASTE = "taste";
     public static final String COLUMN_ORDERDETAIL_COOKIE = "cookie";
     public static final String COLUMN_ORDERDETAIL_WEIGHT = "weight";
+    public static final String COLUMN_ORDERDETAIL_TABLE_NO = "table_no";
+    public static final String COLUMN_ORDERDETAIL_STATUS = "status";
     private static final String CREATE_TABLE_ORDERDETAIL = "create table if not exists "
         + TABLE_ORDERDETAIL
         + "("+ COLUMN_ORDERDETAIL_DISH_ID + " TEXT primary key, "
@@ -135,6 +137,8 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
         + COLUMN_ORDERDETAIL_WEIGHT + " TEXT ,"
         + COLUMN_ORDERDETAIL_TASTE + " TEXT ," 
         + COLUMN_ORDERDETAIL_COOKIE + " TEXT ,"
+        + COLUMN_ORDERDETAIL_TABLE_NO + " TEXT ,"
+        + COLUMN_ORDERDETAIL_STATUS + " TEXT ,"
         + COLUMN_ORDERDETAIL_DISHNUM + " integer not null ,"
         + "FOREIGN KEY (COLUMN_ORDERDETAIL_DISH_ID) REFERENCES TABLE_DISH (COLUMN_DISH_ID) ,"
         + "FOREIGN KEY (COLUMN_ORDERDETAIL_ORDERLIST_ID) REFERENCES TABLE_ORDERLIST (COLUMN_ORDERLIST_ID) ,"

@@ -1,6 +1,8 @@
 package com.infolands.dishorder;
 
 
+import com.infolands.dishorder.DataItem.OrderDetailItem;
+
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.ContentValues;
@@ -14,7 +16,6 @@ import android.widget.Button;
 
 public class OrderActivity extends Activity {
     
-
   private String dish_id;
   private String orderlist_id;
   private String mixture_id;
@@ -58,7 +59,7 @@ public class OrderActivity extends Activity {
               public void run() {
                 
                 //保存点的菜品
-                insertOrderedItem();
+                OrderOneDish();
                 
                 try {
                   Instrumentation inst = new Instrumentation();
@@ -71,50 +72,24 @@ public class OrderActivity extends Activity {
             }.start();
           }
         });
-        
-        Button orderBtn = (Button) findViewById(R.id.orderbt);
-        orderBtn.setOnClickListener(new View.OnClickListener() {
-
-          @Override
-          public void onClick(View v) {
-            new Thread() {
-
-              public void run() {
-                
-                //保存点的菜品
-                insertOrderedItem();
-                
-                try {
-                  Instrumentation inst = new Instrumentation();
-                  inst.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
-                }
-                catch (Exception e) {
-                  Log.e("Exception when onBack", e.toString());
-                }
-              }
-            }.start();
-          }
-        });
-        
         
         CheckBox flagView = (CheckBox) v.findViewById(R.id.subflag);
     }
-  
-  
 
-  //修改用于插入新点菜品到已点列表，这里只放入List，菜点好了，下单时再存数据库
-  public long insertOrderedItem(String address,String position) {
-    
-    orderdetailList
-    // 创建一个DatabaseHelper对象  
-    DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(OrderActivity.this);  
-    SQLiteDatabase writeSession = dbHelper.getWritableDatabase();  
-    ContentValues values = new ContentValues();
-    values.put(DishOrderDatabaseHelper.COLUMN_DISH_ID, address);
-    values.put(KEY_POI_POSITION, position);
-    writeSession.insert("dining", null, values);
-    
-    return mDb.insert(ADDRESS_TABLE_NAME, null, initialValues);
-  }
+    //修改用于插入新点菜品到已点列表，这里只放入List，菜点好了，下单时再存数据库
+    public void OrderOneDish(String dishid, String mixtureid, String t, String c, String w, String st, int dishnum) {
+      DataItem dataItem = new DataItem();
+      String tableno = ((DishApplication)getApplicationContext()).currTableNo;
+      
+      String orderlistid = "";
+      if (((DishApplication)getApplicationContext()).orderdetailList.size() > 0) {
+        orderlistid = ((DishApplication)getApplicationContext()).orderdetailList.get(0).orderlist_id;
+      }
+      else {
+        orderlistid = tableno + "_" + Long.toString(System.currentTimeMillis());
+      }
+      DataItem.OrderDetailItem detailItem = dataItem.new OrderDetailItem(dishid, orderlistid, mixtureid, t, c, w, tableno, st, dishnum);
+      ((DishApplication)getApplicationContext()).orderdetailList.add(detailItem);
+    }
   
 }

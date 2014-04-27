@@ -56,7 +56,61 @@ public class DishApplication extends Application {
   public String getCurrSubMenu() {
     return currSubMenu;
   }
+  
+  //orderdetail表中只存储没有结帐的桌子的菜品列表，因同一桌子同时只会有一单未结帐，所以只需要以table_no区分，不需要orderList_no
+  public void setCurrTableNo(String tn) {
+    
+    if (currTableNo.equalsIgnoreCase(tn)) {
+      return;
+    }
+    
+    //1. 将之前桌子已点菜品存入SQLite
+    DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
+    SQLiteDatabase writeSession = dbHelper.getWritableDatabase();
+    ContentValues values = new ContentValues();
 
+    for (int i = 0; i < orderdetailList.size(); i++) {
+      values.put("dish_id", orderdetailList.get(i).dish_id);
+      values.put("orderlist_id", orderdetailList.get(i).orderlist_id);
+      values.put("mixture_id", orderdetailList.get(i).mixture_id);
+      values.put("dish_num", orderdetailList.get(i).dish_num);
+      values.put("taste", orderdetailList.get(i).taste);
+      values.put("cookie", orderdetailList.get(i).cookie);
+      values.put("weight", orderdetailList.get(i).weight);
+      values.put("status", orderdetailList.get(i).status);
+    }
+    writeSession.insert(DishOrderDatabaseHelper.TABLE_ORDERDETAIL, null, values);
+    orderdetailList.clear();
+    
+    
+    //2. 将当前桌子已点菜品从SQLite中读入到List
+    currTableNo = tn;
+    
+    SQLiteDatabase readSession = dbHelper.getReadableDatabase();
+    Cursor cursor = readSession.query(DishOrderDatabaseHelper.TABLE_ORDERDETAIL, 
+                                      new String[]{"dish_id", "orderlist_id", "mixture_id", "dish_num", "taste", "cookie", "weight", "status"}, 
+                                      "table_no=?", new String[]{currTableNo}, null, null, null);
+    DataItem dataItem = new DataItem();
+    while (cursor.moveToNext()) {
+      String dish_id = cursor.getString(cursor.getColumnIndex("dish_id"));
+      String orderlist_id = cursor.getString(cursor.getColumnIndex("orderlist_id"));
+      String mixture_id = cursor.getString(cursor.getColumnIndex("mixture_id"));
+      
+      int dish_num = cursor.getInt(cursor.getColumnIndex("dish_num"));
+      String taste = cursor.getString(cursor.getColumnIndex("taste"));
+      String cookie = cursor.getString(cursor.getColumnIndex("cookie"));
+      String weight = cursor.getString(cursor.getColumnIndex("weight"));
+      String status = cursor.getString(cursor.getColumnIndex("status"));
+      DataItem.OrderDetailItem detailItem = dataItem.new OrderDetailItem(dish_id, orderlist_id, mixture_id, taste, cookie, weight, currTableNo, status, dish_num);
+      orderdetailList.add(detailItem);
+    }
+  }
+
+  public String getCurrTableNo() {
+    return currTableNo;
+  }
+  
+  
   private void createTestTables() {
     DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
 

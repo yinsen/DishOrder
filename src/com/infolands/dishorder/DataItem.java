@@ -110,17 +110,15 @@ public class DataItem {
     public String waitor_id;
     public String total_price;
     public String table_no;
-    public String listStatus;
 
     public OrderListItem() {
     }
     
-    public OrderListItem(String no, String tableno, String totalprice, String wid, String st) {
+    public OrderListItem(String no, String tableno, String totalprice, String wid) {
       orderlist_id = no;
       table_no = tableno;
       total_price = totalprice;
       waitor_id = wid;
-      listStatus = st;
     }
   }
   
@@ -133,17 +131,21 @@ public class DataItem {
     public String taste;
     public String cookie;
     public String weight;
+    public String status;
+    public String table_no;
 
     public OrderDetailItem() {
     }
     
-    public OrderDetailItem(String dishid, String orderlistid, String mixtureid, String t, String c, String w, int dishnum) {
+    public OrderDetailItem(String dishid, String orderlistid, String mixtureid, String t, String c, String w, String st, String tableno, int dishnum) {
       dish_id = dishid;
       orderlist_id = orderlistid;
       mixture_id = mixtureid;
       taste = t;
       cookie = c;
       weight = w;
+      status = st;
+      table_no = tableno;
       dish_num = dishnum;
     }
   }
