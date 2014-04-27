@@ -1,12 +1,11 @@
 package com.infolands.dishorder;
 
 
-import com.infolands.dishorder.DataItem.OrderDetailItem;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,9 +24,12 @@ public class OrderActivity extends Activity {
   private String weight;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order);
+        
+        Bundle bundle = getIntent().getBundleExtra("order_item");  
+        dish_id = bundle.getString("dish_id"); 
         
         Button backBtn = (Button) findViewById(R.id.backbt);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -53,13 +55,13 @@ public class OrderActivity extends Activity {
         orderBtn.setOnClickListener(new View.OnClickListener() {
 
           @Override
-          public void onClick(View v) {
+          public void onClick(final View v) {
             new Thread() {
 
               public void run() {
                 
-                //保存点的菜品
-                OrderOneDish();
+                OrderActivity activity = (OrderActivity)(v.getContext());
+                activity.OrderOneDish();
                 
                 try {
                   Instrumentation inst = new Instrumentation();
@@ -73,14 +75,14 @@ public class OrderActivity extends Activity {
           }
         });
         
-        CheckBox flagView = (CheckBox) v.findViewById(R.id.subflag);
     }
 
     //修改用于插入新点菜品到已点列表，这里只放入List，菜点好了，下单时再存数据库
-    public void OrderOneDish(String dishid, String mixtureid, String t, String c, String w, String st, int dishnum) {
+    public void OrderOneDish() {
       DataItem dataItem = new DataItem();
       String tableno = ((DishApplication)getApplicationContext()).currTableNo;
       
+      //生成或得到OrderListId
       String orderlistid = "";
       if (((DishApplication)getApplicationContext()).orderdetailList.size() > 0) {
         orderlistid = ((DishApplication)getApplicationContext()).orderdetailList.get(0).orderlist_id;
@@ -88,7 +90,9 @@ public class OrderActivity extends Activity {
       else {
         orderlistid = tableno + "_" + Long.toString(System.currentTimeMillis());
       }
-      DataItem.OrderDetailItem detailItem = dataItem.new OrderDetailItem(dishid, orderlistid, mixtureid, t, c, w, tableno, st, dishnum);
+      
+      DataItem.OrderDetailItem detailItem = dataItem.new OrderDetailItem(dish_id, orderlistid, mixture_id, taste, cookie, weight
+                                                                         , tableno, DataItem.OrderDetailItem.STATUS_UNCONFIRMED, dish_num);
       ((DishApplication)getApplicationContext()).orderdetailList.add(detailItem);
     }
   

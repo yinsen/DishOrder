@@ -28,8 +28,12 @@ import com.infolands.dishorder.DataItem.DishItem;
 
 public class DishApplication extends Application {
 
-  public String currMenu;
-  public String currSubMenu;
+  public String currMenu = "";
+  public String currSubMenu = "";
+  
+  public DataItem item = new DataItem();
+  public DataItem.OrderDetailItem currOrderDetailItem = item.new OrderDetailItem();
+  
   public String currTableNo;
   public Vector<DataItem.DiningItem> diningList = new Vector<DataItem.DiningItem>();
   public Vector<DataItem.WaitorItem> waitorList = new Vector<DataItem.WaitorItem>();
@@ -53,6 +57,20 @@ public class DishApplication extends Application {
     currSubMenu = sm;
   }
 
+  public DataItem.OrderDetailItem getCurrOrderDetailItem() {
+    return currOrderDetailItem;
+  }
+  
+  public void setCurrOrderDetailItem(String dishId) {
+    currOrderDetailItem.dish_id = dishId;
+    currOrderDetailItem.cookie = "";
+    currOrderDetailItem.mixture_id = "";
+    currOrderDetailItem.taste = "";
+    currOrderDetailItem.weight = "";
+    currOrderDetailItem.dish_num = 0;
+    currOrderDetailItem.status = DataItem.OrderDetailItem.STATUS_UNCONFIRMED;
+  }
+
   public String getCurrSubMenu() {
     return currSubMenu;
   }
@@ -64,7 +82,11 @@ public class DishApplication extends Application {
       return;
     }
     
-    //1. 将之前桌子已点菜品存入SQLite
+    //1. 清除当前菜品的配置数据，恢复为默认值，防止之前桌子的点菜动作影响当前桌子
+    setCurrOrderDetailItem("0");
+    
+    
+    //2. 将之前桌子已点菜品存入SQLite
     DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
     SQLiteDatabase writeSession = dbHelper.getWritableDatabase();
     ContentValues values = new ContentValues();
@@ -83,7 +105,7 @@ public class DishApplication extends Application {
     orderdetailList.clear();
     
     
-    //2. 将当前桌子已点菜品从SQLite中读入到List
+    //3. 将当前桌子已点菜品从SQLite中读入到List
     currTableNo = tn;
     
     SQLiteDatabase readSession = dbHelper.getReadableDatabase();
@@ -193,6 +215,7 @@ public class DishApplication extends Application {
   }
 
   private void initDataSet(){
+    
     DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
     SQLiteDatabase readSession = dbHelper.getReadableDatabase();
     // 调用SQLiteDatabase对象的query方法进行查询，返回一个Cursor对象：由数据库查询返回的结果集对象  

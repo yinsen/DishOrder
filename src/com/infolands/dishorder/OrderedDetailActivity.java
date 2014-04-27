@@ -2,10 +2,14 @@ package com.infolands.dishorder;
 
 import java.util.Vector;
 
+import com.infolands.dishorder.DataItem.DishItem;
+
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -168,27 +172,29 @@ public class OrderedDetailActivity extends Activity {
   
   
 
-  public Vector<AddressItem> getDishList() {
-    
-      if(mDb==null)
-        return null;    
-      
-      ArrayList<AddressItem> results = new ArrayList<AddressItem>();
-      Cursor cursor = mDb.query(ADDRESS_TABLE_NAME, new String[] { KEY_ROWID,
-                KEY_POI_ADDRESS, KEY_POI_POSITION }, null, null,
-        null, null, "_id desc");
-      cursor.moveToFirst();
-      
-      while (cursor.getPosition() != cursor.getCount()) 
-        {
-        AddressItem item= new AddressItem();
-        item.rowId =cursor.getString(cursor.getColumnIndex(KEY_ROWID));
-        item.address=cursor.getString(cursor.getColumnIndex(KEY_POI_ADDRESS));
-        item.position=cursor.getString(cursor.getColumnIndex(KEY_POI_POSITION));
-          results.add(item);
-            cursor.moveToNext();
-        }
-        cursor.close();
+  public Vector<DataItem.DishItem> getDishList() {
+
+    DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
+    SQLiteDatabase mDb = dbHelper.getReadableDatabase();
+
+    Vector<DataItem.DishItem> results = new Vector<DataItem.DishItem>();
+
+    String[] selectionArgs = new String[]{currSubMenu, currMenu};
+    Cursor cursor = mDb.rawQuery("select * from table " + DishOrderDatabaseHelper.TABLE_DISH + " where "
+        + DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU + "=?" + " AND " + DishOrderDatabaseHelper.COLUMN_DISH_MENU
+        + "=?", selectionArgs);
+    cursor.moveToFirst();
+
+    DataItem dataItem = new DataItem();
+    while (cursor.getPosition() != cursor.getCount()) {
+      DataItem.DishItem item = dataItem.new DishItem();
+      item.dish_id = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_ID));
+      item.name = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_NAME));
+      item.price = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_PRICE));
+      results.add(item);
+      cursor.moveToNext();
+    }
+    cursor.close();
     return results;
   }
   

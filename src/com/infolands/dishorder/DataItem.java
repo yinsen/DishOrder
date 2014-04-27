@@ -124,6 +124,10 @@ public class DataItem {
   
   public class OrderDetailItem {
 
+    public static final String STATUS_UNCONFIRMED = "unconfirmed";
+    public static final String STATUS_CONFIRMED = "confirmed";
+    public static final String STATUS_PAYED = "payed";
+    
     public String dish_id;
     public String orderlist_id;
     public String mixture_id;

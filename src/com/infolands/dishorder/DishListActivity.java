@@ -25,6 +25,9 @@ import android.widget.TextView;
 
 public class DishListActivity extends Activity {
 
+  public static final int REQUEST_CODE_BIG_IMG = 10;
+  public static final int REQUEST_CODE_MIXTURE = 11;
+  
   private class LabelAdapter extends BaseAdapter {
 
     private View oldSelectedItem = null;
@@ -134,19 +137,28 @@ public class DishListActivity extends Activity {
         }
         Button orderBt = (Button) v.findViewById(R.id.dishOrder);
         if (orderBt != null) {
-          handleDishOrder(orderBt, position);
+          handleDishOrder(orderBt, o);
         }
       }
 
       return v;
     }
 
-    private void handleDishOrder(final Button orderButton, final int pos) {
+    private void handleDishOrder(final Button orderButton, final DataItem.DishItem dishItem) {
 
       orderButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          
+          ((DishApplication)getApplicationContext()).setCurrOrderDetailItem(dishItem.dish_id);
+          try {
+            Intent intent = new Intent(DishListActivity.this,OrderActivity.class);  
+            Bundle bundle = new Bundle();
+            bundle.putString("dish_id", dishItem.dish_id);  
+            intent.putExtra("order_item", bundle);  
+            startActivityForResult(intent, REQUEST_CODE_BIG_IMG); 
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
         }
       });
     }
@@ -194,25 +206,25 @@ public class DishListActivity extends Activity {
         }
         ImageView orderBt = (ImageView) v.findViewById(R.id.dishImgOrder);
         if (orderBt != null) {
-          handleDishOrder(orderBt, position);
+          handleDishOrder(orderBt, o);
         }
       }
 
       return v;
     }
-    
-    private void handleDishOrder(final ImageView orderButton, final int pos) {
+ 
+    private void handleDishOrder(final ImageView orderButton, final DataItem.DishItem dishItem) {
 
       orderButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          //dishList.get(pos).id;
+          ((DishApplication)getApplicationContext()).setCurrOrderDetailItem(dishItem.dish_id);
           try {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            String url = "orderdetail://";
-            intent.setData(Uri.parse(url));
-            startActivity(intent);
+            Intent intent = new Intent(DishListActivity.this,OrderActivity.class);  
+            Bundle bundle = new Bundle();
+            bundle.putString("dish_id", dishItem.dish_id);  
+            intent.putExtra("order_item", bundle);  
+            startActivityForResult(intent, REQUEST_CODE_BIG_IMG); 
           } catch (Exception e) {
             e.printStackTrace();
           }
@@ -245,6 +257,23 @@ public class DishListActivity extends Activity {
     super.onStart();
     
     updateData();
+  }
+  
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    switch (requestCode) {
+     
+      case REQUEST_CODE_BIG_IMG: {
+          
+        }
+        break;
+      case REQUEST_CODE_MIXTURE: {
+        }
+        break;
+      default:
+        break;
+    }
   }
   
   private void updateData(){
