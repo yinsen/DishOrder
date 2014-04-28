@@ -1,62 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainmenu"
-    android:layout_width="fill_parent"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   	android:id="@+id/mainmenu"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:gravity="center">
-	<TableRow android:gravity="center"
-	    android:layout_gravity="center_vertical">
-	    <LinearLayout
-			android:orientation="vertical"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			android:gravity="center">
-			<ImageView
-			    android:id="@+id/hotbt"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:background="@drawable/hot" />
-		</LinearLayout>	
-		<LinearLayout
-			android:orientation="vertical"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			android:gravity="center">
-			<ImageView
-			    android:id="@+id/coolbt"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:background="@drawable/cool" />
-		</LinearLayout>
-	</TableRow>
+	android:background="@drawable/background">
 	
-	<TableRow android:gravity="center"
-	    android:layout_gravity="center_vertical">
-		<LinearLayout
-			android:orientation="vertical"
+    <!-- top bar -->
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="40dp"
+		android:background="@drawable/topbar_bk">
+		
+		<TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_marginLeft="110dp"
+	        android:text="@string/title"
+	        android:textSize="20sp"
+	        android:textStyle="bold"/>
+		
+		<Button android:id="@+id/stypebt"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="0dp"
+		    android:layout_gravity="center_vertical"
+		    android:text="@string/viewstyle"
+		    android:background="@drawable/toolbar_normal" />
+		<Button android:id="@+id/morebt"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="0dp"
+		    android:layout_gravity="center_vertical"
+		    android:text="@string/option"
+		    android:background="@drawable/toolbar_normal" />
+		
+	</LinearLayout>
+	
+	<!--  -->
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="200dp"
+		android:layout_marginLeft="60dp"
+		android:layout_marginTop="20dp">
+
+		<TextView android:id="@+id/drinkBt"
+		    android:layout_width="110dp"
+		    android:layout_height="fill_parent"
+		    android:text="@string/drinks"
+	        android:textSize="30sp"
+	        android:textStyle="bold"
+	        android:gravity="center"
+		    android:background="@drawable/tablestate3"/>
+			
+		<LinearLayout android:orientation="vertical"
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			android:gravity="center">
-			<ImageView
-			    android:id="@+id/staplebt"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:background="@drawable/staple" />
-		</LinearLayout>	
-		<LinearLayout
-			android:orientation="vertical"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			android:gravity="center">
-			<ImageView
-			    android:id="@+id/snacksbt"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:background="@drawable/snacks" />
-		</LinearLayout>
-	</TableRow>
-</TableLayout>
+			android:layout_height="wrap_content">
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+				<TextView android:id="@+id/hotbt"
+				    android:layout_width="160dp"
+				    android:layout_height="100dp"
+				    android:text="@string/hotdishs"
+			        android:textSize="30sp"
+			        android:textStyle="bold"
+			        android:gravity="center"
+				    android:background="@drawable/tablestate4"/>
+				<TextView android:id="@+id/coolbt"
+				    android:layout_width="100dp"
+				    android:layout_height="100dp"
+				    android:text="@string/cooldishs"
+			        android:textSize="30sp"
+			        android:textStyle="bold"
+			        android:gravity="center"
+				    android:background="@drawable/tablestate1"/>
+			</LinearLayout> 
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+				<TextView android:id="@+id/staplebt"
+				    android:layout_width="140dp"
+				    android:layout_height="100dp"
+				    android:text="@string/stapledishs"
+			        android:textSize="30sp"
+			        android:textStyle="bold"
+			        android:gravity="center"
+				    android:background="@drawable/tablestate2"/>
+				<TextView android:id="@+id/snackbt"
+				    android:layout_width="120dp"
+				    android:layout_height="fill_parent"
+				    android:text="@string/snacksdishs"
+			        android:textSize="30sp"
+			        android:textStyle="bold"
+			        android:gravity="center"
+				    android:background="@drawable/tablestate5"/>
+			</LinearLayout> 
+		</LinearLayout> 
+	</LinearLayout>  
+</LinearLayout>

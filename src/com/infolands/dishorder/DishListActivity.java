@@ -206,6 +206,10 @@ public class DishListActivity extends Activity {
         }
         ImageView orderBt = (ImageView) v.findViewById(R.id.dishImgOrder);
         if (orderBt != null) {
+          DishListActivity activity = (DishListActivity)(v.getContext());
+          int id = activity.getResources().getIdentifier(activity.getPackageName()+":drawable/" + o.img, null,null);
+          orderBt.setImageResource(id);
+          
           handleDishOrder(orderBt, o);
         }
       }
@@ -236,8 +240,8 @@ public class DishListActivity extends Activity {
   /**************************** submenuList ************************************
   ********************此变量是否需要一个menu_id作为外键？需要根据数据待确定***************
   *****************************************************************************/
-  private Vector<DataItem.SubmenuItem> submenuList;
-  private Vector<DataItem.DishItem> dishList;
+  private Vector<DataItem.SubmenuItem> submenuList = new Vector<DataItem.SubmenuItem>();
+  private Vector<DataItem.DishItem> dishList = new Vector<DataItem.DishItem>();
   
   private DishAdapter dishAdapter;
   private LabelAdapter labelAdapter;
@@ -247,16 +251,17 @@ public class DishListActivity extends Activity {
     requestWindowFeature(Window.FEATURE_NO_TITLE);
 
     setContentView(R.layout.dishlist);
-
-    
-    setTopButtons();
-    setlabelAdapter();
-    setDishsAdapter();
   }
+  
+  @Override
   public void onStart() {
     super.onStart();
     
     updateData();
+    
+    setTopButtons();
+    setlabelAdapter();
+    setDishsAdapter();
   }
   
 
@@ -277,24 +282,25 @@ public class DishListActivity extends Activity {
   }
   
   private void updateData(){
-    //获取当前页面的Dish List以及Submenu List
-    if (!dishList.isEmpty()) dishList.clear();
     DishApplication app = (DishApplication)getApplicationContext();
-    for (int i=0; i<app.dishList.size(); i++) {
-      if (app.dishList.get(i).submenu_id.equalsIgnoreCase(app.currSubMenu)
-        &&app.dishList.get(i).menu_id.equalsIgnoreCase(app.currMenu)) {
-        dishList.add(app.dishList.get(i));
-      }
-    }
-    dishAdapter.setList(dishList);//更新adapter里的数据&页面内容
-    
+    //获取当前页面的Submenu List以及Dish List
     if (!submenuList.isEmpty()) submenuList.clear();
     for (int i=0; i<app.submenuList.size(); i++) {
       if (app.submenuList.get(i).menu_id.equalsIgnoreCase(app.currMenu)) {
         submenuList.add(app.submenuList.get(i));
       }
     }
-    labelAdapter.setList(submenuList);//更新adapter里的数据&页面内容
+    
+    app.currSubMenu = submenuList.get(0).submenu_id;
+    
+    if (!dishList.isEmpty()) dishList.clear();
+    for (int i=0; i<app.dishList.size(); i++) {
+      if (app.dishList.get(i).submenu_id.equalsIgnoreCase(app.currSubMenu)
+        &&app.dishList.get(i).menu_id.equalsIgnoreCase(app.currMenu)) {
+        dishList.add(app.dishList.get(i));
+      }
+    }
+    
   }
 
   private void setDishsAdapter() {

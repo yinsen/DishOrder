@@ -8,7 +8,7 @@
 		<LinearLayout
 			android:orientation="horizontal"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="40dp"
 			android:background="@drawable/topbar_bk">
 			
 			<Button android:id="@+id/backbt"
@@ -81,7 +81,7 @@
 				    android:verticalSpacing="10dp"
 				    android:horizontalSpacing="10dp"
 				    android:numColumns="auto_fit"
-				    android:columnWidth="60dp"
+				    android:columnWidth="120dp"
 				    android:stretchMode="columnWidth"
 				    android:gravity="center"
 				    android:background="@drawable/background"

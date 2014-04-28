@@ -29,14 +29,14 @@ public class OrderedDetailActivity extends Activity {
 
   private class OrderedItem {
 
-    public int id;
-    public int number;    
+    public String dish_id;
+    public int number;
     public String name;
     public String price;
     public String description;
 
-    public OrderedItem(int no, int num, String n, String p, String des) {
-      id = no;
+    public OrderedItem(String dishid, String n, String p, String des, int num ) {
+      dish_id = dishid;
       number = num;
       name = n;
       price = p;
@@ -77,27 +77,84 @@ public class OrderedDetailActivity extends Activity {
       }
       OrderedItem o = (OrderedItem) dataList.get(position);
       if (o != null) {
-        TextView nameView = (TextView) v.findViewById(R.id.dishName);
-        TextView priceView = (TextView) v.findViewById(R.id.dishPrice);
+        TextView idView = (TextView) v.findViewById(R.id.itemNo);
+        
+        TextView nameView = (TextView) v.findViewById(R.id.itemName);
+        TextView discriptionView = (TextView) v.findViewById(R.id.itemDescription);
+        TextView priceView = (TextView) v.findViewById(R.id.itemPrice);
+        TextView numberView = (TextView) v.findViewById(R.id.itemNums);
         if (nameView != null) {
+          idView.setText(String.valueOf(position));
           nameView.setText(o.name);
           priceView.setText(o.price);
+          discriptionView.setText(o.description);
+          numberView.setText(o.number);
         }
-        Button orderBt = (Button) v.findViewById(R.id.dishOrder);
-        if (orderBt != null) {
-          handleDishOrder(orderBt, position);
+        Button addBt = (Button) v.findViewById(R.id.itemAdd);
+        if (addBt != null) {
+          addDishNum(addBt, o.dish_id);
+        }
+        
+        Button reduceBt = (Button) v.findViewById(R.id.itemReduce);
+        if (reduceBt != null) {
+          reduceDishNum(reduceBt, o.dish_id);
+        }
+        
+        Button deleteBt = (Button) v.findViewById(R.id.itemDelete);
+        if (deleteBt != null) {
+          deleteOrderItem(deleteBt, o.dish_id);
         }
       }
 
       return v;
     }
 
-    private void handleDishOrder(final Button orderButton, final int pos) {
+    private void addDishNum(final Button addButton, final String dishid) {
 
-      orderButton.setOnClickListener(new View.OnClickListener() {
+      addButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          //dataList.get(pos).id;
+          
+          int len = ((DishApplication)getApplicationContext()).orderdetailList.size();
+          for (int i=0; i<len; i++) {
+            if (dishid.equalsIgnoreCase(((DishApplication)getApplicationContext()).orderdetailList.get(i).dish_id)) {
+              ((DishApplication)getApplicationContext()).orderdetailList.get(i).dish_num ++;
+              break;
+            }
+          }
+        }
+      });
+    }
+    private void reduceDishNum(final Button reduceButton, final String dishid) {
+
+      reduceButton.setOnClickListener(new View.OnClickListener() {
+
+        public void onClick(View v) {
+          
+          int len = ((DishApplication)getApplicationContext()).orderdetailList.size();
+          for (int i=0; i<len; i++) {
+            if (dishid.equalsIgnoreCase(((DishApplication)getApplicationContext()).orderdetailList.get(i).dish_id)) {
+              if (((DishApplication)getApplicationContext()).orderdetailList.get(i).dish_num > 1)
+                ((DishApplication)getApplicationContext()).orderdetailList.get(i).dish_num --;
+              break;
+            }
+          }
+        }
+      });
+    }
+    private void deleteOrderItem(final Button deleteButton, final String dishid) {
+
+      deleteButton.setOnClickListener(new View.OnClickListener() {
+
+        public void onClick(View v) {
+          
+          int len = ((DishApplication)getApplicationContext()).orderdetailList.size();
+          for (int i=0; i<len; i++) {
+            if (dishid.equalsIgnoreCase(((DishApplication)getApplicationContext()).orderdetailList.get(i).dish_id)) {
+              ((DishApplication)getApplicationContext()).orderdetailList.remove(i);
+              break;
+            }
+          }
         }
       });
     }
@@ -111,22 +168,47 @@ public class OrderedDetailActivity extends Activity {
     setContentView(R.layout.ordereddetaillist);
 
     setTopButtons();
-    setDishsAdapter();
+    
   }
 
+
+  @Override
+  public void onStart (){
+    setDishsAdapter();
+    
+  }
+  
   private void setDishsAdapter() {
 
     Vector<OrderedItem> dishList = new Vector<OrderedItem>();
-    OrderedItem element0 = new OrderedItem(0, 1, "chicken", "180",  "");
-    OrderedItem element1 = new OrderedItem(1, 2, "chicken3", "180",  "");
-    OrderedItem element2 = new OrderedItem(2, 1, "chicken4", "180",  "");
-    OrderedItem element3 = new OrderedItem(3, 1, "chicken5", "180",  "");
-    OrderedItem element4 = new OrderedItem(4, 1, "chicken6", "180",  "");
-    dishList.addElement(element0);
-    dishList.addElement(element1);
-    dishList.addElement(element2);
-    dishList.addElement(element3);
-    dishList.addElement(element4);
+    int numOrdered = ((DishApplication)getApplicationContext()).orderdetailList.size();
+    int numDishs = ((DishApplication)getApplicationContext()).dishList.size();
+    
+    for (int i = 0; i < numOrdered; i++){
+      String dish_id = ((DishApplication)getApplicationContext()).orderdetailList.get(i).dish_id;
+      String dish_description = ((DishApplication)getApplicationContext()).orderdetailList.get(i).taste 
+                              +((DishApplication)getApplicationContext()).orderdetailList.get(i).cookie
+                              +((DishApplication)getApplicationContext()).orderdetailList.get(i).weight
+                              +((DishApplication)getApplicationContext()).orderdetailList.get(i).mixture_id;
+      int dish_nums = ((DishApplication)getApplicationContext()).orderdetailList.get(i).dish_num;
+      
+      String dish_name = "";
+      String dish_price = "";
+      
+      for (int j=0; j < numDishs; j++) {
+        if (dish_id.equalsIgnoreCase(((DishApplication)getApplicationContext()).dishList.get(j).dish_id)) {
+          dish_name = ((DishApplication)getApplicationContext()).dishList.get(j).name;
+          dish_price = ((DishApplication)getApplicationContext()).dishList.get(j).price;
+          break;
+        }
+      }
+      
+      
+      OrderedItem element = new OrderedItem(dish_id, dish_name, dish_price, dish_description, dish_nums );
+      dishList.addElement(element);
+    }
+    
+    
     OrderedDetailAdapter dishAdapter = new OrderedDetailAdapter(dishList);
 
     //    ScrollView dishScrollView = (ScrollView) findViewById(R.id.dishScrollView);
@@ -170,38 +252,4 @@ public class OrderedDetailActivity extends Activity {
     });
   }
   
-  
-
-  public Vector<DataItem.DishItem> getDishList() {
-
-    DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
-    SQLiteDatabase mDb = dbHelper.getReadableDatabase();
-
-    Vector<DataItem.DishItem> results = new Vector<DataItem.DishItem>();
-
-    String[] selectionArgs = new String[]{currSubMenu, currMenu};
-    Cursor cursor = mDb.rawQuery("select * from table " + DishOrderDatabaseHelper.TABLE_DISH + " where "
-        + DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU + "=?" + " AND " + DishOrderDatabaseHelper.COLUMN_DISH_MENU
-        + "=?", selectionArgs);
-    cursor.moveToFirst();
-
-    DataItem dataItem = new DataItem();
-    while (cursor.getPosition() != cursor.getCount()) {
-      DataItem.DishItem item = dataItem.new DishItem();
-      item.dish_id = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_ID));
-      item.name = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_NAME));
-      item.price = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_DISH_PRICE));
-      results.add(item);
-      cursor.moveToNext();
-    }
-    cursor.close();
-    return results;
-  }
-  
-  public boolean deleteAddress(String rowId) {
-    if(mDb==null)
-        return false; 
-    
-    return mDb.delete(ADDRESS_TABLE_NAME, KEY_ROWID + "=" + rowId, null) > 0;
-  }
 }
