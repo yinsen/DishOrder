@@ -31,6 +31,14 @@ import com.infolands.dishorder.DataItem.DishItem;
 
 public class DishApplication extends Application {
 
+  public enum app_mode {
+    MODE_CUSTOMER,
+    MODE_WAITOR,
+    MODE_ADMIN,
+    
+    MODE_NONE
+  }
+  public app_mode currMode = app_mode.MODE_CUSTOMER;
   public String currMenu = "";
   public String currSubMenu = "";
   
@@ -60,6 +68,10 @@ public class DishApplication extends Application {
     currSubMenu = sm;
   }
 
+  public String getCurrSubMenu() {
+    return currSubMenu;
+  }
+  
   public DataItem.OrderDetailItem getCurrOrderDetailItem() {
     return currOrderDetailItem;
   }
@@ -74,9 +86,6 @@ public class DishApplication extends Application {
     currOrderDetailItem.status = DataItem.OrderDetailItem.STATUS_UNCONFIRMED;
   }
 
-  public String getCurrSubMenu() {
-    return currSubMenu;
-  }
   
   //orderdetail表中只存储没有结帐的桌子的菜品列表，因同一桌子同时只会有一单未结帐，所以只需要以table_no区分，不需要orderList_no
   public void setCurrTableNo(String tn) {
@@ -172,11 +181,13 @@ public class DishApplication extends Application {
     }
     
     writeSession.delete(DishOrderDatabaseHelper.TABLE_MENU, null, null);
-    values.clear();
-    values.put(DishOrderDatabaseHelper.COLUMN_MENU_ID, "menu_id_11");
-    values.put(DishOrderDatabaseHelper.COLUMN_MENU_NAME, "menu_name_11");
-    values.put(DishOrderDatabaseHelper.COLUMN_MENU_IMG, "img_path_11");
-    writeSession.insert(DishOrderDatabaseHelper.TABLE_MENU, null, values);
+    for (int i = 0; i < 10; i++) {
+      values.clear();
+      values.put(DishOrderDatabaseHelper.COLUMN_MENU_ID, "menu_id_1"+i);
+      values.put(DishOrderDatabaseHelper.COLUMN_MENU_NAME, "menu_name_1"+i);
+      values.put(DishOrderDatabaseHelper.COLUMN_MENU_IMG, "d3");
+      writeSession.insert(DishOrderDatabaseHelper.TABLE_MENU, null, values);
+    }
     
     writeSession.delete(DishOrderDatabaseHelper.TABLE_SUBMENU, null, null);
     for (int i = 0; i < 10; i++) {
@@ -190,13 +201,13 @@ public class DishApplication extends Application {
     
     writeSession.delete(DishOrderDatabaseHelper.TABLE_DISH, null, null);
     for (int i = 0; i < 10; i++) {
-      values.clear();
-      values.put(DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU, "submenu_id_" + i + 1);
       for (int j=i; j<10; j++ ) {
-        values.put(DishOrderDatabaseHelper.COLUMN_DISH_ID, j + 1);
+        values.clear();
+        values.put(DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU, "submenu_id_" + i + 1);
+        values.put(DishOrderDatabaseHelper.COLUMN_DISH_MENU, "menu_id_11");
+        values.put(DishOrderDatabaseHelper.COLUMN_DISH_ID, "dish_id_"+ i + "_" + j + 1);
         values.put(DishOrderDatabaseHelper.COLUMN_DISH_NAME, "dish_name_" + j + 1);
         values.put(DishOrderDatabaseHelper.COLUMN_DISH_PRICE, "price_" + 120);
-        values.put(DishOrderDatabaseHelper.COLUMN_DISH_MENU, "menu_id_11");
         values.put(DishOrderDatabaseHelper.COLUMN_DISH_IMG, "d" + (j+2));
         writeSession.insert(DishOrderDatabaseHelper.TABLE_DISH, null, values);
       }
@@ -338,19 +349,8 @@ public class DishApplication extends Application {
   @Override
   public void onCreate() {
 
-    new Thread() {
-
-      public void run() {
-        try {
-          createTestTables();
-          initDataSet();
-        }
-        catch (Exception e) {
-          Log.e("Exception when onBack", e.toString());
-        }
-      }
-    }.start();
-    
+    createTestTables();
+    initDataSet();
   }
   
   public void updateDateDisplay() {

@@ -9,7 +9,6 @@
     <string name="drinks">酒水</string>
     <string name="title">尹森酒楼</string>
     <string name="order">点单</string>
-    <string name="option">设置</string>
     <string name="viewstyle">视图切换</string>
     
     <string name="kouwei">口味</string>
@@ -41,4 +40,12 @@
     <string name="del">删除</string>
     <string name="totalprice">总金额</string>
     <string name="ok">确认</string>
+    
+    <string name="option">设置</string>
+    <string name="language">语言</string>
+    <string name="orderedlist">已点菜单</string>
+    <string name="waitormode">服务员模式</string>
+    <string name="customermode">退出服务员模式</string>
+    <string name="structuretype">结构分类</string>
+    <string name="dishsearch">菜品查询</string>
 </resources>

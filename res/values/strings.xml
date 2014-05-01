@@ -9,7 +9,6 @@
     <string name="drinks">drinks</string>
     <string name="title">Yinsen dian dan</string>
     <string name="order">Order</string>
-    <string name="option">Options</string>
     <string name="viewstyle">View Style</string>
     
     <string name="kouwei">kouwei</string>
@@ -41,4 +40,12 @@
     <string name="del">No</string>
     <string name="totalprice">Total Price</string>
     <string name="ok">OK</string>
+    
+    <string name="option">Options</string>
+    <string name="language">Language</string>
+    <string name="orderedlist">Ordered List</string>
+    <string name="waitormode">Waitor Mode</string>
+    <string name="customermode">Exit Waitor Mode</string>
+    <string name="structuretype">Structure Type</string>
+    <string name="dishsearch">Search</string>
 </resources>

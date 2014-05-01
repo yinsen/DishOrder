@@ -2,17 +2,18 @@ package com.infolands.dishorder;
 
 import java.util.Vector;
 
+import com.infolands.dishorder.DishApplication.app_mode;
+
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,7 +31,6 @@ public class DishListActivity extends Activity {
   
   private class LabelAdapter extends BaseAdapter {
 
-    private View oldSelectedItem = null;
     private Vector<DataItem.SubmenuItem> submenuList;
     public LabelAdapter(Vector<DataItem.SubmenuItem> list) {
       this.submenuList = list;
@@ -90,7 +90,7 @@ public class DishListActivity extends Activity {
           app.currSubMenu =  submenuList.get(pos).submenu_id;
           
           DishListActivity activity = (DishListActivity)(v.getContext());
-          activity.updateData();
+          activity.getCurrDishsData();
         }
       });
     }
@@ -236,12 +236,12 @@ public class DishListActivity extends Activity {
       });
     }
   }
-
+  
   /**************************** submenuList ************************************
   ********************此变量是否需要一个menu_id作为外键？需要根据数据待确定***************
   *****************************************************************************/
-  private Vector<DataItem.SubmenuItem> submenuList = new Vector<DataItem.SubmenuItem>();
-  private Vector<DataItem.DishItem> dishList = new Vector<DataItem.DishItem>();
+  private Vector<DataItem.SubmenuItem> currSubmenuList = new Vector<DataItem.SubmenuItem>();
+  private Vector<DataItem.DishItem> currDishList = new Vector<DataItem.DishItem>();
   
   private DishAdapter dishAdapter;
   private LabelAdapter labelAdapter;
@@ -249,15 +249,15 @@ public class DishListActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_NO_TITLE);
-
     setContentView(R.layout.dishlist);
+    
   }
   
   @Override
   public void onStart() {
     super.onStart();
     
-    updateData();
+    getCurrDishsData();
     
     setTopButtons();
     setlabelAdapter();
@@ -281,31 +281,46 @@ public class DishListActivity extends Activity {
     }
   }
   
-  private void updateData(){
+  //获取当前menu对应的submenu、当前menu&submenu对应的dishs
+  private boolean getCurrDishsData(){
     DishApplication app = (DishApplication)getApplicationContext();
     //获取当前页面的Submenu List以及Dish List
-    if (!submenuList.isEmpty()) submenuList.clear();
+    if (!currSubmenuList.isEmpty()) currSubmenuList.clear();
     for (int i=0; i<app.submenuList.size(); i++) {
       if (app.submenuList.get(i).menu_id.equalsIgnoreCase(app.currMenu)) {
-        submenuList.add(app.submenuList.get(i));
+        currSubmenuList.add(app.submenuList.get(i));
       }
     }
     
-    app.currSubMenu = submenuList.get(0).submenu_id;
-    
-    if (!dishList.isEmpty()) dishList.clear();
-    for (int i=0; i<app.dishList.size(); i++) {
-      if (app.dishList.get(i).submenu_id.equalsIgnoreCase(app.currSubMenu)
-        &&app.dishList.get(i).menu_id.equalsIgnoreCase(app.currMenu)) {
-        dishList.add(app.dishList.get(i));
+    for (int i=0; i<currSubmenuList.size(); i++) {
+      app.currSubMenu = currSubmenuList.get(i).submenu_id;
+      
+      if (!currDishList.isEmpty()) currDishList.clear();
+      for (int j=0; j<app.dishList.size(); j++) {
+        if (app.dishList.get(j).submenu_id.equalsIgnoreCase(app.currSubMenu)
+          &&app.dishList.get(j).menu_id.equalsIgnoreCase(app.currMenu)) {
+          currDishList.add(app.dishList.get(j));
+        }
       }
+      
+      //只有当submenu以及此submenu中有dish的时候，才返回true;
+      if (!currDishList.isEmpty())
+        return true;
     }
     
+    return false;
   }
-
+  private void setSettingSpinner(){
+    Vector<CharSequence> settingList = new Vector<CharSequence>();
+//    settingList.add(R.string.language);
+//    settingList.add(R.string.orderedlist);
+//    settingList.add(R.string.waitormode);
+//    settingList.add(R.string.structuretype);
+//    settingList.add(R.string.dishsearch);
+  }
   private void setDishsAdapter() {
 
-    dishAdapter = new DishAdapter(dishList);
+    dishAdapter = new DishAdapter(currDishList);
 
     //    ScrollView dishScrollView = (ScrollView) findViewById(R.id.dishScrollView);
     //    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -315,7 +330,7 @@ public class DishListActivity extends Activity {
     dishListView.setAdapter(dishAdapter);
     dishListView.setVisibility(View.INVISIBLE);
     
-    DishGridAdapter dishGridAdapter = new DishGridAdapter(dishList);
+    DishGridAdapter dishGridAdapter = new DishGridAdapter(currDishList);
     GridView dishGridView = (GridView) findViewById(R.id.dishGrid);
     dishGridView.setAdapter(dishGridAdapter);
     dishGridView.setVisibility(View.VISIBLE);
@@ -324,7 +339,7 @@ public class DishListActivity extends Activity {
 
   private void setlabelAdapter() {
     
-    labelAdapter = new LabelAdapter(submenuList);
+    labelAdapter = new LabelAdapter(currSubmenuList);
 
     ListView labelListView = (ListView) findViewById(R.id.labelList);
     labelListView.setAdapter(labelAdapter);
@@ -352,14 +367,7 @@ public class DishListActivity extends Activity {
     });
 
 
-    Button moreBtn = (Button) findViewById(R.id.morebt);
-    moreBtn.setOnClickListener(new View.OnClickListener() {
-
-      @Override
-      public void onClick(View v) {
-          
-      }
-    });
+    setSettingSpinner();
 
     Button stypeBtn = (Button) findViewById(R.id.stypebt);
     stypeBtn.setOnClickListener(new View.OnClickListener() {
@@ -380,6 +388,67 @@ public class DishListActivity extends Activity {
       }
     });
   }
+  
+
+  private static final int MENU_WAITOR_MODE = 1;
+  private static final int MENU_CURTOMER_MODE = 2;
+  private static final int MENU_CATEGORY = 3;
+  private static final int MENU_SEARCH = 4;
+
+  @Override
+  public boolean onPrepareOptionsMenu(Menu menu) {
+    super.onPrepareOptionsMenu(menu);
+    
+    menu.clear();
+    DishApplication app = (DishApplication)getApplicationContext();
+    if ( app_mode.MODE_CUSTOMER == app.currMode) {
+      menu.add(Menu.NONE, MENU_WAITOR_MODE, Menu.NONE, R.string.waitormode).setIcon(
+          android.R.drawable.ic_menu_manage);
+      
+    }
+    else if (app_mode.MODE_WAITOR == app.currMode) {
+      menu.add(Menu.NONE, MENU_CURTOMER_MODE, Menu.NONE, R.string.customermode)
+          .setIcon(android.R.drawable.ic_menu_view);
+    }
+    
+    menu.add(Menu.NONE, MENU_CATEGORY, Menu.NONE, R.string.structuretype).setIcon(
+        android.R.drawable.ic_menu_edit);
+    menu.add(Menu.NONE, MENU_SEARCH, Menu.NONE, R.string.dishsearch)
+        .setIcon(android.R.drawable.ic_menu_search);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case MENU_WAITOR_MODE:
+        onMenuWaitorMode();
+        return true;
+      case MENU_CURTOMER_MODE:
+        onMenuCustomerMode();
+        return true;
+      case MENU_CATEGORY:
+        onMenuCategory();
+        return true;
+      case MENU_SEARCH:
+        onMenuSearch();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+  
+  private void onMenuWaitorMode() {
+    DishApplication app = (DishApplication)getApplicationContext();
+    app.currMode = app_mode.MODE_WAITOR;
+    
+  }
+  
+  private void onMenuCustomerMode(){}
+  
+  private void onMenuCategory(){}
+  
+  private void onMenuSearch(){}
   
   
 }

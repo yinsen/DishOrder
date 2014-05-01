@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/menuGridItem"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="120dp">
+	<TextView
+	    android:id="@+id/menuBt"
+	    android:layout_width="120dp"
+	    android:layout_height="80dp"
+	    android:background="@drawable/d2" />
+	
+</LinearLayout>
+
