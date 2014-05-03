@@ -48,4 +48,6 @@
     <string name="customermode">退出服务员模式</string>
     <string name="structuretype">结构分类</string>
     <string name="dishsearch">菜品查询</string>
+    <string name="searchhint">请输入菜名</string>
+    
 </resources>

@@ -48,4 +48,5 @@
     <string name="customermode">Exit Waitor Mode</string>
     <string name="structuretype">Structure Type</string>
     <string name="dishsearch">Search</string>
+    <string name="searchhint">Input dish name</string>
 </resources>

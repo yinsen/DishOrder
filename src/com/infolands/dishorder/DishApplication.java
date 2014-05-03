@@ -16,18 +16,13 @@
 
 package com.infolands.dishorder;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import android.app.Application;
-import android.app.Instrumentation;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.view.KeyEvent;
 
-import com.infolands.dishorder.DataItem.DiningItem;
-import com.infolands.dishorder.DataItem.DishItem;
 
 public class DishApplication extends Application {
 
@@ -46,15 +41,15 @@ public class DishApplication extends Application {
   public DataItem.OrderDetailItem currOrderDetailItem = item.new OrderDetailItem();
   
   public String currTableNo;
-  public Vector<DataItem.DiningItem> diningList = new Vector<DataItem.DiningItem>();
-  public Vector<DataItem.WaitorItem> waitorList = new Vector<DataItem.WaitorItem>();
-  public Vector<DataItem.MenuItem> menuList = new Vector<DataItem.MenuItem>();
-  public Vector<DataItem.SubmenuItem> submenuList = new Vector<DataItem.SubmenuItem>();
-  public Vector<DataItem.DishItem> dishList = new Vector<DataItem.DishItem>();
-  public Vector<DataItem.MixtureItem> mixtureList = new Vector<DataItem.MixtureItem>();
+  public ArrayList<DataItem.DiningItem> diningList = new ArrayList<DataItem.DiningItem>();
+  public ArrayList<DataItem.WaitorItem> waitorList = new ArrayList<DataItem.WaitorItem>();
+  public ArrayList<DataItem.MenuItem> menuList = new ArrayList<DataItem.MenuItem>();
+  public ArrayList<DataItem.SubmenuItem> submenuList = new ArrayList<DataItem.SubmenuItem>();
+  public ArrayList<DataItem.DishItem> dishList = new ArrayList<DataItem.DishItem>();
+  public ArrayList<DataItem.MixtureItem> mixtureList = new ArrayList<DataItem.MixtureItem>();
   
-  public Vector<DataItem.OrderListItem> orderlistList = new Vector<DataItem.OrderListItem>();
-  public Vector<DataItem.OrderDetailItem> orderdetailList = new Vector<DataItem.OrderDetailItem>();
+  public ArrayList<DataItem.OrderListItem> orderlistList = new ArrayList<DataItem.OrderListItem>();
+  public ArrayList<DataItem.OrderDetailItem> orderdetailList = new ArrayList<DataItem.OrderDetailItem>();
   
   public void setCurrMenu(String m) {
     currMenu = m;
@@ -358,12 +353,12 @@ public class DishApplication extends Application {
 
   }
 
-//  public Vector<DataItem.DishItem> getDishList() {
+//  public ArrayList<DataItem.DishItem> getDishList() {
 //
 //    DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
 //    SQLiteDatabase mDb = dbHelper.getReadableDatabase();
 //
-//    Vector<DataItem.DishItem> results = new Vector<DataItem.DishItem>();
+//    ArrayList<DataItem.DishItem> results = new ArrayList<DataItem.DishItem>();
 //
 //    String[] selectionArgs = new String[]{currSubMenu, currMenu};
 //    Cursor cursor = mDb.rawQuery("select * from table " + DishOrderDatabaseHelper.TABLE_DISH + " where "

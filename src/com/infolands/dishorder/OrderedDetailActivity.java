@@ -1,6 +1,6 @@
 package com.infolands.dishorder;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import com.infolands.dishorder.DataItem.DishItem;
 
@@ -46,13 +46,13 @@ public class OrderedDetailActivity extends Activity {
 
   private class OrderedDetailAdapter extends BaseAdapter {
 
-    private Vector<OrderedItem> dataList;
+    private ArrayList<OrderedItem> dataList;
 
-    public OrderedDetailAdapter(Vector<OrderedItem> list) {
+    public OrderedDetailAdapter(ArrayList<OrderedItem> list) {
       this.dataList = list;
     }
 
-    public void setList(Vector<OrderedItem> list) {
+    public void setList(ArrayList<OrderedItem> list) {
       this.dataList = list;
       notifyDataSetChanged();
     }
@@ -180,7 +180,7 @@ public class OrderedDetailActivity extends Activity {
   
   private void setDishsAdapter() {
 
-    Vector<OrderedItem> dishList = new Vector<OrderedItem>();
+    ArrayList<OrderedItem> dishList = new ArrayList<OrderedItem>();
     int numOrdered = ((DishApplication)getApplicationContext()).orderdetailList.size();
     int numDishs = ((DishApplication)getApplicationContext()).dishList.size();
     
@@ -205,7 +205,7 @@ public class OrderedDetailActivity extends Activity {
       
       
       OrderedItem element = new OrderedItem(dish_id, dish_name, dish_price, dish_description, dish_nums );
-      dishList.addElement(element);
+      dishList.add(element);
     }
     
     

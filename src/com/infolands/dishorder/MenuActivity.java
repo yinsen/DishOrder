@@ -1,7 +1,7 @@
 package com.infolands.dishorder;
 
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,13 +20,13 @@ import android.widget.TextView;
 public class MenuActivity extends Activity {
   
   public class MenuGridAdapter extends BaseAdapter {
-    private Vector<DataItem.MenuItem> menuList;
+    private ArrayList<DataItem.MenuItem> menuList;
     
-    public MenuGridAdapter(Vector<DataItem.MenuItem> list) {
+    public MenuGridAdapter(ArrayList<DataItem.MenuItem> list) {
       this.menuList = list;
     }
 
-    public void setList(Vector<DataItem.MenuItem> list) {
+    public void setList(ArrayList<DataItem.MenuItem> list) {
       this.menuList = list;
       notifyDataSetChanged();
     }

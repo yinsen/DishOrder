@@ -1,6 +1,6 @@
 package com.infolands.dishorder;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import com.infolands.dishorder.DishApplication.app_mode;
 
@@ -31,12 +31,12 @@ public class DishListActivity extends Activity {
   
   private class LabelAdapter extends BaseAdapter {
 
-    private Vector<DataItem.SubmenuItem> submenuList;
-    public LabelAdapter(Vector<DataItem.SubmenuItem> list) {
+    private ArrayList<DataItem.SubmenuItem> submenuList;
+    public LabelAdapter(ArrayList<DataItem.SubmenuItem> list) {
       this.submenuList = list;
     }
 
-    public void setList(Vector<DataItem.SubmenuItem> list) {
+    public void setList(ArrayList<DataItem.SubmenuItem> list) {
       this.submenuList = list;
       notifyDataSetChanged();
     }
@@ -98,13 +98,13 @@ public class DishListActivity extends Activity {
 
   private class DishAdapter extends BaseAdapter {
 
-    private Vector<DataItem.DishItem> dishList;
+    private ArrayList<DataItem.DishItem> dishList;
 
-    public DishAdapter(Vector<DataItem.DishItem> list) {
+    public DishAdapter(ArrayList<DataItem.DishItem> list) {
       this.dishList = list;
     }
 
-    public void setList(Vector<DataItem.DishItem> list) {
+    public void setList(ArrayList<DataItem.DishItem> list) {
       this.dishList = list;
       notifyDataSetChanged();
     }
@@ -165,13 +165,13 @@ public class DishListActivity extends Activity {
   }
 
   public class DishGridAdapter extends BaseAdapter {
-    private Vector<DataItem.DishItem> dishList;
+    private ArrayList<DataItem.DishItem> dishList;
     
-    public DishGridAdapter(Vector<DataItem.DishItem> list) {
+    public DishGridAdapter(ArrayList<DataItem.DishItem> list) {
       this.dishList = list;
     }
 
-    public void setList(Vector<DataItem.DishItem> list) {
+    public void setList(ArrayList<DataItem.DishItem> list) {
       this.dishList = list;
       notifyDataSetChanged();
     }
@@ -240,8 +240,8 @@ public class DishListActivity extends Activity {
   /**************************** submenuList ************************************
   ********************此变量是否需要一个menu_id作为外键？需要根据数据待确定***************
   *****************************************************************************/
-  private Vector<DataItem.SubmenuItem> currSubmenuList = new Vector<DataItem.SubmenuItem>();
-  private Vector<DataItem.DishItem> currDishList = new Vector<DataItem.DishItem>();
+  private ArrayList<DataItem.SubmenuItem> currSubmenuList = new ArrayList<DataItem.SubmenuItem>();
+  private ArrayList<DataItem.DishItem> currDishList = new ArrayList<DataItem.DishItem>();
   
   private DishAdapter dishAdapter;
   private LabelAdapter labelAdapter;
@@ -310,14 +310,6 @@ public class DishListActivity extends Activity {
     
     return false;
   }
-  private void setSettingSpinner(){
-    Vector<CharSequence> settingList = new Vector<CharSequence>();
-//    settingList.add(R.string.language);
-//    settingList.add(R.string.orderedlist);
-//    settingList.add(R.string.waitormode);
-//    settingList.add(R.string.structuretype);
-//    settingList.add(R.string.dishsearch);
-  }
   private void setDishsAdapter() {
 
     dishAdapter = new DishAdapter(currDishList);
@@ -367,8 +359,6 @@ public class DishListActivity extends Activity {
     });
 
 
-    setSettingSpinner();
-
     Button stypeBtn = (Button) findViewById(R.id.stypebt);
     stypeBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -394,6 +384,7 @@ public class DishListActivity extends Activity {
   private static final int MENU_CURTOMER_MODE = 2;
   private static final int MENU_CATEGORY = 3;
   private static final int MENU_SEARCH = 4;
+  private static final int MENU_SETTING = 5;
 
   @Override
   public boolean onPrepareOptionsMenu(Menu menu) {
@@ -409,6 +400,8 @@ public class DishListActivity extends Activity {
     else if (app_mode.MODE_WAITOR == app.currMode) {
       menu.add(Menu.NONE, MENU_CURTOMER_MODE, Menu.NONE, R.string.customermode)
           .setIcon(android.R.drawable.ic_menu_view);
+      menu.add(Menu.NONE, MENU_SETTING, Menu.NONE, R.string.structuretype).setIcon(
+          android.R.drawable.ic_menu_preferences);
     }
     
     menu.add(Menu.NONE, MENU_CATEGORY, Menu.NONE, R.string.structuretype).setIcon(
@@ -433,6 +426,9 @@ public class DishListActivity extends Activity {
       case MENU_SEARCH:
         onMenuSearch();
         return true;
+      case MENU_SETTING:
+        onMenuSetting();
+        return true;
       default:
         return super.onOptionsItemSelected(item);
     }
@@ -440,15 +436,23 @@ public class DishListActivity extends Activity {
   
   private void onMenuWaitorMode() {
     DishApplication app = (DishApplication)getApplicationContext();
+    
     app.currMode = app_mode.MODE_WAITOR;
     
   }
   
-  private void onMenuCustomerMode(){}
+  private void onMenuCustomerMode(){
+    
+  }
   
   private void onMenuCategory(){}
   
-  private void onMenuSearch(){}
+  private void onMenuSearch(){
+    //onSearchRequested();
+    Intent intent = new Intent(DishListActivity.this, SearchResultActivity.class);
+    startActivity(intent);
+  }
   
+  private void onMenuSetting(){}
   
 }
