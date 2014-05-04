@@ -48,9 +48,13 @@ public class SearchResultActivity extends Activity {
 
       @Override
       protected void publishResults(CharSequence constraint, FilterResults results) {
+        
+        dishSearchAdapter.setList(dishSearchList);
+        
         //noinspection unchecked
         if (results.count > 0) {
           notifyDataSetChanged();
+          
         }
         else {
           notifyDataSetInvalidated();
@@ -58,15 +62,14 @@ public class SearchResultActivity extends Activity {
       }
     }
 
-    private ArrayList<DataItem.DishItem> dishSearchList;
     private DishSearchFilter mFilter;
 
     public DishSearchAdapter(ArrayList<DataItem.DishItem> list) {
-      this.dishSearchList = list;
+      dishSearchList = list;
     }
 
     public void setList(ArrayList<DataItem.DishItem> list) {
-      this.dishSearchList = list;
+      dishSearchList = list;
       notifyDataSetChanged();
     }
 
@@ -127,7 +130,9 @@ public class SearchResultActivity extends Activity {
       });
     }
   }
-
+  
+  private ArrayList<DataItem.DishItem> dishSearchList = new ArrayList<DataItem.DishItem>();;
+  private DishSearchAdapter dishSearchAdapter;
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -142,29 +147,25 @@ public class SearchResultActivity extends Activity {
     //        doSearch(query);
     //      }
 
+    DishApplication app = (DishApplication) getApplicationContext();
+    for (int i = 0; i < app.dishList.size(); i++) {
+        dishSearchList.add(app.dishList.get(i));
+    }
+    dishSearchAdapter = new DishSearchAdapter(dishSearchList);
+    ListView dishResultView = (ListView) findViewById(R.id.searchResultList);
+    dishResultView.setAdapter(dishSearchAdapter);
+    
     setTopButtons();
   }
 
   private void setTopButtons() {
-
-    ImageView stypeBtn = (ImageView) findViewById(R.id.searchBt);
-    stypeBtn.setOnClickListener(new View.OnClickListener() {
-
-      @Override
-      public void onClick(View v) {
-        EditText editor = (EditText) findViewById(R.id.searchbox);
-        String query = editor.getText().toString().trim();
-
-        doSearch(query);
-      }
-    });
 
     EditText input = (EditText) findViewById(R.id.searchbox);
     input.addTextChangedListener(new TextWatcher() {
 
       @Override
       public void afterTextChanged(Editable s) {
-        String query = s.toString().trim();
+        final String query = s.toString().trim();
         doSearch(query);
       }
 
@@ -181,15 +182,13 @@ public class SearchResultActivity extends Activity {
 
   }
 
-  private void doSearch(String query) {
+  private void doSearch(final String q) {
 
-    DishApplication app = (DishApplication) getApplicationContext();
-    DishSearchAdapter dishSearchAdapter = new DishSearchAdapter(app.dishList);
+    
+    
+    dishSearchAdapter.getFilter().filter(q);
 
-    dishSearchAdapter.getFilter().filter(query);
-
-    ListView dishResultView = (ListView) findViewById(R.id.searchResultList);
-    dishResultView.setAdapter(dishSearchAdapter);
+    
 
   }
 
