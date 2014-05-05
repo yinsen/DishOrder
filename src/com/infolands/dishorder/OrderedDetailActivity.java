@@ -2,15 +2,9 @@ package com.infolands.dishorder;
 
 import java.util.ArrayList;
 
-import com.infolands.dishorder.DataItem.DishItem;
-
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,8 +14,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -73,22 +65,21 @@ public class OrderedDetailActivity extends Activity {
       View v = convertView;
       if (v == null) {
         LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        v = vi.inflate(R.layout.dishitem, null);
+        v = vi.inflate(R.layout.ordereddetailitem, null);
       }
       OrderedItem o = (OrderedItem) dataList.get(position);
       if (o != null) {
         TextView idView = (TextView) v.findViewById(R.id.itemNo);
-        
         TextView nameView = (TextView) v.findViewById(R.id.itemName);
         TextView discriptionView = (TextView) v.findViewById(R.id.itemDescription);
         TextView priceView = (TextView) v.findViewById(R.id.itemPrice);
         TextView numberView = (TextView) v.findViewById(R.id.itemNums);
-        if (nameView != null) {
+        if (idView != null) {
           idView.setText(String.valueOf(position));
           nameView.setText(o.name);
           priceView.setText(o.price);
           discriptionView.setText(o.description);
-          numberView.setText(o.number);
+          numberView.setText(Integer.toString(o.number));
         }
         Button addBt = (Button) v.findViewById(R.id.itemAdd);
         if (addBt != null) {
@@ -122,6 +113,15 @@ public class OrderedDetailActivity extends Activity {
               break;
             }
           }
+          
+          int len2 = detailList.size();
+          for (int i=0; i<len2; i++) {
+            if (dishid.equalsIgnoreCase(detailList.get(i).dish_id)) {
+              detailList.get(i).number ++;
+              break;
+            }
+          }
+          detailAdapter.setList(detailList);
         }
       });
     }
@@ -139,6 +139,15 @@ public class OrderedDetailActivity extends Activity {
               break;
             }
           }
+          
+          int len2 = detailList.size();
+          for (int i=0; i<len2; i++) {
+            if (dishid.equalsIgnoreCase(detailList.get(i).dish_id) && detailList.get(i).number > 1) {
+              detailList.get(i).number --;
+              break;
+            }
+          }
+          detailAdapter.setList(detailList);
         }
       });
     }
@@ -155,6 +164,15 @@ public class OrderedDetailActivity extends Activity {
               break;
             }
           }
+          
+          int len2 = detailList.size();
+          for (int i=0; i<len2; i++) {
+            if (dishid.equalsIgnoreCase(detailList.get(i).dish_id)) {
+              detailList.remove(i);
+              break;
+            }
+          }
+          detailAdapter.setList(detailList);
         }
       });
     }
@@ -168,19 +186,21 @@ public class OrderedDetailActivity extends Activity {
     setContentView(R.layout.ordereddetaillist);
 
     setTopButtons();
-    
   }
 
 
   @Override
   public void onStart (){
+    super.onStart();
+    
     setDishsAdapter();
     
   }
   
+  ArrayList<OrderedItem> detailList = new ArrayList<OrderedItem>();
+  OrderedDetailAdapter detailAdapter;
   private void setDishsAdapter() {
-
-    ArrayList<OrderedItem> dishList = new ArrayList<OrderedItem>();
+    
     int numOrdered = ((DishApplication)getApplicationContext()).orderdetailList.size();
     int numDishs = ((DishApplication)getApplicationContext()).dishList.size();
     
@@ -205,22 +225,27 @@ public class OrderedDetailActivity extends Activity {
       
       
       OrderedItem element = new OrderedItem(dish_id, dish_name, dish_price, dish_description, dish_nums );
-      dishList.add(element);
+      detailList.add(element);
     }
     
-    
-    OrderedDetailAdapter dishAdapter = new OrderedDetailAdapter(dishList);
+    detailAdapter = new OrderedDetailAdapter(detailList);
 
-    //    ScrollView dishScrollView = (ScrollView) findViewById(R.id.dishScrollView);
-    //    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    //    final View dishListLayout = inflater.inflate(R.layout.dishitem, dishScrollView);
-    //    ListView dishListView = (ListView) dishListLayout.findViewById(R.id.dishlist);
-    ListView dishListView = (ListView) findViewById(R.id.dishList);
-    dishListView.setAdapter(dishAdapter);
-    dishListView.setVisibility(View.INVISIBLE);
+    ListView dishListView = (ListView) findViewById(R.id.orderDetailList);
+    dishListView.setAdapter(detailAdapter);
   }
 
   private void setTopButtons() {
+    
+    TextView tableno = (TextView) findViewById(R.id.detailtableno);
+    tableno.setText(getResources().getString(R.string.tableno) + ((DishApplication)getApplicationContext()).currTableNo);
+    tableno.setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View v) {
+
+      }
+    });
+    
     Button backBtn = (Button) findViewById(R.id.backBt);
     backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -242,8 +267,8 @@ public class OrderedDetailActivity extends Activity {
     });
 
 
-    Button moreBtn = (Button) findViewById(R.id.okBt);
-    moreBtn.setOnClickListener(new View.OnClickListener() {
+    Button okBtn = (Button) findViewById(R.id.okBt);
+    okBtn.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View v) {

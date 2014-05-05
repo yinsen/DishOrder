@@ -2,13 +2,13 @@ package com.infolands.dishorder;
 
 import java.util.ArrayList;
 
-import com.infolands.dishorder.DishApplication.app_mode;
-
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,12 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+
+import com.infolands.dishorder.DishApplication.app_mode;
 
 public class DishListActivity extends Activity {
 
@@ -337,6 +342,52 @@ public class DishListActivity extends Activity {
     labelListView.setAdapter(labelAdapter);
   }
 
+  private void setTableNoView(){
+    TextView tableno = (TextView) findViewById(R.id.tableNo);
+    EditText tableEditNo = (EditText) findViewById(R.id.tableedit1);
+    tableno.setText(((DishApplication)getApplicationContext()).currTableNo);
+    tableEditNo.setText(((DishApplication)getApplicationContext()).currTableNo);
+    if (app_mode.MODE_WAITOR == ((DishApplication)getApplicationContext()).currMode) {
+      tableEditNo.setVisibility(View.VISIBLE);
+      tableno.setVisibility(View.INVISIBLE);
+    }
+    else {
+      tableEditNo.setVisibility(View.INVISIBLE);
+      tableno.setVisibility(View.VISIBLE);
+    }
+    
+
+    tableEditNo.setOnEditorActionListener(new OnEditorActionListener() {   
+            @Override  
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {   
+                if (EditorInfo.IME_ACTION_DONE == actionId) {
+                  if (v.getText().length()<3) {}
+                  else {
+                    ((DishApplication)getApplicationContext()).currTableNo = v.getText().toString();
+                  }
+                }
+                return false;   
+            }   
+        }); 
+
+    tableEditNo.addTextChangedListener(new TextWatcher() {
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        final String query = s.toString().trim();
+      }
+
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+      }
+
+    });
+  }
   private void setTopButtons() {
     Button backBtn = (Button) findViewById(R.id.backbt);
     backBtn.setOnClickListener(new View.OnClickListener() {
@@ -357,7 +408,19 @@ public class DishListActivity extends Activity {
         }.start();
       }
     });
+    
+    setTableNoView();
+    
+    Button detailBt = (Button) findViewById(R.id.detailBt);
+    detailBt.setOnClickListener(new View.OnClickListener() {
 
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(DishListActivity.this, OrderedDetailActivity.class);
+        startActivity(intent);
+      }
+    });
+    
 
     Button stypeBtn = (Button) findViewById(R.id.stypebt);
     stypeBtn.setOnClickListener(new View.OnClickListener() {
@@ -382,9 +445,9 @@ public class DishListActivity extends Activity {
 
   private static final int MENU_WAITOR_MODE = 1;
   private static final int MENU_CURTOMER_MODE = 2;
-  private static final int MENU_CATEGORY = 3;
   private static final int MENU_SEARCH = 4;
   private static final int MENU_SETTING = 5;
+  private static final int MENU_UPDATING_DATA = 6;
 
   @Override
   public boolean onPrepareOptionsMenu(Menu menu) {
@@ -394,7 +457,7 @@ public class DishListActivity extends Activity {
     DishApplication app = (DishApplication)getApplicationContext();
     if ( app_mode.MODE_CUSTOMER == app.currMode) {
       menu.add(Menu.NONE, MENU_WAITOR_MODE, Menu.NONE, R.string.waitormode).setIcon(
-          android.R.drawable.ic_menu_manage);
+          android.R.drawable.ic_menu_edit);
       
     }
     else if (app_mode.MODE_WAITOR == app.currMode) {
@@ -402,10 +465,10 @@ public class DishListActivity extends Activity {
           .setIcon(android.R.drawable.ic_menu_view);
       menu.add(Menu.NONE, MENU_SETTING, Menu.NONE, R.string.structuretype).setIcon(
           android.R.drawable.ic_menu_preferences);
+      menu.add(Menu.NONE, MENU_UPDATING_DATA, Menu.NONE, R.string.updatedata).setIcon(
+          android.R.drawable.ic_menu_manage);
     }
     
-    menu.add(Menu.NONE, MENU_CATEGORY, Menu.NONE, R.string.structuretype).setIcon(
-        android.R.drawable.ic_menu_edit);
     menu.add(Menu.NONE, MENU_SEARCH, Menu.NONE, R.string.dishsearch)
         .setIcon(android.R.drawable.ic_menu_search);
     return true;
@@ -420,9 +483,6 @@ public class DishListActivity extends Activity {
       case MENU_CURTOMER_MODE:
         onMenuCustomerMode();
         return true;
-      case MENU_CATEGORY:
-        onMenuCategory();
-        return true;
       case MENU_SEARCH:
         onMenuSearch();
         return true;
@@ -436,16 +496,17 @@ public class DishListActivity extends Activity {
   
   private void onMenuWaitorMode() {
     DishApplication app = (DishApplication)getApplicationContext();
-    
     app.currMode = app_mode.MODE_WAITOR;
     
+    setTableNoView();
   }
   
   private void onMenuCustomerMode(){
+    DishApplication app = (DishApplication)getApplicationContext();
+    app.currMode = app_mode.MODE_CUSTOMER;
     
+    setTableNoView();
   }
-  
-  private void onMenuCategory(){}
   
   private void onMenuSearch(){
     //onSearchRequested();

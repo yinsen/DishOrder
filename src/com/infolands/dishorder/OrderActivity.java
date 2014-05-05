@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 
@@ -17,15 +18,16 @@ public class OrderActivity extends Activity {
     
   private String dish_id;
   private String orderlist_id;
-  private String mixture_id;
-  private int dish_num;
-  private String taste;
-  private String cookie;
-  private String weight;
+  private String mixture_id = "1";
+  private int dish_num = 1;
+  private String taste = "taste";
+  private String cookie = "cookie";
+  private String weight = "weight";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.order);
         
         Bundle bundle = getIntent().getBundleExtra("order_item");  
@@ -56,13 +58,13 @@ public class OrderActivity extends Activity {
 
           @Override
           public void onClick(final View v) {
+                
+            OrderActivity activity = (OrderActivity)(v.getContext());
+            activity.OrderOneDish();
+            
             new Thread() {
 
               public void run() {
-                
-                OrderActivity activity = (OrderActivity)(v.getContext());
-                activity.OrderOneDish();
-                
                 try {
                   Instrumentation inst = new Instrumentation();
                   inst.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
@@ -92,7 +94,7 @@ public class OrderActivity extends Activity {
       }
       
       DataItem.OrderDetailItem detailItem = dataItem.new OrderDetailItem(dish_id, orderlistid, mixture_id, taste, cookie, weight
-                                                                         , tableno, DataItem.OrderDetailItem.STATUS_UNCONFIRMED, dish_num);
+                                                                         , DataItem.OrderDetailItem.STATUS_UNCONFIRMED, tableno, dish_num);
       ((DishApplication)getApplicationContext()).orderdetailList.add(detailItem);
     }
   

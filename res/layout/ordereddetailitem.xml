@@ -1,52 +1,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/orderedDetailItem"
 	android:orientation="horizontal"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="wrap_content">
 	
     <TextView
 		  android:layout_width="wrap_content"
-	      android:layout_height="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:layout_marginLeft="10dp"
+		  android:layout_marginTop="5dp"
 		  android:id="@+id/itemNo"/>
     
     <TextView
 		  android:layout_width="wrap_content"
-	      android:layout_height="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:layout_marginLeft="10dp"
+		  android:layout_marginTop="5dp"
 		  android:id="@+id/itemName"/>
     
     <TextView
 		  android:layout_width="wrap_content"
-	      android:layout_height="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:layout_marginLeft="10dp"
+		  android:layout_marginTop="5dp"
 		  android:id="@+id/itemDescription"/>
     
     <TextView
 		  android:layout_width="wrap_content"
-	      android:layout_height="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:layout_marginLeft="10dp"
+		  android:layout_marginTop="5dp"
 		  android:id="@+id/itemPrice"/>
 	
 	<LinearLayout
-	    android:id="@+id/itemOperate"
 		android:orientation="horizontal"
 		android:layout_width="wrap_content"
-		android:layout_height="fill_parent">
-		<ImageView
-	    android:id="@+id/itemAdd"
-	    android:layout_width="wrap_content"
-	    android:layout_height="fill_parent"
-	    android:background="@drawable/btn_add1_normal" />
+		android:layout_height="wrap_content">
+		<Button
+		    android:id="@+id/itemAdd"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/btn_add1_normal" />
 		<TextView
 		  android:layout_width="wrap_content"
-	      android:layout_height="fill_parent"
+	      android:layout_height="wrap_content"
 		  android:id="@+id/itemNums"/>
-		<ImageView
-	    android:id="@+id/itemReduce"
-	    android:layout_width="wrap_content"
-	    android:layout_height="fill_parent"
-	    android:background="@drawable/btn_dec1_normal" />
+		<Button
+		    android:id="@+id/itemReduce"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/btn_dec1_normal" />
 	</LinearLayout>
 	
 	
-	<ImageView
+	<Button
 	    android:id="@+id/itemDelete"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"

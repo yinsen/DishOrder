@@ -10,6 +10,7 @@
     <string name="title">Yinsen dian dan</string>
     <string name="order">Order</string>
     <string name="viewstyle">View Style</string>
+    <string name="ordereddetail">Ordered Detail</string>
     
     <string name="kouwei">kouwei</string>
     <string name="qingdan">qingdan</string>
@@ -49,4 +50,8 @@
     <string name="structuretype">Structure Type</string>
     <string name="dishsearch">Search</string>
     <string name="searchhint">Input dish name</string>
+    
+    <string name="orderok">Order OK</string>
+    <string name="tableno">Table No:</string>
+    <string name="updatedata">Data update</string>
 </resources>

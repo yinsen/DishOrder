@@ -1,86 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-		
-        <!-- top bar -->
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="fill_parent"
-			android:layout_height="40dp"
-			android:background="@drawable/topbar_bk">
-			
-			<Button android:id="@+id/backbt"
-			    android:layout_width="wrap_content"
-	        	android:layout_height="40dp"
-			    android:layout_marginLeft="0dp"
-			    android:layout_gravity="center_vertical"
-			    android:text="@string/back"
-			    android:background="@drawable/toolbar_back_normal" />
-			<Spinner android:id="@+id/morebt"
-		        android:layout_width="wrap_content"
-		        android:layout_height="40dp"
-		        android:layout_gravity="center"
-		        android:text="@string/option"
-		        android:background="@drawable/toolbar_normal"/>
-			<Button android:id="@+id/stypebt"
-			    android:layout_width="wrap_content"
-			    android:layout_height="40dp"
-			    android:layout_marginRight="0dp"
-			    android:layout_gravity="center_vertical"
-			    android:text="@string/viewstyle"
-			    android:background="@drawable/toolbar_normal" />
-			
-			
-		</LinearLayout>
-		
-		<!-- label和list -->
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-			
-		    <!-- label -->
-			<ListView android:id="@+id/labelList"
-			    android:minHeight="40dip"
-				android:layout_width="wrap_content"
-				android:layout_height="fill_parent"
-				android:layout_weight="5"
-				android:background="@drawable/labelbg"
-				android:cacheColorHint="@android:color/transparent">
-			</ListView>
-		
-			<!-- list -->
-			<FrameLayout android:id="@+id/menuview"
-	            android:layout_width="fill_parent"
-	            android:layout_height="fill_parent"
-				android:layout_weight="1"> 
-				<ListView android:id="@+id/dishList"
-				    android:minHeight="40dip"
-					android:layout_width="wrap_content"
-					android:layout_height="fill_parent"
-					android:background="@drawable/background"
-					android:cacheColorHint="@android:color/transparent">
-				</ListView>
-				
-				<GridView
-				    android:id="@+id/dishGrid"
-					android:layout_width="fill_parent" 
-					android:layout_height="fill_parent"
-				    android:padding="10dp"
-				    android:verticalSpacing="10dp"
-				    android:horizontalSpacing="10dp"
-				    android:numColumns="auto_fit"
-				    android:columnWidth="120dp"
-				    android:stretchMode="columnWidth"
-				    android:gravity="center"
-				    android:background="@drawable/background"
-					android:cacheColorHint="@android:color/transparent">
-				    
-				</GridView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-								
-			</FrameLayout>
-		</LinearLayout>  
-	</LinearLayout>
+    <!-- top bar -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/topbar_bk"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/backbt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/toolbar_back_normal"
+            android:text="@string/back" />
+
+        <TextView
+            android:id="@+id/tableNoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/nousedcontrol"
+            android:text="@string/tableno"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/nousedcontrol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text=""/>
+        
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/nousedcontrol" >
+
+            <TextView
+                android:id="@+id/tableNo"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/tableedit1"
+                android:layout_width="60dp"
+                android:layout_height="fill_parent"
+                android:singleLine="true"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:imeOptions="flagNoExtractUi|actionDone"
+                android:inputType="number"
+                android:ems="3" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/detailBt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_toLeftOf="@+id/stypebt"
+            android:background="@drawable/toolbar_normal"
+            android:text="@string/ordereddetail" />
+
+        <Button
+            android:id="@+id/stypebt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/toolbar_normal"
+            android:text="@string/viewstyle" />
+    </RelativeLayout>
+
+    <!-- label和list -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <!-- label -->
+
+        <ListView
+            android:id="@+id/labelList"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:background="@drawable/labelbg"
+            android:cacheColorHint="@android:color/transparent"
+            android:minHeight="40dip" >
+        </ListView>
+
+        <!-- list -->
+
+        <FrameLayout
+            android:id="@+id/menuview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <ListView
+                android:id="@+id/dishList"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:background="@drawable/background"
+                android:cacheColorHint="@android:color/transparent"
+                android:minHeight="40dip" >
+            </ListView>
+
+            <GridView
+                android:id="@+id/dishGrid"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/background"
+                android:cacheColorHint="@android:color/transparent"
+                android:columnWidth="120dp"
+                android:gravity="center"
+                android:horizontalSpacing="10dp"
+                android:numColumns="auto_fit"
+                android:padding="10dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="10dp" >
+            </GridView>
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>
