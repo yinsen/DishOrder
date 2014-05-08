@@ -11,6 +11,7 @@
     <string name="order">点单</string>
     <string name="viewstyle">视图切换</string>
     <string name="ordereddetail">已点菜单</string>
+    <string name="enter">进入</string>
     
     <string name="kouwei">口味</string>
     <string name="qingdan">清淡</string>
@@ -54,5 +55,9 @@
     <string name="orderok">下单</string>
     <string name="tableno">桌号:</string>
     <string name="updatedata">数据更新</string>
+    
+    <string name="updatecharsdata">下传菜品资料、菜单资料、服务员资料</string>
+    <string name="updateimgdata">下传菜品图片</string>
+    <string name="download">下载</string>
     
 </resources>

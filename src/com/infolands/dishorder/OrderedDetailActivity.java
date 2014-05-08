@@ -21,11 +21,11 @@ public class OrderedDetailActivity extends Activity {
 
   private class OrderedItem {
 
-    public String dish_id;
-    public int number;
-    public String name;
-    public String price;
-    public String description;
+    public String dish_id = "";
+    public int number = 0;
+    public String name = "";
+    public String price = "";
+    public String description = "";
 
     public OrderedItem(String dishid, String n, String p, String des, int num ) {
       dish_id = dishid;
@@ -237,7 +237,7 @@ public class OrderedDetailActivity extends Activity {
   private void setTopButtons() {
     
     TextView tableno = (TextView) findViewById(R.id.detailtableno);
-    tableno.setText(getResources().getString(R.string.tableno) + ((DishApplication)getApplicationContext()).currTableNo);
+    tableno.setText(getResources().getString(R.string.tableno) + ((DishApplication)getApplicationContext()).getCurrTableNo());
     tableno.setOnClickListener(new View.OnClickListener() {
 
       @Override

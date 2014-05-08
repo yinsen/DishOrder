@@ -16,8 +16,7 @@ import android.widget.Button;
 
 public class OrderActivity extends Activity {
     
-  private String dish_id;
-  private String orderlist_id;
+  private String orderlist_id = "";
   private String mixture_id = "1";
   private int dish_num = 1;
   private String taste = "taste";
@@ -29,9 +28,6 @@ public class OrderActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.order);
-        
-        Bundle bundle = getIntent().getBundleExtra("order_item");  
-        dish_id = bundle.getString("dish_id"); 
         
         Button backBtn = (Button) findViewById(R.id.backbt);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +78,8 @@ public class OrderActivity extends Activity {
     //修改用于插入新点菜品到已点列表，这里只放入List，菜点好了，下单时再存数据库
     public void OrderOneDish() {
       DataItem dataItem = new DataItem();
-      String tableno = ((DishApplication)getApplicationContext()).currTableNo;
+      String tableno = ((DishApplication)getApplicationContext()).getCurrTableNo();
+      String dish_id = ((DishApplication)getApplicationContext()).currDishId;
       
       //生成或得到OrderListId
       String orderlistid = "";

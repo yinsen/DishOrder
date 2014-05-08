@@ -11,6 +11,7 @@
     <string name="order">Order</string>
     <string name="viewstyle">View Style</string>
     <string name="ordereddetail">Ordered Detail</string>
+    <string name="enter">Enter</string>
     
     <string name="kouwei">kouwei</string>
     <string name="qingdan">qingdan</string>
@@ -54,4 +55,8 @@
     <string name="orderok">Order OK</string>
     <string name="tableno">Table No:</string>
     <string name="updatedata">Data update</string>
+    
+    <string name="updatecharsdata">Updata chars</string>
+    <string name="updateimgdata">update imgs</string>
+    <string name="download">Download</string>
 </resources>

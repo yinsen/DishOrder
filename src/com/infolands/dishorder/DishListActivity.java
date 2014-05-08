@@ -154,12 +154,9 @@ public class DishListActivity extends Activity {
       orderButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          ((DishApplication)getApplicationContext()).setCurrOrderDetailItem(dishItem.dish_id);
+          ((DishApplication)getApplicationContext()).currDishId = dishItem.dish_id;
           try {
             Intent intent = new Intent(DishListActivity.this,OrderActivity.class);  
-            Bundle bundle = new Bundle();
-            bundle.putString("dish_id", dishItem.dish_id);  
-            intent.putExtra("order_item", bundle);  
             startActivityForResult(intent, REQUEST_CODE_BIG_IMG); 
           } catch (Exception e) {
             e.printStackTrace();
@@ -227,12 +224,9 @@ public class DishListActivity extends Activity {
       orderButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          ((DishApplication)getApplicationContext()).setCurrOrderDetailItem(dishItem.dish_id);
+          ((DishApplication)getApplicationContext()).currDishId = dishItem.dish_id;
           try {
             Intent intent = new Intent(DishListActivity.this,OrderActivity.class);  
-            Bundle bundle = new Bundle();
-            bundle.putString("dish_id", dishItem.dish_id);  
-            intent.putExtra("order_item", bundle);  
             startActivityForResult(intent, REQUEST_CODE_BIG_IMG); 
           } catch (Exception e) {
             e.printStackTrace();
@@ -344,50 +338,34 @@ public class DishListActivity extends Activity {
 
   private void setTableNoView(){
     TextView tableno = (TextView) findViewById(R.id.tableNo);
-    EditText tableEditNo = (EditText) findViewById(R.id.tableedit1);
-    tableno.setText(((DishApplication)getApplicationContext()).currTableNo);
-    tableEditNo.setText(((DishApplication)getApplicationContext()).currTableNo);
+    Button tableBt = (Button) findViewById(R.id.tableBt);
+    tableno.setText(((DishApplication)getApplicationContext()).getCurrTableNo());
+    tableBt.setText(((DishApplication)getApplicationContext()).getCurrTableNo());
+    tableBt.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        new NumberPickerDialog(v.getContext(), new NumberPickerDialog.OnNumberChangedListener() {
+          
+          @Override
+          public void numberChanged(int number, int mode) {
+            ((DishApplication)getApplicationContext()).setCurrTableNo(Integer.toString(number));
+            Button tableBt = (Button) findViewById(R.id.tableBt);
+            tableBt.setText(Integer.toString(number));
+          }
+        }, 0, 999, 0, 1).show();
+      }
+    });
+    
     if (app_mode.MODE_WAITOR == ((DishApplication)getApplicationContext()).currMode) {
-      tableEditNo.setVisibility(View.VISIBLE);
+      tableBt.setVisibility(View.VISIBLE);
       tableno.setVisibility(View.INVISIBLE);
     }
     else {
-      tableEditNo.setVisibility(View.INVISIBLE);
+      tableBt.setVisibility(View.INVISIBLE);
       tableno.setVisibility(View.VISIBLE);
     }
-    
-
-    tableEditNo.setOnEditorActionListener(new OnEditorActionListener() {   
-            @Override  
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {   
-                if (EditorInfo.IME_ACTION_DONE == actionId) {
-                  if (v.getText().length()<3) {}
-                  else {
-                    ((DishApplication)getApplicationContext()).currTableNo = v.getText().toString();
-                  }
-                }
-                return false;   
-            }   
-        }); 
-
-    tableEditNo.addTextChangedListener(new TextWatcher() {
-
-      @Override
-      public void afterTextChanged(Editable s) {
-        final String query = s.toString().trim();
-      }
-
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-      }
-
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-      }
-
-    });
   }
+  
   private void setTopButtons() {
     Button backBtn = (Button) findViewById(R.id.backbt);
     backBtn.setOnClickListener(new View.OnClickListener() {
@@ -462,9 +440,7 @@ public class DishListActivity extends Activity {
     }
     else if (app_mode.MODE_WAITOR == app.currMode) {
       menu.add(Menu.NONE, MENU_CURTOMER_MODE, Menu.NONE, R.string.customermode)
-          .setIcon(android.R.drawable.ic_menu_view);
-      menu.add(Menu.NONE, MENU_SETTING, Menu.NONE, R.string.structuretype).setIcon(
-          android.R.drawable.ic_menu_preferences);
+          .setIcon(android.R.drawable.ic_menu_save);
       menu.add(Menu.NONE, MENU_UPDATING_DATA, Menu.NONE, R.string.updatedata).setIcon(
           android.R.drawable.ic_menu_manage);
     }
@@ -488,6 +464,9 @@ public class DishListActivity extends Activity {
         return true;
       case MENU_SETTING:
         onMenuSetting();
+        return true;
+      case MENU_UPDATING_DATA:
+        onMenuUpdatingData();
         return true;
       default:
         return super.onOptionsItemSelected(item);
@@ -514,6 +493,10 @@ public class DishListActivity extends Activity {
     startActivity(intent);
   }
   
+  private void onMenuUpdatingData(){
+    Intent intent = new Intent(DishListActivity.this, UpdateDataActivity.class);
+    startActivity(intent);
+  }
   private void onMenuSetting(){}
   
 }

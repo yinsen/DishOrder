@@ -115,7 +115,7 @@ public class SearchResultActivity extends Activity {
       orderButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          ((DishApplication) getApplicationContext()).setCurrOrderDetailItem(dishItem.dish_id);
+          ((DishApplication) getApplicationContext()).currDishId = dishItem.dish_id;
           try {
             Intent intent = new Intent(SearchResultActivity.this, OrderActivity.class);
             Bundle bundle = new Bundle();

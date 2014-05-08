@@ -34,13 +34,12 @@ public class DishApplication extends Application {
     MODE_NONE
   }
   public app_mode currMode = app_mode.MODE_CUSTOMER;
+  private String currTableNo = "001";
+
   public String currMenu = "";
   public String currSubMenu = "";
+  public String currDishId = "";
   
-  public DataItem item = new DataItem();
-  public DataItem.OrderDetailItem currOrderDetailItem = item.new OrderDetailItem();
-  
-  public String currTableNo;
   public ArrayList<DataItem.DiningItem> diningList = new ArrayList<DataItem.DiningItem>();
   public ArrayList<DataItem.WaitorItem> waitorList = new ArrayList<DataItem.WaitorItem>();
   public ArrayList<DataItem.MenuItem> menuList = new ArrayList<DataItem.MenuItem>();
@@ -67,30 +66,27 @@ public class DishApplication extends Application {
     return currSubMenu;
   }
   
-  public DataItem.OrderDetailItem getCurrOrderDetailItem() {
-    return currOrderDetailItem;
+  public String getCurrDishId() {
+    return currDishId;
   }
   
-  public void setCurrOrderDetailItem(String dishId) {
-    currOrderDetailItem.dish_id = dishId;
-    currOrderDetailItem.cookie = "";
-    currOrderDetailItem.mixture_id = "";
-    currOrderDetailItem.taste = "";
-    currOrderDetailItem.weight = "";
-    currOrderDetailItem.dish_num = 0;
-    currOrderDetailItem.status = DataItem.OrderDetailItem.STATUS_UNCONFIRMED;
+  public void setCurrDishId(String dishId) {
+    currDishId = dishId;
   }
 
-  
+  public String getCurrTableNo() {
+    return currTableNo;
+  }
   //orderdetail表中只存储没有结帐的桌子的菜品列表，因同一桌子同时只会有一单未结帐，所以只需要以table_no区分，不需要orderList_no
   public void setCurrTableNo(String tn) {
     
     if (currTableNo.equalsIgnoreCase(tn)) {
       return;
     }
+    currTableNo = tn;
     
     //1. 清除当前菜品的配置数据，恢复为默认值，防止之前桌子的点菜动作影响当前桌子
-    setCurrOrderDetailItem("0");
+    setCurrDishId("0");
     
     
     //2. 将之前桌子已点菜品存入SQLite
@@ -107,9 +103,9 @@ public class DishApplication extends Application {
       values.put(DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_COOKIE, orderdetailList.get(i).cookie);
       values.put(DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_WEIGHT, orderdetailList.get(i).weight);
       values.put(DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_STATUS, orderdetailList.get(i).status);
+      values.put(DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_TABLE_NO, orderdetailList.get(i).table_no);
+      writeSession.insert(DishOrderDatabaseHelper.TABLE_ORDERDETAIL, null, values);
     }
-    writeSession.insert(DishOrderDatabaseHelper.TABLE_ORDERDETAIL, null, values);
-    
     writeSession.close();
     orderdetailList.clear();
     
@@ -126,9 +122,11 @@ public class DishApplication extends Application {
                                                  , DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_TASTE
                                                  , DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_COOKIE
                                                  , DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_WEIGHT
-                                                 , DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_STATUS}, 
-                                      "table_no=?", new String[]{currTableNo}, null, null, null);
+                                                 , DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_STATUS
+                                                 , DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_TABLE_NO}, 
+                                                 DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_TABLE_NO + "=?", new String[]{currTableNo}, null, null, null);
     DataItem dataItem = new DataItem();
+    
     while (cursor.moveToNext()) {
       String dish_id = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_DISH_ID));
       String orderlist_id = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_ORDERDETAIL_ORDERLIST_ID));
@@ -144,10 +142,6 @@ public class DishApplication extends Application {
     }
     cursor.close();
     readSession.close();
-  }
-
-  public String getCurrTableNo() {
-    return currTableNo;
   }
   
   

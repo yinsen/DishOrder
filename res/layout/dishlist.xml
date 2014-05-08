@@ -47,19 +47,31 @@
                 android:id="@+id/tableNo"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
+            <Button
+	            android:id="@+id/tableBt"
+	            android:layout_width="wrap_content"
+	            android:layout_height="40dp"
+	            android:layout_gravity="center_vertical"
+	            android:textSize="20sp"
+                android:textStyle="bold"
+                android:background="@drawable/toolbar_normal"/>
+            <!--
             <EditText
                 android:id="@+id/tableedit1"
                 android:layout_width="60dp"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:imeOptions="flagNoExtractUi|actionDone"
                 android:inputType="number"
+                android:maxLength="10"
                 android:ems="3" />
+            -->
         </FrameLayout>
 
         <Button
@@ -80,14 +92,12 @@
     </RelativeLayout>
 
     <!-- label和list -->
-
-    <LinearLayout
+    <LinearLayout android:baselineAligned="false"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="horizontal" >
 
         <!-- label -->
-
         <ListView
             android:id="@+id/labelList"
             android:layout_width="wrap_content"
@@ -99,7 +109,6 @@
         </ListView>
 
         <!-- list -->
-
         <FrameLayout
             android:id="@+id/menuview"
             android:layout_width="fill_parent"
