@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -523,9 +524,9 @@ public class DishListActivity extends Activity {
   private void onMenuWaitorMode() {
     LayoutInflater factory = LayoutInflater.from(this);
     
-    final EditText userInput = (EditText)findViewById(R.id.username_edit);
-    final EditText passwordInput = (EditText)findViewById(R.id.password_edit);
     final View loginView = factory.inflate(R.layout.login, null);
+    final EditText userInput = (EditText)loginView.findViewById(R.id.username_edit);
+    final EditText passwordInput = (EditText)loginView.findViewById(R.id.password_edit);
     new AlertDialog.Builder(this)
         .setTitle(R.string.alert_dialog_text_entry)
         .setView(loginView)
