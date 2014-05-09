@@ -5,9 +5,10 @@
 	>
 
 	
-	<Button
+	<TextView
 	  android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
+      android:layout_height="60dp"
+      android:background="@drawable/labelbg"
 	  android:id="@+id/labelItem"
 	  />
 </LinearLayout>

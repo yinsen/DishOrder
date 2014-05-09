@@ -30,12 +30,14 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     protected static final String TABLE_WAITOR = "waitor";
     // WAITOR TABLES COLUMNS
     public static final String COLUMN_WAITOR_ID = "waitor_id";
+    public static final String COLUMN_WAITOR_PASSWORD = "password";
     public static final String COLUMN_WAITOR_NAME = "name";
     public static final String COLUMN_WAITOR_IMG = "img";
     private static final String CREATE_TABLE_WAITOR = "create table if not exists "
         + TABLE_WAITOR
         + "("+ COLUMN_WAITOR_ID + " TEXT primary key, "
-        + COLUMN_WAITOR_NAME + " TEXT not null ," 
+        + COLUMN_WAITOR_PASSWORD + " TEXT not null, "
+        + COLUMN_WAITOR_NAME + " TEXT not null, " 
         + COLUMN_WAITOR_IMG + " TEXT not null)";
     
     

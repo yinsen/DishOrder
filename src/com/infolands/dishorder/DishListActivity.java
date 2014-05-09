@@ -3,12 +3,12 @@ package com.infolands.dishorder;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +24,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.infolands.dishorder.DishApplication.app_mode;
 
@@ -37,6 +36,8 @@ public class DishListActivity extends Activity {
   private class LabelAdapter extends BaseAdapter {
 
     private ArrayList<DataItem.SubmenuItem> submenuList;
+    public LabelAdapter() {
+    }
     public LabelAdapter(ArrayList<DataItem.SubmenuItem> list) {
       this.submenuList = list;
     }
@@ -64,38 +65,44 @@ public class DishListActivity extends Activity {
         LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = vi.inflate(R.layout.labelitem, null);
       }
-      DataItem.SubmenuItem o = (DataItem.SubmenuItem) submenuList.get(position);
       
+      TextView labelBt = (TextView) v.findViewById(R.id.labelItem);
+      DataItem.SubmenuItem o = (DataItem.SubmenuItem) submenuList.get(position);
       if (o != null) {
-        Button labelBt = (Button) v.findViewById(R.id.labelItem);
+        
         if (labelBt != null) {
           labelBt.setText(o.name);
-          labelBt.getBackground().setAlpha(0);
           handleLabelSelect(labelBt, position);
+          
+          if (o.isFocus)
+            labelBt.setBackgroundResource(R.drawable.background);
+          else
+            labelBt.setBackgroundResource(R.drawable.labelbg);
         }
       }
 
       return v;
     }
 
-    private void handleLabelSelect(final Button labelButton, final int pos) {
+    private void handleLabelSelect(final TextView labelButton, final int pos) {
 
       labelButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
-          //submenuList.get(pos).id;
-          //          if (oldSelectedItem != null) {
-          //            oldSelectedItem.getBackground().setAlpha(0);
-          //          }
-          //          v.setBackgroundColor(Color.LTGRAY);
-          //          oldSelectedItem = v;
-          
           //更新当前子菜单项，同时更新菜品列表
           DishApplication app = (DishApplication)getApplicationContext();
           app.currSubMenu =  submenuList.get(pos).submenu_id;
           
+          for (int i=0; i<app.submenuList.size(); i++) {
+            submenuList.get(i).isFocus = false;
+          }
+          submenuList.get(pos).isFocus = true;
+          
           DishListActivity activity = (DishListActivity)(v.getContext());
-          activity.getCurrDishsData();
+          activity.labelAdapter.notifyDataSetChanged();
+          activity.updateDishListPerSubmenu();
+          //((ViewGroup)(v.getParent())).setBackgroundResource(R.drawable.labelbg);
+          
         }
       });
     }
@@ -105,6 +112,8 @@ public class DishListActivity extends Activity {
 
     private ArrayList<DataItem.DishItem> dishList;
 
+    public DishAdapter() {
+    }
     public DishAdapter(ArrayList<DataItem.DishItem> list) {
       this.dishList = list;
     }
@@ -169,6 +178,8 @@ public class DishListActivity extends Activity {
   public class DishGridAdapter extends BaseAdapter {
     private ArrayList<DataItem.DishItem> dishList;
     
+    public DishGridAdapter() {
+    }
     public DishGridAdapter(ArrayList<DataItem.DishItem> list) {
       this.dishList = list;
     }
@@ -239,28 +250,35 @@ public class DishListActivity extends Activity {
   /**************************** submenuList ************************************
   ********************此变量是否需要一个menu_id作为外键？需要根据数据待确定***************
   *****************************************************************************/
+  private enum DisplayMode {
+    MODE_GRID,
+    MODE_LIST,
+    
+    MODE_NONE
+  }
+  private DisplayMode displayMode=DisplayMode.MODE_GRID;
+  
   private ArrayList<DataItem.SubmenuItem> currSubmenuList = new ArrayList<DataItem.SubmenuItem>();
   private ArrayList<DataItem.DishItem> currDishList = new ArrayList<DataItem.DishItem>();
   
-  private DishAdapter dishAdapter;
-  private LabelAdapter labelAdapter;
+  private DishAdapter dishAdapter = new DishAdapter();
+  private DishGridAdapter dishGridAdapter = new DishGridAdapter();
+  private LabelAdapter labelAdapter = new LabelAdapter();
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.dishlist);
     
+    setTopButtons();
+    
+    initDataList();
   }
   
   @Override
   public void onStart() {
     super.onStart();
     
-    getCurrDishsData();
-    
-    setTopButtons();
-    setlabelAdapter();
-    setDishsAdapter();
   }
   
 
@@ -281,7 +299,22 @@ public class DishListActivity extends Activity {
   }
   
   //获取当前menu对应的submenu、当前menu&submenu对应的dishs
-  private boolean getCurrDishsData(){
+  private void initDataList(){
+    DishApplication app = (DishApplication)getApplicationContext();
+    
+    updateSubmenuListPerMenu();
+
+    //初始化本menu的活动submenu
+    if (currSubmenuList.size()>0) {
+      app.currSubMenu = currSubmenuList.get(0).submenu_id;
+      currSubmenuList.get(0).isFocus = true;
+      updateDishListPerSubmenu();
+    }
+    
+    return;
+  }
+  
+  private void updateSubmenuListPerMenu(){
     DishApplication app = (DishApplication)getApplicationContext();
     //获取当前页面的Submenu List以及Dish List
     if (!currSubmenuList.isEmpty()) currSubmenuList.clear();
@@ -291,49 +324,60 @@ public class DishListActivity extends Activity {
       }
     }
     
-    for (int i=0; i<currSubmenuList.size(); i++) {
-      app.currSubMenu = currSubmenuList.get(i).submenu_id;
-      
-      if (!currDishList.isEmpty()) currDishList.clear();
-      for (int j=0; j<app.dishList.size(); j++) {
-        if (app.dishList.get(j).submenu_id.equalsIgnoreCase(app.currSubMenu)
-          &&app.dishList.get(j).menu_id.equalsIgnoreCase(app.currMenu)) {
-          currDishList.add(app.dishList.get(j));
-        }
-      }
-      
-      //只有当submenu以及此submenu中有dish的时候，才返回true;
-      if (!currDishList.isEmpty())
-        return true;
-    }
-    
-    return false;
-  }
-  private void setDishsAdapter() {
-
-    dishAdapter = new DishAdapter(currDishList);
-
-    //    ScrollView dishScrollView = (ScrollView) findViewById(R.id.dishScrollView);
-    //    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    //    final View dishListLayout = inflater.inflate(R.layout.dishitem, dishScrollView);
-    //    ListView dishListView = (ListView) dishListLayout.findViewById(R.id.dishlist);
-    ListView dishListView = (ListView) findViewById(R.id.dishList);
-    dishListView.setAdapter(dishAdapter);
-    dishListView.setVisibility(View.INVISIBLE);
-    
-    DishGridAdapter dishGridAdapter = new DishGridAdapter(currDishList);
-    GridView dishGridView = (GridView) findViewById(R.id.dishGrid);
-    dishGridView.setAdapter(dishGridAdapter);
-    dishGridView.setVisibility(View.VISIBLE);
-
-  }
-
-  private void setlabelAdapter() {
-    
-    labelAdapter = new LabelAdapter(currSubmenuList);
-
+    labelAdapter.setList(currSubmenuList);
     ListView labelListView = (ListView) findViewById(R.id.labelList);
     labelListView.setAdapter(labelAdapter);
+    
+  }
+  
+  private void updateDishListPerSubmenu(){
+    
+    if (!currDishList.isEmpty()) currDishList.clear();
+    
+    DishApplication app = (DishApplication)getApplicationContext();
+    for (int j=0; j<app.dishList.size(); j++) {
+      if (app.dishList.get(j).submenu_id.equalsIgnoreCase(app.currSubMenu)
+        &&app.dishList.get(j).menu_id.equalsIgnoreCase(app.currMenu)) {
+        currDishList.add(app.dishList.get(j));
+      }
+    }
+    
+    TextView noDishView = (TextView) findViewById(R.id.noDish);
+    
+    ListView dishListView = (ListView) findViewById(R.id.dishList);
+    dishAdapter.setList(currDishList);
+    dishListView.setAdapter(dishAdapter);
+    
+    GridView dishGridView = (GridView) findViewById(R.id.dishGrid);
+    dishGridAdapter.setList(currDishList);
+    dishGridView.setAdapter(dishGridAdapter);
+    
+    if (currDishList.size()<=0) {
+      noDishView.setVisibility(View.VISIBLE);
+      dishListView.setVisibility(View.INVISIBLE);
+      dishGridView.setVisibility(View.INVISIBLE);
+    }
+    else {
+      switch (displayMode){
+        case MODE_GRID:
+          {
+            noDishView.setVisibility(View.INVISIBLE);
+            dishListView.setVisibility(View.INVISIBLE);
+            dishGridView.setVisibility(View.VISIBLE);
+          }
+          break;
+        case MODE_LIST:
+          {
+            noDishView.setVisibility(View.INVISIBLE);
+            dishListView.setVisibility(View.VISIBLE);
+            dishGridView.setVisibility(View.INVISIBLE);
+          }
+          break;
+        default:
+          
+          break;
+      }
+    }
   }
 
   private void setTableNoView(){
@@ -405,14 +449,17 @@ public class DishListActivity extends Activity {
 
       @Override
       public void onClick(View v) {
+        TextView noDishView = (TextView) findViewById(R.id.noDish);
         GridView dishGridView = (GridView) findViewById(R.id.dishGrid);
         ListView dishListView = (ListView) findViewById(R.id.dishList);
         
         if (View.VISIBLE == dishGridView.getVisibility()) {
+          noDishView.setVisibility(View.INVISIBLE);
           dishGridView.setVisibility(View.INVISIBLE);
           dishListView.setVisibility(View.VISIBLE);
         }
         else {
+          noDishView.setVisibility(View.INVISIBLE);
           dishListView.setVisibility(View.INVISIBLE);
           dishGridView.setVisibility(View.VISIBLE);
         }
@@ -474,10 +521,52 @@ public class DishListActivity extends Activity {
   }
   
   private void onMenuWaitorMode() {
-    DishApplication app = (DishApplication)getApplicationContext();
-    app.currMode = app_mode.MODE_WAITOR;
+    LayoutInflater factory = LayoutInflater.from(this);
     
-    setTableNoView();
+    final EditText userInput = (EditText)findViewById(R.id.username_edit);
+    final EditText passwordInput = (EditText)findViewById(R.id.password_edit);
+    final View loginView = factory.inflate(R.layout.login, null);
+    new AlertDialog.Builder(this)
+        .setTitle(R.string.alert_dialog_text_entry)
+        .setView(loginView)
+        .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+              
+              DishApplication app = (DishApplication)getApplicationContext();
+              int i=0;
+              for(; i<app.waitorList.size(); i++){
+                String user = userInput.getText().toString().trim();
+                String pwd = passwordInput.getText().toString().trim();
+                
+                if( user !=null && user.equals(app.waitorList.get(i).waitor_id)
+                 && pwd !=null && pwd.equals(app.waitorList.get(i).password)){
+                  
+                  app.currMode = app_mode.MODE_WAITOR;
+                  setTableNoView();
+                  
+                  break;
+                }
+                else {
+                  
+                }
+              }
+              
+              if ( i >= app.waitorList.size()){
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_error), Toast.LENGTH_LONG).show();
+              }
+                /* User clicked OK so do some stuff */
+            }
+        })
+        .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                /* User clicked cancel so do some stuff */
+            }
+        })
+        .create()
+        .show();
+    
+    
   }
   
   private void onMenuCustomerMode(){

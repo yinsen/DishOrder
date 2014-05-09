@@ -20,13 +20,15 @@ public class DataItem {
   public class WaitorItem {
 
     public String waitor_id;
+    public String password;
     public String name;
     public String img;
 
     public WaitorItem() {
     }
-    public WaitorItem(String no, String n, String imgPath) {
+    public WaitorItem(String no, String pwd, String n, String imgPath) {
       waitor_id = no;
+      password = pwd;
       name = n;
       img = imgPath;
     }
@@ -37,6 +39,8 @@ public class DataItem {
     public String menu_id;
     public String name;
     public String img;
+    
+    public boolean isFocus = false;//用于标识本item是否显示为高亮
 
     public MenuItem() {
     }
@@ -53,6 +57,8 @@ public class DataItem {
     public String name;
     public String menu_id;
     public String img;
+    
+    public boolean isFocus = false;//用于标识本item是否显示为高亮
 
     public SubmenuItem() {
     }
@@ -72,6 +78,8 @@ public class DataItem {
     public String img;
     public String submenu_id;
     public String menu_id;
+    
+    public boolean isFocus = false;//用于标识本item是否显示为高亮
 
     public DishItem() {
     }

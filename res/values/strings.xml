@@ -12,7 +12,8 @@
     <string name="viewstyle">View Style</string>
     <string name="ordereddetail">Ordered Detail</string>
     <string name="enter">Enter</string>
-    
+    <string name="nodish">No dish</string>
+     
     <string name="kouwei">kouwei</string>
     <string name="qingdan">qingdan</string>
     <string name="weila">weila</string>
@@ -59,4 +60,12 @@
     <string name="updatecharsdata">Updata chars</string>
     <string name="updateimgdata">update imgs</string>
     <string name="download">Download</string>
+    
+    <string name="login">Login</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="alert_dialog_text_entry">Waitor Login</string>
+    <string name="alert_dialog_username">Username</string>
+    <string name="alert_dialog_password">Password</string>
+    <string name="login_error">Login Fail</string>
 </resources>

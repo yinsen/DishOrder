@@ -145,10 +145,14 @@ public class DishApplication extends Application {
   }
   
   
-  private void createTestTables() {
+  private void insertTestValuesToTables() {
     DishOrderDatabaseHelper dbHelper = new DishOrderDatabaseHelper(this);
-    
     SQLiteDatabase writeSession = dbHelper.getWritableDatabase();
+    
+    //========================== for test================================
+    //    writeSession.execSQL("drop table " + DishOrderDatabaseHelper.TABLE_WAITOR);
+    //========================== for test================================
+    
     // 向该对象中插入键值对，其中键是列名，值是希望插入到这一列的值，值必须和数据库当中的数据类型一致 
     ContentValues values = new ContentValues();
 
@@ -163,7 +167,8 @@ public class DishApplication extends Application {
     writeSession.delete(DishOrderDatabaseHelper.TABLE_WAITOR, null, null);
     for (int i = 0; i < 10; i++) {
       values.clear();
-      values.put(DishOrderDatabaseHelper.COLUMN_WAITOR_ID, "waitor_id_" + i + 1);
+      values.put(DishOrderDatabaseHelper.COLUMN_WAITOR_ID, "waitor" + i + 1);
+      values.put(DishOrderDatabaseHelper.COLUMN_WAITOR_PASSWORD, "123");
       values.put(DishOrderDatabaseHelper.COLUMN_WAITOR_NAME, "waitor_name_" + i + 1);
       values.put(DishOrderDatabaseHelper.COLUMN_WAITOR_IMG, "img_path_" + i + 1);
       writeSession.insert(DishOrderDatabaseHelper.TABLE_WAITOR, null, values);
@@ -265,13 +270,15 @@ public class DishApplication extends Application {
     cursor.close();
     
     cursor = readSession.query(DishOrderDatabaseHelper.TABLE_WAITOR, new String[]{DishOrderDatabaseHelper.COLUMN_WAITOR_ID
+                                                                                , DishOrderDatabaseHelper.COLUMN_WAITOR_PASSWORD
                                                                                 , DishOrderDatabaseHelper.COLUMN_WAITOR_NAME
                                                                                 , DishOrderDatabaseHelper.COLUMN_WAITOR_IMG}, "", null, null, null, null);
     while (cursor.moveToNext()) {
       String id = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_WAITOR_ID));
+      String password = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_WAITOR_PASSWORD));
       String name = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_WAITOR_NAME));
       String img = cursor.getString(cursor.getColumnIndex(DishOrderDatabaseHelper.COLUMN_WAITOR_IMG));
-      DataItem.WaitorItem waitorItem =  dataItem.new WaitorItem(id, name, img);
+      DataItem.WaitorItem waitorItem =  dataItem.new WaitorItem(id, password, name, img);
       waitorList.add(waitorItem);
     }
     cursor.close();
@@ -335,16 +342,17 @@ public class DishApplication extends Application {
     cursor.close();
     readSession.close();
   }
+  
   @Override
   public void onCreate() {
-
-    createTestTables();
+  //！！！！下面两行需要移到 数据更新 的处理流程中去！！！！！
+    insertTestValuesToTables();
     initDataSet();
+
   }
   
   public void updateDateDisplay() {
     
-
   }
 
 //  public ArrayList<DataItem.DishItem> getDishList() {

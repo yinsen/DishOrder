@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text=""/>
-        
+            android:text="" />
+
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,13 +52,13 @@
                 android:textStyle="bold" />
 
             <Button
-	            android:id="@+id/tableBt"
-	            android:layout_width="wrap_content"
-	            android:layout_height="40dp"
-	            android:layout_gravity="center_vertical"
-	            android:textSize="20sp"
-                android:textStyle="bold"
-                android:background="@drawable/toolbar_normal"/>
+                android:id="@+id/tableBt"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/toolbar_normal"
+                android:textSize="20sp"
+                android:textStyle="bold" />
             <!--
             <EditText
                 android:id="@+id/tableedit1"
@@ -92,36 +92,51 @@
     </RelativeLayout>
 
     <!-- label和list -->
-    <LinearLayout android:baselineAligned="false"
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:baselineAligned="false"
         android:orientation="horizontal" >
 
         <!-- label -->
+
         <ListView
             android:id="@+id/labelList"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="5"
-            android:background="@drawable/labelbg"
             android:cacheColorHint="@android:color/transparent"
-            android:minHeight="40dip" >
+            android:listSelector="@drawable/list_selector"
+            android:minHeight="60dip" >
         </ListView>
 
         <!-- list -->
+
         <FrameLayout
             android:id="@+id/menuview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1" >
 
-            <ListView
-                android:id="@+id/dishList"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/noDish"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="@drawable/background"
                 android:cacheColorHint="@android:color/transparent"
-                android:minHeight="40dip" >
+                android:text="@string/nodish"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+            
+            <ListView
+                android:id="@+id/dishList"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/background"
+                android:cacheColorHint="@android:color/transparent"
+                android:visibility="invisible" >
             </ListView>
 
             <GridView
@@ -136,7 +151,8 @@
                 android:numColumns="auto_fit"
                 android:padding="10dp"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="10dp" >
+                android:verticalSpacing="10dp"
+                android:visibility="invisible" >
             </GridView>
         </FrameLayout>
     </LinearLayout>

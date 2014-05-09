@@ -12,6 +12,7 @@
     <string name="viewstyle">视图切换</string>
     <string name="ordereddetail">已点菜单</string>
     <string name="enter">进入</string>
+    <string name="nodish">无菜品</string>
     
     <string name="kouwei">口味</string>
     <string name="qingdan">清淡</string>
@@ -60,4 +61,11 @@
     <string name="updateimgdata">下传菜品图片</string>
     <string name="download">下载</string>
     
+    <string name="login">登录</string>
+    <string name="alert_dialog_ok">确定</string>
+    <string name="alert_dialog_cancel">取消</string>
+    <string name="alert_dialog_text_entry">服务员登录</string>
+    <string name="alert_dialog_username">用户名</string>
+    <string name="alert_dialog_password">密码</string>
+    <string name="login_error">用户名或密码错误</string>
 </resources>
