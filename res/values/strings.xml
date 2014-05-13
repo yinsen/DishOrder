@@ -54,6 +54,11 @@
     <string name="searchhint">Input dish name</string>
     
     <string name="orderok">Order OK</string>
+    <string name="orderconfirmedok">Order confirmed</string>
+    <string name="statusunconfirmed">Unconfirmed</string>
+    <string name="statusconfirmed">Confirmed</string>
+    <string name="statuspayed">Payed</string>
+    <string name="noorderitem">No ordered</string>
     <string name="tableno">Table No:</string>
     <string name="updatedata">Data update</string>
     

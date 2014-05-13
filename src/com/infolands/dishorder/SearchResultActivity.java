@@ -42,6 +42,12 @@ public class SearchResultActivity extends Activity {
           results.values = dishSearchList;
           results.count = dishSearchList.size();
         }
+        else {
+          DishApplication app = (DishApplication) getApplicationContext();
+          for (int i = 0; i < app.dishList.size(); i++) {
+              dishSearchList.add(app.dishList.get(i));
+          }
+        }
 
         return results;
       }

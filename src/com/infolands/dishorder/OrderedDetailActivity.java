@@ -2,6 +2,8 @@ package com.infolands.dishorder;
 
 import java.util.ArrayList;
 
+import com.infolands.dishorder.DishApplication.app_mode;
+
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
@@ -16,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class OrderedDetailActivity extends Activity {
 
@@ -185,7 +188,7 @@ public class OrderedDetailActivity extends Activity {
 
     setContentView(R.layout.ordereddetaillist);
 
-    setTopButtons();
+    initTopButtons();
   }
 
 
@@ -234,11 +237,28 @@ public class OrderedDetailActivity extends Activity {
     dishListView.setAdapter(detailAdapter);
   }
 
-  private void setTopButtons() {
-    
-    TextView tableno = (TextView) findViewById(R.id.detailtableno);
-    tableno.setText(getResources().getString(R.string.tableno) + ((DishApplication)getApplicationContext()).getCurrTableNo());
-    tableno.setOnClickListener(new View.OnClickListener() {
+  private String statusStr = "";
+  private void initTopButtons() {
+    if (((DishApplication)getApplicationContext()).orderlistList.size()<=0){
+      statusStr = "";
+    }
+    else if (((DishApplication)getApplicationContext()).STATUS_UNCONFIRMED.equals(
+        ((DishApplication)getApplicationContext()).orderlistList.get(0).status)){
+      statusStr = getResources().getString(R.string.statusunconfirmed);
+    }
+    else if (((DishApplication)getApplicationContext()).STATUS_CONFIRMED.equals(
+        ((DishApplication)getApplicationContext()).orderlistList.get(0).status)){
+      statusStr = getResources().getString(R.string.statusconfirmed);
+    }
+    else if (((DishApplication)getApplicationContext()).STATUS_PAYED.equals(
+        ((DishApplication)getApplicationContext()).orderlistList.get(0).status)){
+      statusStr = getResources().getString(R.string.statuspayed);
+    }
+    TextView tableText = (TextView) findViewById(R.id.detailtableno);
+    tableText.setText(getResources().getString(R.string.tableno) 
+                                            + ((DishApplication)getApplicationContext()).getCurrTableNo()
+                                            + "(" + statusStr + ")");
+    tableText.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View v) {
@@ -266,13 +286,44 @@ public class OrderedDetailActivity extends Activity {
       }
     });
 
-
     Button okBtn = (Button) findViewById(R.id.okBt);
+    if (app_mode.MODE_WAITOR == ((DishApplication)getApplicationContext()).currMode) {
+      okBtn.setVisibility(View.VISIBLE);
+    }
+    else {
+      okBtn.setVisibility(View.INVISIBLE);
+    }
     okBtn.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View v) {
-
+        if (((DishApplication)getApplicationContext()).orderlistList.size()<=0){
+          Toast.makeText(getApplicationContext(), getResources().getString(R.string.noorderitem), Toast.LENGTH_LONG).show();
+        }
+        else {
+          ((DishApplication)getApplicationContext()).orderlistList.get(0).status = DishApplication.STATUS_CONFIRMED;
+          
+  //        for (int i=0; i<((DishApplication)getApplicationContext()).orderdetailList.size(); i++){
+  //          ((DishApplication)getApplicationContext()).orderdetailList.get(i).status = DishApplication.STATUS_CONFIRMED;
+  //        }
+          
+          ((DishApplication)getApplicationContext()).saveOrderedData();
+          
+          Toast.makeText(getApplicationContext(), getResources().getString(R.string.orderconfirmedok), Toast.LENGTH_LONG).show();
+          
+          if (((DishApplication)getApplicationContext()).STATUS_UNCONFIRMED.equals(
+              ((DishApplication)getApplicationContext()).orderlistList.get(0).status)){
+            statusStr = getResources().getString(R.string.statusconfirmed);
+          }
+          else if (((DishApplication)getApplicationContext()).STATUS_CONFIRMED.equals(
+              ((DishApplication)getApplicationContext()).orderlistList.get(0).status)) {
+            statusStr = getResources().getString(R.string.statuspayed);
+          }
+          TextView tableText = (TextView) findViewById(R.id.detailtableno);
+          tableText.setText(getResources().getString(R.string.tableno) 
+                                                  + ((DishApplication)getApplicationContext()).getCurrTableNo()
+                                                  + "(" + statusStr + ")");
+        }
       }
     });
   }

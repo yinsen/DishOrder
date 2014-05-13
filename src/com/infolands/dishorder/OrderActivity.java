@@ -16,7 +16,6 @@ import android.widget.Button;
 
 public class OrderActivity extends Activity {
     
-  private String orderlist_id = "";
   private String mixture_id = "1";
   private int dish_num = 1;
   private String taste = "taste";
@@ -75,7 +74,7 @@ public class OrderActivity extends Activity {
         
     }
 
-    //修改用于插入新点菜品到已点列表，这里只放入List，菜点好了，下单时再存数据库
+    //修改用于插入新点菜品到已点菜品列表，并更新已点菜单数据结构。这里只放入List，菜点好了，下单时再存数据库
     public void OrderOneDish() {
       DataItem dataItem = new DataItem();
       String tableno = ((DishApplication)getApplicationContext()).getCurrTableNo();
@@ -83,16 +82,31 @@ public class OrderActivity extends Activity {
       
       //生成或得到OrderListId
       String orderlistid = "";
-      if (((DishApplication)getApplicationContext()).orderdetailList.size() > 0) {
-        orderlistid = ((DishApplication)getApplicationContext()).orderdetailList.get(0).orderlist_id;
+      if (((DishApplication)getApplicationContext()).orderlistList.size() > 0) {
+        orderlistid = ((DishApplication)getApplicationContext()).orderlistList.get(0).orderlist_id;
       }
       else {
         orderlistid = tableno + "_" + Long.toString(System.currentTimeMillis());
       }
-      
-      DataItem.OrderDetailItem detailItem = dataItem.new OrderDetailItem(dish_id, orderlistid, mixture_id, taste, cookie, weight
-                                                                         , DataItem.OrderDetailItem.STATUS_UNCONFIRMED, tableno, dish_num);
+      DataItem.OrderDetailItem detailItem = dataItem.new OrderDetailItem(dish_id, orderlistid, mixture_id, taste, cookie, weight,dish_num);
       ((DishApplication)getApplicationContext()).orderdetailList.add(detailItem);
+      
+      //计算总价
+      int total_price = 0;
+      if (((DishApplication)getApplicationContext()).orderlistList.size() > 0) {
+        total_price = Integer.parseInt(((DishApplication)getApplicationContext()).orderlistList.get(0).total_price);
+      }
+      for (int j=0; j<((DishApplication)getApplicationContext()).dishList.size(); j++) {
+        if (dish_id != null && dish_id.equals(((DishApplication)getApplicationContext()).dishList.get(j).dish_id)) {
+          total_price += Integer.parseInt(((DishApplication)getApplicationContext()).dishList.get(j).price);
+          break;
+        }
+      }
+      DataItem.OrderListItem listItem = dataItem.new OrderListItem(orderlistid, tableno, Integer.toString(total_price)
+                                                                  , ((DishApplication)getApplicationContext()).currWaitorId
+                                                                  , ((DishApplication)getApplicationContext()).STATUS_UNCONFIRMED);
+      ((DishApplication)getApplicationContext()).orderlistList.clear();
+      ((DishApplication)getApplicationContext()).orderlistList.add(listItem);
     }
   
 }

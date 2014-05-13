@@ -9,6 +9,7 @@
 	        android:layout_width="fill_parent"  
 	        android:layout_height="wrap_content"  
 	        android:layout_alignParentTop="true"  
+	        android:imeOptions="flagNoExtractUi"
 	        android:drawableLeft="@android:drawable/ic_menu_search"  
 	        android:hint="Search"  
 	        android:singleLine="true"/>  

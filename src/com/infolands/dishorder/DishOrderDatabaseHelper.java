@@ -111,12 +111,14 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ORDERLIST_TOTAL_PRICE = "total_price";
     public static final String COLUMN_ORDERLIST_WAITOR_ID = "waitor_id";
     public static final String COLUMN_ORDERLIST_TABLE_NO = "table_no";
+    public static final String COLUMN_ORDERLIST_STATUS = "status";
     private static final String CREATE_TABLE_ORDERLIST = "create table if not exists "
         + TABLE_ORDERLIST
         + "("+ COLUMN_ORDERLIST_ID + " TEXT primary key, "
         + COLUMN_ORDERLIST_TOTAL_PRICE + " integer not null ,"
         + COLUMN_ORDERLIST_WAITOR_ID + " TEXT not null ,"
         + COLUMN_ORDERLIST_TABLE_NO + " TEXT not null ,"
+        + COLUMN_ORDERLIST_STATUS + " TEXT not null ,"
         + "FOREIGN KEY (" +COLUMN_ORDERLIST_WAITOR_ID +") REFERENCES TABLE_WAITOR (COLUMN_WAITOR_ID))";
 
     // ORDERDETAIL TABLES
@@ -129,8 +131,12 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ORDERDETAIL_TASTE = "taste";
     public static final String COLUMN_ORDERDETAIL_COOKIE = "cookie";
     public static final String COLUMN_ORDERDETAIL_WEIGHT = "weight";
-    public static final String COLUMN_ORDERDETAIL_TABLE_NO = "table_no";
-    public static final String COLUMN_ORDERDETAIL_STATUS = "status";
+    /*========以下4项本应为orderlist表的属性，先放在这里作为冗余数据存储，主要是简化程序逻辑，将来最好优化这里的设计====*/
+//    public static final String COLUMN_ORDERDETAIL_TABLE_NO = "table_no";
+//    public static final String COLUMN_ORDERDETAIL_WAITOR_ID = "waitor_id";
+//    public static final String COLUMN_ORDERDETAIL_TOTAL_PRICE = "total_price";
+//    public static final String COLUMN_ORDERDETAIL_STATUS = "status";
+    /*========以上4项本应为orderlist表的属性，先放在这里作为冗余数据存储，主要是简化程序逻辑，将来最好优化这里的设计====*/
     private static final String CREATE_TABLE_ORDERDETAIL = "create table if not exists "
         + TABLE_ORDERDETAIL
         + "("+ COLUMN_ORDERDETAIL_DISH_ID + " TEXT not null , "
@@ -139,8 +145,10 @@ class DishOrderDatabaseHelper extends SQLiteOpenHelper {
         + COLUMN_ORDERDETAIL_WEIGHT + " TEXT ,"
         + COLUMN_ORDERDETAIL_TASTE + " TEXT ," 
         + COLUMN_ORDERDETAIL_COOKIE + " TEXT ,"
-        + COLUMN_ORDERDETAIL_TABLE_NO + " TEXT ,"
-        + COLUMN_ORDERDETAIL_STATUS + " TEXT ,"
+//        + COLUMN_ORDERDETAIL_TABLE_NO + " TEXT ,"
+//        + COLUMN_ORDERDETAIL_WAITOR_ID + " TEXT ,"
+//        + COLUMN_ORDERDETAIL_TOTAL_PRICE + " TEXT ,"
+//        + COLUMN_ORDERDETAIL_STATUS + " TEXT ,"
         + COLUMN_ORDERDETAIL_DISHNUM + " integer not null ,"
         + "primary key (" + COLUMN_ORDERDETAIL_DISH_ID + "," + COLUMN_ORDERDETAIL_ORDERLIST_ID +"), " 
         + "FOREIGN KEY (" +COLUMN_ORDERDETAIL_DISH_ID+ ") REFERENCES TABLE_DISH (COLUMN_DISH_ID) ,"

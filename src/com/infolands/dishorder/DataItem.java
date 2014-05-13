@@ -118,23 +118,21 @@ public class DataItem {
     public String waitor_id;
     public String total_price;
     public String table_no;
+    public String status;
 
     public OrderListItem() {
     }
     
-    public OrderListItem(String no, String tableno, String totalprice, String wid) {
+    public OrderListItem(String no, String tableno, String totalprice, String wid, String st) {
       orderlist_id = no;
       table_no = tableno;
       total_price = totalprice;
       waitor_id = wid;
+      status = st;
     }
   }
   
   public class OrderDetailItem {
-
-    public static final String STATUS_UNCONFIRMED = "unconfirmed";
-    public static final String STATUS_CONFIRMED = "confirmed";
-    public static final String STATUS_PAYED = "payed";
     
     public String dish_id;
     public String orderlist_id;
@@ -143,22 +141,36 @@ public class DataItem {
     public String taste;
     public String cookie;
     public String weight;
-    public String status;
-    public String table_no;
+//    public String status;
+//    public String table_no;
+//    public String waitor_id;
+//    public String total_price;
 
     public OrderDetailItem() {
     }
     
-    public OrderDetailItem(String dishid, String orderlistid, String mixtureid, String t, String c, String w, String st, String tableno, int dishnum) {
+    public OrderDetailItem(String dishid, String orderlistid, String mixtureid, String t, String c, String w, int dishnum) {
       dish_id = dishid;
       orderlist_id = orderlistid;
       mixture_id = mixtureid;
       taste = t;
       cookie = c;
       weight = w;
-      status = st;
-      table_no = tableno;
       dish_num = dishnum;
     }
+    
+//    public OrderDetailItem(String dishid, String orderlistid, String mixtureid, String t, String c, String w, String st, String tableno, String totalprice, String wid, int dishnum) {
+//      dish_id = dishid;
+//      orderlist_id = orderlistid;
+//      mixture_id = mixtureid;
+//      taste = t;
+//      cookie = c;
+//      weight = w;
+//      status = st;
+//      table_no = tableno;
+//      total_price = totalprice;
+//      waitor_id = wid;
+//      dish_num = dishnum;
+//    }
   }
 }
