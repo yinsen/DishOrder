@@ -6,8 +6,7 @@
 	<TextView
 	    android:id="@+id/menuBt"
 	    android:layout_width="120dp"
-	    android:layout_height="80dp"
-	    android:background="@drawable/d2" />
+	    android:layout_height="80dp"/>
 	
 </LinearLayout>
 

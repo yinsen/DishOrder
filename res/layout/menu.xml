@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/menu"
-	android:orientation="vertical"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-		android:background="@drawable/mainbackground">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/mainbackground"
+    android:orientation="vertical" >
 
-	<LinearLayout android:id="@+id/lang"
-		android:orientation="vertical"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-    <Button android:id="@+id/languageBt"
-				    android:layout_width="wrap_content"
-				    android:layout_height="40dp"
-				    android:text="@string/language"
-			        android:textSize="30sp"
-			        android:textStyle="bold"
-			        android:layout_gravity="right|center"
-				    android:background="@drawable/button_normal"/>
-	</LinearLayout>	
-	
-	<GridView
-				    android:id="@+id/menuGrid"
-					android:layout_width="fill_parent" 
-					android:layout_height="fill_parent"
-				    android:padding="1dp"
-				    android:verticalSpacing="1dp"
-				    android:horizontalSpacing="1dp"
-				    android:numColumns="auto_fit"
-				    android:columnWidth="120dp"
-				    android:stretchMode="columnWidth"
-				    android:gravity="center"
-					android:cacheColorHint="@android:color/transparent">
-				    
-				</GridView>
+    <LinearLayout
+        android:id="@+id/lang"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-</LinearLayout>	
+        <Button
+            android:id="@+id/languageBt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="right|center"
+            android:background="@drawable/button_normal"
+            android:text="@string/language"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/menuGrid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:columnWidth="120dp"
+        android:gravity="center"
+        android:horizontalSpacing="1dp"
+        android:numColumns="auto_fit"
+        android:padding="1dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="1dp" >
+    </GridView>
+
+</LinearLayout>

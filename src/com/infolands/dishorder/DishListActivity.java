@@ -148,7 +148,7 @@ public class DishListActivity extends Activity {
         TextView priceView = (TextView) v.findViewById(R.id.dishPrice);
         if (nameView != null) {
           nameView.setText(o.name);
-          priceView.setText(o.price);
+          priceView.setText("(" + o.price + getResources().getString(R.string.pricestr) + ")");
         }
         Button orderBt = (Button) v.findViewById(R.id.dishOrder);
         if (orderBt != null) {
@@ -167,6 +167,9 @@ public class DishListActivity extends Activity {
           ((DishApplication)getApplicationContext()).currDishId = dishItem.dish_id;
           try {
             Intent intent = new Intent(DishListActivity.this,OrderActivity.class);  
+            Bundle bundle = new Bundle();
+            bundle.putString("dishname", dishItem.name);  
+            intent.putExtra("dishname", bundle); 
             startActivityForResult(intent, REQUEST_CODE_BIG_IMG); 
           } catch (Exception e) {
             e.printStackTrace();
@@ -216,7 +219,7 @@ public class DishListActivity extends Activity {
         TextView priceView = (TextView) v.findViewById(R.id.dishPrice);
         if (nameView != null) {
           nameView.setText(o.name);
-          priceView.setText(o.price);
+          priceView.setText("(" + o.price + getResources().getString(R.string.pricestr) + ")");
         }
         ImageView orderBt = (ImageView) v.findViewById(R.id.dishImgOrder);
         if (orderBt != null) {
@@ -238,7 +241,10 @@ public class DishListActivity extends Activity {
         public void onClick(View v) {
           ((DishApplication)getApplicationContext()).currDishId = dishItem.dish_id;
           try {
-            Intent intent = new Intent(DishListActivity.this,OrderActivity.class);  
+            Intent intent = new Intent(DishListActivity.this,OrderActivity.class); 
+            Bundle bundle = new Bundle();
+            bundle.putString("dishname", dishItem.name);  
+            intent.putExtra("dishname", bundle); 
             startActivityForResult(intent, REQUEST_CODE_BIG_IMG); 
           } catch (Exception e) {
             e.printStackTrace();

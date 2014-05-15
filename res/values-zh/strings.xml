@@ -13,6 +13,7 @@
     <string name="ordereddetail">已点菜单</string>
     <string name="enter">进入</string>
     <string name="nodish">无菜品</string>
+    <string name="pricestr">元/例</string>
     
     <string name="kouwei">口味</string>
     <string name="qingdan">清淡</string>
@@ -34,8 +35,13 @@
     <string name="numberdish">份数</string>
     <string name="orderdish">点菜</string>
     
-    <string name="dishdetail">青椒豆干炒肉片，青椒微辣，豆干劲道，肉片嫩滑，色泽清爽，清香宜人</string>
+    <string name="mixture">配料</string>
+    <string name="mix1">高级清汤</string>
+    <string name="mix2">鸡蛋</string>
+    <string name="mix0">其它</string>
+    <string name="dishdetail">简介：\n青椒豆干炒肉片，青椒微辣，豆干劲道，肉片嫩滑，色泽清爽，清香宜人</string>
     <string name="example_name">青椒炒肉片</string>
+    
     
     <string name="no">序号</string>
     <string name="dishname">菜名</string>
@@ -53,8 +59,10 @@
     <string name="dishsearch">菜品查询</string>
     <string name="searchhint">请输入菜名</string>
     
-    <string name="orderok">下单</string>
+    <string name="orderok">点击下单</string>
+    <string name="payedok">点击结帐</string>
     <string name="orderconfirmedok">下单成功</string>
+    <string name="orderpayedok">结帐成功</string>
     <string name="statusunconfirmed">未下单</string>
     <string name="statusconfirmed">已下单</string>
     <string name="statuspayed">已结帐</string>

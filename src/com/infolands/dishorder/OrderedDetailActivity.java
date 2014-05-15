@@ -238,6 +238,7 @@ public class OrderedDetailActivity extends Activity {
   }
 
   private String statusStr = "";
+  private String clickStr = "";
   private void initTopButtons() {
     if (((DishApplication)getApplicationContext()).orderlistList.size()<=0){
       statusStr = "";
@@ -245,10 +246,12 @@ public class OrderedDetailActivity extends Activity {
     else if (((DishApplication)getApplicationContext()).STATUS_UNCONFIRMED.equals(
         ((DishApplication)getApplicationContext()).orderlistList.get(0).status)){
       statusStr = getResources().getString(R.string.statusunconfirmed);
+      clickStr = getResources().getString(R.string.orderok);
     }
     else if (((DishApplication)getApplicationContext()).STATUS_CONFIRMED.equals(
         ((DishApplication)getApplicationContext()).orderlistList.get(0).status)){
       statusStr = getResources().getString(R.string.statusconfirmed);
+      clickStr = getResources().getString(R.string.payedok);
     }
     else if (((DishApplication)getApplicationContext()).STATUS_PAYED.equals(
         ((DishApplication)getApplicationContext()).orderlistList.get(0).status)){
@@ -286,8 +289,9 @@ public class OrderedDetailActivity extends Activity {
       }
     });
 
-    Button okBtn = (Button) findViewById(R.id.okBt);
+    final Button okBtn = (Button) findViewById(R.id.okBt);
     if (app_mode.MODE_WAITOR == ((DishApplication)getApplicationContext()).currMode) {
+      okBtn.setText(clickStr);
       okBtn.setVisibility(View.VISIBLE);
     }
     else {
@@ -301,23 +305,30 @@ public class OrderedDetailActivity extends Activity {
           Toast.makeText(getApplicationContext(), getResources().getString(R.string.noorderitem), Toast.LENGTH_LONG).show();
         }
         else {
-          ((DishApplication)getApplicationContext()).orderlistList.get(0).status = DishApplication.STATUS_CONFIRMED;
-          
   //        for (int i=0; i<((DishApplication)getApplicationContext()).orderdetailList.size(); i++){
   //          ((DishApplication)getApplicationContext()).orderdetailList.get(i).status = DishApplication.STATUS_CONFIRMED;
   //        }
           
-          ((DishApplication)getApplicationContext()).saveOrderedData();
-          
-          Toast.makeText(getApplicationContext(), getResources().getString(R.string.orderconfirmedok), Toast.LENGTH_LONG).show();
-          
-          if (((DishApplication)getApplicationContext()).STATUS_UNCONFIRMED.equals(
+          if (DishApplication.STATUS_UNCONFIRMED.equals(
               ((DishApplication)getApplicationContext()).orderlistList.get(0).status)){
+            ((DishApplication)getApplicationContext()).saveOrderedData();
+            ((DishApplication)getApplicationContext()).orderlistList.get(0).status = DishApplication.STATUS_CONFIRMED;
             statusStr = getResources().getString(R.string.statusconfirmed);
+            clickStr = getResources().getString(R.string.payedok);
+            okBtn.setText(clickStr);
+            
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.orderconfirmedok), Toast.LENGTH_LONG).show();
           }
-          else if (((DishApplication)getApplicationContext()).STATUS_CONFIRMED.equals(
+          else if (DishApplication.STATUS_CONFIRMED.equals(
               ((DishApplication)getApplicationContext()).orderlistList.get(0).status)) {
+            //====================================================//
+            //============== 此处需要增加结帐后上传到服务器的代码 =======//
+            //====================================================//
+            ((DishApplication)getApplicationContext()).orderlistList.get(0).status = DishApplication.STATUS_PAYED;
             statusStr = getResources().getString(R.string.statuspayed);
+            okBtn.setVisibility(View.INVISIBLE);
+            
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.orderpayedok), Toast.LENGTH_LONG).show();
           }
           TextView tableText = (TextView) findViewById(R.id.detailtableno);
           tableText.setText(getResources().getString(R.string.tableno) 

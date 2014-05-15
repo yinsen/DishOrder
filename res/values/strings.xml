@@ -13,6 +13,7 @@
     <string name="ordereddetail">Ordered Detail</string>
     <string name="enter">Enter</string>
     <string name="nodish">No dish</string>
+    <string name="pricestr">Yuan</string>
      
     <string name="kouwei">kouwei</string>
     <string name="qingdan">qingdan</string>
@@ -34,8 +35,13 @@
     <string name="numberdish">number</string>
     <string name="orderdish">OK</string>
     
+    <string name="mixture">Mixture</string>
+    <string name="mix1">Senior</string>
+    <string name="mix2">Egg</string>
+    <string name="mix0">Other</string>
     <string name="dishdetail">A very nice dish</string>
     <string name="example_name">example name</string>
+    
     
     <string name="no">No</string>
     <string name="dishname">Dish Name</string>
@@ -54,10 +60,12 @@
     <string name="searchhint">Input dish name</string>
     
     <string name="orderok">Order OK</string>
+    <string name="payedok">Click to Pay</string>
     <string name="orderconfirmedok">Order confirmed</string>
+    <string name="orderpayedok">Paid OK</string>
     <string name="statusunconfirmed">Unconfirmed</string>
     <string name="statusconfirmed">Confirmed</string>
-    <string name="statuspayed">Payed</string>
+    <string name="statuspayed">Paid</string>
     <string name="noorderitem">No ordered</string>
     <string name="tableno">Table No:</string>
     <string name="updatedata">Data update</string>

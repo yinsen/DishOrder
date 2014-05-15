@@ -252,32 +252,48 @@ public class DishApplication extends Application {
       values.clear();
       values.put(DishOrderDatabaseHelper.COLUMN_MENU_ID, "menu_id_1"+i);
       values.put(DishOrderDatabaseHelper.COLUMN_MENU_NAME, "menu_name_1"+i);
-      values.put(DishOrderDatabaseHelper.COLUMN_MENU_IMG, "d3");
+      values.put(DishOrderDatabaseHelper.COLUMN_MENU_IMG, "d2");
       writeSession.insert(DishOrderDatabaseHelper.TABLE_MENU, null, values);
     }
     
+    String submenu[]={"川府风味", "酒水", "广东风味", "精品美食", "养生炖汤","时尚凉菜","特色小吃","鲜美热菜","中餐","主食","新品推荐"};
     writeSession.delete(DishOrderDatabaseHelper.TABLE_SUBMENU, null, null);
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
       values.clear();
-      values.put(DishOrderDatabaseHelper.COLUMN_SUBMENU_ID, "submenu_id_" + i + 1);
-      values.put(DishOrderDatabaseHelper.COLUMN_SUBMENU_NAME, "submenu_name_" + i + 1);
+      values.put(DishOrderDatabaseHelper.COLUMN_SUBMENU_ID, "" + i);
+      values.put(DishOrderDatabaseHelper.COLUMN_SUBMENU_NAME, submenu[i]);
       values.put(DishOrderDatabaseHelper.COLUMN_SUBMENU_MENU_ID, "menu_id_11");
       values.put(DishOrderDatabaseHelper.COLUMN_SUBMENU_IMG, "img_path_" + i + 1);
       writeSession.insert(DishOrderDatabaseHelper.TABLE_SUBMENU, null, values);
     }
     
+    String Dish_chuanfu[]={
+        "天府印象","硕果累累","牛油果茴香鹅肝","阳光藿香鲶鱼","河帮仔姜田鸡","生嗜排骨煲","天府水煮鱼","干烧野生大黄鱼","小炒黑山羊"
+        //,"干捞水晶粉","青花椒牛蛙","清炒河虾仁","葱爆小河虾","美味双脆","四季香锅","干锅灰树菇"
+    };
+    String Dish_jiushui[]={
+        "碧潭飘雪", "血玛丽", "菊花茶", "凯撒白啤", "龙徽干红", "手工花毛峰", "铁观音", "王朝干红"
+    };
     writeSession.delete(DishOrderDatabaseHelper.TABLE_DISH, null, null);
-    for (int i = 0; i < 10; i++) {
-      for (int j=i; j<10; j++ ) {
-        values.clear();
-        values.put(DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU, "submenu_id_" + i + 1);
-        values.put(DishOrderDatabaseHelper.COLUMN_DISH_MENU, "menu_id_11");
-        values.put(DishOrderDatabaseHelper.COLUMN_DISH_ID, "dish_id_"+ i + "_" + j + 1);
-        values.put(DishOrderDatabaseHelper.COLUMN_DISH_NAME, "dish_name_" + j + 1);
-        values.put(DishOrderDatabaseHelper.COLUMN_DISH_PRICE, "" + 20);
-        values.put(DishOrderDatabaseHelper.COLUMN_DISH_IMG, "d" + (j+2));
-        writeSession.insert(DishOrderDatabaseHelper.TABLE_DISH, null, values);
-      }
+    for (int j=0; j<9; j++ ) {
+      values.clear();
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU, "" + 0);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_MENU, "menu_id_11");
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_ID, "dish_id_"+0+j);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_NAME, Dish_chuanfu[j]);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_PRICE, "" + 20);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_IMG, "d" + (j%8));
+      writeSession.insert(DishOrderDatabaseHelper.TABLE_DISH, null, values);
+    }
+    for (int j=0; j<8; j++ ) {
+      values.clear();
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_SUBMENU, "" + 1);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_MENU, "menu_id_11");
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_ID, "dish_id_"+1+j);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_NAME, Dish_jiushui[j]);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_PRICE, "" + 20);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_IMG, "j1");
+      writeSession.insert(DishOrderDatabaseHelper.TABLE_DISH, null, values);
     }
     
     writeSession.delete(DishOrderDatabaseHelper.TABLE_MIXTURE, null, null);
