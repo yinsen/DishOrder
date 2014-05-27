@@ -18,6 +18,9 @@ package com.infolands.dishorder;
 
 import java.util.ArrayList;
 
+import com.infolands.dishorder.DataItem.OrderDetailItem;
+import com.infolands.dishorder.DataItem.OrderListItem;
+
 import android.app.Application;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -498,6 +501,41 @@ public class DishApplication extends Application {
     
     readSession.close();
     
+  }
+  
+
+  //修改用于插入新点菜品到已点菜品列表，并更新已点菜单数据结构。这里只放入List，菜点好了，下单时再存数据库
+  public void OrderOneDish(String mixtureid, String _taste, String _cookie, String _weight, int dishnum) {
+    DataItem dataItem = new DataItem();
+    String tableno = getCurrTableNo();
+    
+    //生成或得到OrderListId
+    String orderlistid = "";
+    if (((DishApplication)getApplicationContext()).orderlistList.size() > 0) {
+      orderlistid = orderlistList.get(0).orderlist_id;
+    }
+    else {
+      orderlistid = tableno + "_" + Long.toString(System.currentTimeMillis());
+    }
+    DataItem.OrderDetailItem detailItem = dataItem.new OrderDetailItem(currDishId, orderlistid, mixtureid, _taste, _cookie, _weight, dishnum);
+    orderdetailList.add(detailItem);
+    
+    //计算总价
+    int total_price = 0;
+    if (((DishApplication)getApplicationContext()).orderlistList.size() > 0) {
+      total_price = Integer.parseInt(((DishApplication)getApplicationContext()).orderlistList.get(0).total_price);
+    }
+    for (int j=0; j<((DishApplication)getApplicationContext()).dishList.size(); j++) {
+      if (currDishId != null && currDishId.equals(((DishApplication)getApplicationContext()).dishList.get(j).dish_id)) {
+        total_price += Integer.parseInt(((DishApplication)getApplicationContext()).dishList.get(j).price);
+        break;
+      }
+    }
+    DataItem.OrderListItem listItem = dataItem.new OrderListItem(orderlistid, tableno, Integer.toString(total_price)
+                                                                , currWaitorId
+                                                                , STATUS_UNCONFIRMED);
+    orderlistList.clear();
+    orderlistList.add(listItem);
   }
   
   @Override

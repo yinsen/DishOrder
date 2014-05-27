@@ -62,6 +62,12 @@
 		        	android:textSize="15sp"
 			        android:textStyle="bold"
 				    android:text="@string/mixture"/>
+		        <Button android:id="@+id/remarksbt"
+				    android:layout_width="120dp"
+		        	android:layout_height="wrap_content"
+		        	android:textSize="15sp"
+			        android:textStyle="bold"
+				    android:text="@string/remarks"/>
 		        
 			    <!-- 文字介绍 -->
 				<TextView

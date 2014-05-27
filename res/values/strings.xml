@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dish Order</string>
+    
+    <string name="dining">Dining</string>
+    <string name="dining_chinese">Chinese Food</string>
+    <string name="dining_european">European food</string>
+    
     <string name="back">Back</string>
     <string name="hotdishs">Hot Dishs</string>
     <string name="cooldishs">Cool Dishs</string>
@@ -36,6 +41,7 @@
     <string name="orderdish">OK</string>
     
     <string name="mixture">Mixture</string>
+    <string name="remarks">Remarks</string>
     <string name="mix1">Senior</string>
     <string name="mix2">Egg</string>
     <string name="mix0">Other</string>

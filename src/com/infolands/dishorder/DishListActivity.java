@@ -150,6 +150,11 @@ public class DishListActivity extends Activity {
           nameView.setText(o.name);
           priceView.setText("(" + o.price + getResources().getString(R.string.pricestr) + ")");
         }
+        
+        Button enterBt = (Button) v.findViewById(R.id.dishEnter);
+        if (enterBt != null) {
+          handleDishEnter(enterBt, o);
+        }
         Button orderBt = (Button) v.findViewById(R.id.dishOrder);
         if (orderBt != null) {
           handleDishOrder(orderBt, o);
@@ -159,9 +164,9 @@ public class DishListActivity extends Activity {
       return v;
     }
 
-    private void handleDishOrder(final Button orderButton, final DataItem.DishItem dishItem) {
+    private void handleDishEnter(final Button enterButton, final DataItem.DishItem dishItem) {
 
-      orderButton.setOnClickListener(new View.OnClickListener() {
+      enterButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
           ((DishApplication)getApplicationContext()).currDishId = dishItem.dish_id;
@@ -177,6 +182,19 @@ public class DishListActivity extends Activity {
         }
       });
     }
+  }
+  
+  private void handleDishOrder(final Button orderButton, final DataItem.DishItem dishItem) {
+
+    orderButton.setOnClickListener(new View.OnClickListener() {
+
+      public void onClick(View v) {
+        ((DishApplication)getApplicationContext()).currDishId = dishItem.dish_id;
+        
+        //直接下单时使用默认参数
+        ((DishApplication)getApplicationContext()).OrderOneDish("1", "taste", "cookie", "weight", 1);
+      }
+    });
   }
 
   public class DishGridAdapter extends BaseAdapter {
@@ -477,6 +495,7 @@ public class DishListActivity extends Activity {
 
   private static final int MENU_WAITOR_MODE = 1;
   private static final int MENU_CURTOMER_MODE = 2;
+  private static final int MENU_LANGUAGE = 3;
   private static final int MENU_SEARCH = 4;
   private static final int MENU_SETTING = 5;
   private static final int MENU_UPDATING_DATA = 6;
@@ -501,6 +520,8 @@ public class DishListActivity extends Activity {
     
     menu.add(Menu.NONE, MENU_SEARCH, Menu.NONE, R.string.dishsearch)
         .setIcon(android.R.drawable.ic_menu_search);
+    menu.add(Menu.NONE, MENU_LANGUAGE, Menu.NONE, R.string.language)
+        .setIcon(android.R.drawable.ic_menu_set_as);
     return true;
   }
 
@@ -515,6 +536,9 @@ public class DishListActivity extends Activity {
         return true;
       case MENU_SEARCH:
         onMenuSearch();
+        return true;
+      case MENU_LANGUAGE:
+        onMenuLanguage();
         return true;
       case MENU_SETTING:
         onMenuSetting();
@@ -587,6 +611,11 @@ public class DishListActivity extends Activity {
     //onSearchRequested();
     Intent intent = new Intent(DishListActivity.this, SearchResultActivity.class);
     startActivity(intent);
+  }
+  
+  private void onMenuLanguage(){
+//    Intent intent = new Intent(DishListActivity.this, UpdateDataActivity.class);
+//    startActivity(intent);
   }
   
   private void onMenuUpdatingData(){
