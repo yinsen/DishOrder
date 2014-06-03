@@ -13,10 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class OrderActivity extends Activity {
+public class BigImgActivity extends Activity {
     
   private String mixture_id = "1";
   private int dish_num = 1;
@@ -28,7 +29,7 @@ public class OrderActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.order);
+        setContentView(R.layout.bigimg);
         
         Button backBtn = (Button) findViewById(R.id.backbt);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +64,19 @@ public class OrderActivity extends Activity {
         TextView orderDishName = (TextView) findViewById(R.id.orderdishname);
         orderDishName.setText(dishName);
         
+        Button detailBtn = (Button) findViewById(R.id.detailBt);
+        detailBtn.setOnClickListener(new View.OnClickListener() {
+
+          public void onClick(View v) {
+            try {
+              Intent intent = new Intent(BigImgActivity.this,OrderActivity.class);  
+              startActivity(intent); 
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        });
+        
         Button orderBtn = (Button) findViewById(R.id.orderbt);
         orderBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -87,66 +101,9 @@ public class OrderActivity extends Activity {
           }
         });
         
-        Button mixtureBtn = (Button) findViewById(R.id.mixturebt);
-        mixtureBtn.setOnClickListener(new View.OnClickListener() {
-
-          @Override
-          public void onClick(final View v) {
-
-            LayoutInflater factory = LayoutInflater.from(OrderActivity.this);
-            
-            final View mixtureView = factory.inflate(R.layout.mixture, null);
-            new AlertDialog.Builder(OrderActivity.this)
-                .setTitle(R.string.mixture)
-                .setView(mixtureView)
-                .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                      
-                      DishApplication app = (DishApplication)getApplicationContext();
-                    }
-                })
-                .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        /* User clicked cancel so do some stuff */
-                    }
-                })
-                .create()
-                .show();
-          }
-        });
         
-        Button remarksBtn = (Button) findViewById(R.id.remarksbt);
-        remarksBtn.setOnClickListener(new View.OnClickListener() {
-
-          @Override
-          public void onClick(final View v) {
-
-            LayoutInflater factory = LayoutInflater.from(OrderActivity.this);
-            
-            final View remarksView = factory.inflate(R.layout.remarks, null);
-            new AlertDialog.Builder(OrderActivity.this)
-                .setTitle(R.string.remarks)
-                .setView(remarksView)
-                .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                      
-                      DishApplication app = (DishApplication)getApplicationContext();
-                    }
-                })
-                .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        /* User clicked cancel so do some stuff */
-                    }
-                })
-                .create()
-                .show();
-          }
-        });
-        
-        
+        ImageView bigImg = (ImageView) findViewById(R.id.dishimg);
+        bigImg.setBackgroundResource(R.drawable.bigimg);
     }
-
   
 }

@@ -134,6 +134,7 @@
                 android:id="@+id/dishList"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:background="@drawable/background"
                 android:cacheColorHint="@android:color/transparent"
                 android:visibility="invisible" >
             </ListView>
@@ -142,6 +143,7 @@
                 android:id="@+id/dishGrid"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:background="@drawable/background"
                 android:cacheColorHint="@android:color/transparent"
                 android:columnWidth="120dp"
                 android:gravity="center"

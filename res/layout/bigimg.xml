@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+	  <!-- top bar -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/topbar_bk"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/backbt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/toolbar_back_normal"
+            android:text="@string/back" />
+
+        <TextView android:id="@+id/orderdishname"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerInParent="true"
+		        android:textSize="25sp"
+		        android:textStyle="bold"/>
+
+
+        <Button
+            android:id="@+id/detailBt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_toLeftOf="@+id/orderbt"
+            android:background="@drawable/toolbar_normal"
+            android:text="@string/enter" />
+
+        <Button
+            android:id="@+id/orderbt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/toolbar_normal"
+            android:text="@string/orderdish" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/dishimg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+</LinearLayout>

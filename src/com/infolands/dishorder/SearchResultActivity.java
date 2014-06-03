@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -109,6 +110,7 @@ public class SearchResultActivity extends Activity {
         TextView nameView = (TextView) v.findViewById(R.id.searchDishItem);
         if (nameView != null) {
           nameView.setText(o.name);
+          nameView.setBackgroundColor(Color.DKGRAY);
           handleDishOrder(nameView, o);
         }
       }

@@ -16,7 +16,7 @@
     <string name="order">点单</string>
     <string name="viewstyle">视图切换</string>
     <string name="ordereddetail">已点菜单</string>
-    <string name="enter">进入</string>
+    <string name="enter">详情</string>
     <string name="nodish">无菜品</string>
     <string name="pricestr">元/例</string>
     
@@ -45,7 +45,7 @@
     <string name="mix1">高级清汤</string>
     <string name="mix2">鸡蛋</string>
     <string name="mix0">其它</string>
-    <string name="dishdetail">简介：\n青椒豆干炒肉片，青椒微辣，豆干劲道，肉片嫩滑，色泽清爽，清香宜人</string>
+    <string name="dishdetail">简介：\n此处为本菜品的文字说明</string>
     <string name="example_name">青椒炒肉片</string>
     
     

@@ -8,6 +8,7 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -73,12 +74,16 @@ public class DishListActivity extends Activity {
         
         if (labelBt != null) {
           labelBt.setText(o.name);
-          handleLabelSelect(labelBt, position);
+          if (o.isFocus) {
+            labelBt.setBackgroundResource(R.drawable.secondmenubghighlight);
+            labelBt.setTextColor(Color.LTGRAY);
+          }
+          else {
+            labelBt.setBackgroundResource(R.drawable.secondmenubg);
+            labelBt.setTextColor(Color.BLACK);
+          }
           
-          if (o.isFocus)
-            labelBt.setBackgroundResource(R.drawable.background);
-          else
-            labelBt.setBackgroundResource(R.drawable.labelbg);
+          handleLabelSelect(labelBt, position);
         }
       }
 
@@ -86,7 +91,7 @@ public class DishListActivity extends Activity {
     }
 
     private void handleLabelSelect(final TextView labelButton, final int pos) {
-
+      
       labelButton.setOnClickListener(new View.OnClickListener() {
 
         public void onClick(View v) {
@@ -171,10 +176,10 @@ public class DishListActivity extends Activity {
         public void onClick(View v) {
           ((DishApplication)getApplicationContext()).currDishId = dishItem.dish_id;
           try {
-            Intent intent = new Intent(DishListActivity.this,OrderActivity.class);  
-            Bundle bundle = new Bundle();
-            bundle.putString("dishname", dishItem.name);  
-            intent.putExtra("dishname", bundle); 
+            Intent intent = new Intent(DishListActivity.this,BigImgActivity.class);  
+//            Bundle bundle = new Bundle();
+//            bundle.putString("dishname", dishItem.name);  
+//            intent.putExtra("dishname", bundle); 
             startActivityForResult(intent, REQUEST_CODE_BIG_IMG); 
           } catch (Exception e) {
             e.printStackTrace();
@@ -259,10 +264,10 @@ public class DishListActivity extends Activity {
         public void onClick(View v) {
           ((DishApplication)getApplicationContext()).currDishId = dishItem.dish_id;
           try {
-            Intent intent = new Intent(DishListActivity.this,OrderActivity.class); 
-            Bundle bundle = new Bundle();
-            bundle.putString("dishname", dishItem.name);  
-            intent.putExtra("dishname", bundle); 
+            Intent intent = new Intent(DishListActivity.this,BigImgActivity.class); 
+//            Bundle bundle = new Bundle();
+//            bundle.putString("dishname", dishItem.name);  
+//            intent.putExtra("dishname", bundle); 
             startActivityForResult(intent, REQUEST_CODE_BIG_IMG); 
           } catch (Exception e) {
             e.printStackTrace();
