@@ -284,7 +284,7 @@ public class DishApplication extends Application {
       values.put(DishOrderDatabaseHelper.COLUMN_DISH_MENU, "menu_id_11");
       values.put(DishOrderDatabaseHelper.COLUMN_DISH_ID, "dish_id_"+0+j);
       values.put(DishOrderDatabaseHelper.COLUMN_DISH_NAME, Dish_chuanfu[j]);
-      values.put(DishOrderDatabaseHelper.COLUMN_DISH_PRICE, "" + 20);
+      values.put(DishOrderDatabaseHelper.COLUMN_DISH_PRICE, "" + (280 + (2-j%4)*20));
       values.put(DishOrderDatabaseHelper.COLUMN_DISH_IMG, "d" + (j%8));
       writeSession.insert(DishOrderDatabaseHelper.TABLE_DISH, null, values);
     }

@@ -54,15 +54,16 @@ public class BigImgActivity extends Activity {
         int size = ((DishApplication)getApplicationContext()).dishList.size();
         String dishId = ((DishApplication)getApplicationContext()).currDishId;
         String dishName = "";
+        String price = "";
         for (int i=0; i<size; i++){
           if (((DishApplication)getApplicationContext()).dishList.get(i).dish_id.equals(dishId)){
             dishName = ((DishApplication)getApplicationContext()).dishList.get(i).name;
-            
+            price = ((DishApplication)getApplicationContext()).dishList.get(i).price;
             break;
           }
         }
         TextView orderDishName = (TextView) findViewById(R.id.orderdishname);
-        orderDishName.setText(dishName);
+        orderDishName.setText(dishName + "(" + price + getResources().getString(R.string.pricestr) + ")");
         
         Button detailBtn = (Button) findViewById(R.id.detailBt);
         detailBtn.setOnClickListener(new View.OnClickListener() {
